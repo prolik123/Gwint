@@ -42,7 +42,7 @@ public class App extends Application {
         stage.setScene(new Scene(root,width,height));
         stage.show();
     }
-    
+
     public static void main(String[] args) {
         //3 2 1 and launch 🚀
         launch(args);
