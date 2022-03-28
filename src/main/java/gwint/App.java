@@ -31,10 +31,10 @@ public class App extends Application {
         stage.setScene(new Scene(root,1280,760));
         stage.show();
     }
-
-
+    
     public static void main(String[] args) {
         launch(args);
+        
     }
 
 }
