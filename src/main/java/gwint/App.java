@@ -17,14 +17,14 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        stage.setTitle("cos");
+        stage.setTitle("Base Game");
         GridPane root = new GridPane();
         String image = App.class.getResource("plansza.jpg").toExternalForm();
-        Image Plan = new Image(image);
+        //Image Plan = new Image(image);
         root.setStyle(
             "-fx-background-image: url('" + image + "'); " +
-           "-fx-background-position: center top;" + 
-           "-fx-background-repeat: no-repeat; " +
+            "-fx-background-position: center top;" + 
+            "-fx-background-repeat: no-repeat; " +
             "-fx-background-size: 1280 560; "
         );
         stage.setResizable(false);
