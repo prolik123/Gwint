@@ -14,14 +14,6 @@ import javafx.stage.Screen;
 import javafx.geometry.Rectangle2D;
 
 import java.io.IOException;
-<<<<<<< HEAD
-import java.util.*;
-/**
- * JavaFX App
- */
-=======
-
->>>>>>> remotes/origin/alpha
 public class App extends Application {
 
     @Override
@@ -35,21 +27,11 @@ public class App extends Application {
         stage.setTitle("Base Game");
         stage.setFullScreen(true);
         GridPane root = new GridPane();
-<<<<<<< HEAD
-        String image = App.class.getResource("plansza.jpg").toExternalForm();
-=======
         String image = App.class.getResource("plansza.png").toExternalForm();
->>>>>>> remotes/origin/alpha
         root.setStyle(
             "-fx-background-image: url('" + image + "'); " +
             "-fx-background-position: right center;" + 
             "-fx-background-repeat: no-repeat; " +
-<<<<<<< HEAD
-            "-fx-background-size: 1200 500; "
-        );
-        stage.setResizable(false);
-        stage.setScene(new Scene(root,1200,700));
-=======
             "-fx-background-size: cover" 
             //MOZNA ZMIENIC NA CONTAIN 
         );
@@ -57,7 +39,6 @@ public class App extends Application {
         
         //Add scene to stage and show it
         stage.setScene(new Scene(root,width,height));
->>>>>>> remotes/origin/alpha
         stage.show();
     }
 
