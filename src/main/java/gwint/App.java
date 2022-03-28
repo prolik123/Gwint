@@ -14,6 +14,7 @@ import javafx.stage.Screen;
 import javafx.geometry.Rectangle2D;
 
 import java.io.IOException;
+
 public class App extends Application {
 
     @Override
