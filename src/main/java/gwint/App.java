@@ -8,7 +8,11 @@ package gwint;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.Screen;
 import javafx.geometry.Rectangle2D;
@@ -36,6 +40,8 @@ public class App extends Application {
             "-fx-background-size: cover" 
             //MOZNA ZMIENIC NA CONTAIN 
         );
+        GameEngine engine = new GameEngine();
+        
         stage.setResizable(false);
         
         //Add scene to stage and show it
@@ -46,7 +52,6 @@ public class App extends Application {
     public static void main(String[] args) {
         //3 2 1 and launch 🚀
         launch(args);
-        
     }
 
 }

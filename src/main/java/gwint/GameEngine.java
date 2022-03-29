@@ -4,8 +4,8 @@ import java.util.*;
 
 public class GameEngine {
     
-    public List<Card> myCards;
-    public List<Card> opponentCards;
+    public BoardSlot myCards;
+    public BoardSlot opponentCards;
     public Stack<Card> myCardStack;
     public Stack<Card> opponentCardStack;
     boolean myPass = false;
@@ -14,11 +14,36 @@ public class GameEngine {
     int opponentBoardValue = 0;
     int startNumberOfCards = 7;
 
-    public Board myBoard;
-    public Board opponentBoard;
+    public BoardSlot myBoard[];
+    public BoardSlot opponentBoard[];
 
     GameEngine() {
-        myCards = JsonCardParser.getCardsList();
+        
+        myCards = new BoardSlot();
+        myCardStack = new Stack<>();
+        myCards.cardList = JsonCardParser.getCardsList();
+        getListPermutation(myCards.cardList);
+        chooseHandCards(myCards.cardList, myCardStack);
+
+        opponentCards = new BoardSlot();
+        opponentCardStack = new Stack<>();
+        opponentCards.cardList = JsonCardParser.getCardsList();
+        getListPermutation(opponentCards.cardList);
+        chooseHandCards(opponentCards.cardList, opponentCardStack);
 
     }
+
+    /// getting startNumberOfCards to list and the rest lies on Stack
+    private void chooseHandCards(List<Card> currList, Stack<Card> currStack){
+        while(currList.size() > startNumberOfCards) {
+            currStack.add(currList.get(currList.size()-1));
+            currList.remove(currList.size()-1);
+        }
+    }
+
+    /// Get a random permutation of the list
+    public void getListPermutation(List<?> currList){
+        Collections.shuffle(currList);
+    }
+
 }
