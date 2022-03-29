@@ -15,6 +15,7 @@ public class BoardSlot {
     boolean hand = false;
     BoardView curentView;
     BoardSlot Bords[];
+    final String cardPathPrefix = "Cards/";
 
     BoardSlot() {
         cardList = new ArrayList<>();
@@ -44,8 +45,8 @@ public class BoardSlot {
         private static final String DECK_STYLE="-fx-background-color: transparent;";
         public BoardView(double ratio) {
             for(Card card : cardList) {
-                System.out.println(card);
-                Image current = new Image(App.class.getResource(card.imageLink).toExternalForm());
+                
+                Image current = new Image(App.class.getResource(cardPathPrefix+card.imageLink).toExternalForm());
                 ImageView ImView = new ImageView(current);
                 Button btn = new Button();
                 btn.setGraphic(ImView);
