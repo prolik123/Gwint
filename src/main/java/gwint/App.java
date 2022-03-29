@@ -34,7 +34,7 @@ public class App extends Application {
             "-fx-background-position: right center;" + 
             "-fx-background-repeat: no-repeat; " +
             "-fx-background-size: contain" 
-            //MOZNA ZMIENIC NA COVER 
+            //MOZNA ZMIENIC NA CONTAIN 
         );
         stage.setResizable(false);
         
