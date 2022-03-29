@@ -10,9 +10,10 @@ public class DeckView extends HBox {
     public DeckView(double height, double width) {
         Button deckEntity=new Button();
         deckEntity.setGraphic(new ImageView(new Image(App.class.getResource("back.png").toExternalForm())));
-        double C=1990/3366;
-        deckEntity.setScaleX((0.6)+C*height/width);
-        deckEntity.setScaleY((0.6)+C*height/width);
+        double C=width/3366;
+        double CC=1990*C;
+        deckEntity.setScaleX((height-(height-CC))/width);
+        deckEntity.setScaleY((height-(height-CC))/width);
         deckEntity.setStyle(DECK_STYLE);
 
         getChildren().add(deckEntity);

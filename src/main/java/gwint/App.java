@@ -29,6 +29,8 @@ public class App extends Application {
         //Set stage
         stage.setTitle("Base Game");
         stage.setFullScreen(true);
+        stage.setHeight(1000);
+        stage.setWidth(1000);
         GridPane root = new GridPane();
         //root.setAlignment(Pos.BOTTOM_RIGHT);
         //root.setHgap(500);
