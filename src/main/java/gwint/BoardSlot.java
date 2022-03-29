@@ -56,8 +56,11 @@ public class BoardSlot {
                         @Override
                         public void handle(ActionEvent event) {
                             getChildren().remove(btn);
+                            Button copyButton = new Button();
+                            copyButton.setGraphic(ImView);
+                            copyButton.setStyle(DECK_STYLE);
                             value += card.value;
-                            Bords[card.boardType].getCurentBoardView().getChildren().add(btn);
+                            Bords[card.boardType].getCurentBoardView().getChildren().add(copyButton);
                             Bords[card.boardType].value+= card.value;
                             cardList.remove(card);
                         }
