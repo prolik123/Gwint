@@ -5,9 +5,6 @@ import java.io.FileReader;
 import java.util.*;
 import org.json.*;
 
-    /// Get a random permutation of the list
-    /// Collections.shuffle(result);
-
 public class JsonCardParser {
     
     public static List<Card> getCardsList() {
@@ -46,6 +43,8 @@ public class JsonCardParser {
             currentCard.imageLink = getJsonStringAttribute(currentJsonCard, "link");
 
             currentCard.value = getJsonIntegerAttribute(currentJsonCard, "value");
+
+            currentCard.boardType = getJsonIntegerAttribute(currentJsonCard, "board");
 
             int quantity = getJsonIntegerAttribute(currentJsonCard, "quantity");
             

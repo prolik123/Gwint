@@ -4,7 +4,8 @@
             "name": "1",
             "quantity" : "3",
             "link": "1.png",
-            "value": "1"
+            "value": "1",
+            "board": "0"
         }
     },
     {
@@ -12,7 +13,8 @@
             "name": "2",
             "quantity" : "2",
             "link": "2.png",
-            "value": "2"
+            "value": "2",
+            "board": "0"
         }
     },
     {
@@ -20,7 +22,8 @@
             "name": "3",
             "quantity" : "1",
             "link": "3.png",
-            "value": "3"
+            "value": "3",
+            "board": "0"
         }
     },
     {
@@ -28,7 +31,8 @@
             "name": "4",
             "quantity" : "1",
             "link": "4.png",
-            "value": "4"
+            "value": "4",
+            "board": "1"
         }
     },
     {
@@ -36,7 +40,8 @@
             "name": "5",
             "quantity" : "1",
             "link": "5.png",
-            "value": "5"
+            "value": "5",
+            "board": "1"
         }
     },
     {
@@ -44,7 +49,8 @@
             "name": "6",
             "quantity" : "1",
             "link": "6.png",
-            "value": "6"
+            "value": "6",
+            "board": "1"
         }
     },
     {
@@ -52,7 +58,8 @@
             "name": "7",
             "quantity" : "1",
             "link": "7.png",
-            "value": "7"
+            "value": "7",
+            "board": "2"
         }
     },
     {
@@ -60,7 +67,8 @@
             "name": "8",
             "quantity" : "1",
             "link": "8.png",
-            "value": "8"
+            "value": "8",
+            "board": "2"
         }
     },
     {
@@ -68,7 +76,8 @@
             "name": "9",
             "quantity" : "1",
             "link": "9.png",
-            "value": "9"
+            "value": "9",
+            "board": "2"
         }
     }
 ]

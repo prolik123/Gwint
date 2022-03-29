@@ -8,13 +8,25 @@ package gwint;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.Screen;
 import javafx.geometry.Rectangle2D;
+<<<<<<< HEAD
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
+=======
 import javafx.scene.layout.*;
+>>>>>>> remotes/origin/alpha
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+import java.util.*;
 
 public class App extends Application {
 
@@ -46,6 +58,26 @@ public class App extends Application {
             "-fx-background-position: right center;" + 
             "-fx-background-repeat: no-repeat; " +
             "-fx-background-size: contain" 
+<<<<<<< HEAD
+            //MOZNA ZMIENIC NA CONTAIN 
+        );
+        GameEngine engine = new GameEngine();
+        
+        //BoardSlot.BoardView n = (engine.myCards).BoardView(100);
+        root.add(engine.myCards.getNewBoardView(1000),0,80);
+        for(int k=0;k<3;k++)
+            root.add(engine.myBoard[k].getNewBoardView(1000),0,30+10*k);
+        //BoardSlot.BoardView t = engine.opponentCards.getNewBoardView(1000);
+        //root.add(t,500,0);
+        
+        stage.setScene(new Scene(root,width,height));
+        stage.show();
+        stage.setResizable(false);
+        
+        //Add scene to stage and show it
+        //stage.setScene(new Scene(root,width,height));
+        //stage.show();
+=======
         );
 
         //Add elements to grid
@@ -59,6 +91,7 @@ public class App extends Application {
         stage.setResizable(false);
         stage.setScene(new Scene(root,width,height));
         stage.show();
+>>>>>>> remotes/origin/alpha
     }
 
     public static void main(String[] args) {
