@@ -13,6 +13,7 @@ public class GameEngine {
     int myBoradValue = 0;
     int opponentBoardValue = 0;
     int startNumberOfCards = 7;
+    final String cardPathPrefix = "Cards/";
 
     public BoardSlot myBoard[] = new BoardSlot[3];
     public BoardSlot opponentBoard[] = new BoardSlot[3];
