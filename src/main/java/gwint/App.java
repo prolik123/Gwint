@@ -11,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.Screen;
-import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.layout.*;
 
@@ -26,46 +25,38 @@ public class App extends Application {
         double height=screenBounds.getHeight();
         double width=screenBounds.getWidth();
 
-        //Set stage
-        stage.setTitle("Base Game");
-        stage.setFullScreen(true);
-        stage.setHeight(1000);
-        stage.setWidth(1000);
+        //Create 200x200 grid
         GridPane root = new GridPane();
-        //root.setAlignment(Pos.BOTTOM_RIGHT);
-        //root.setHgap(500);
-        //root.setVgap(500);
-        root.setGridLinesVisible(true);
+        //root.setGridLinesVisible(true);
 
-        for(int i=0;i<100;i++) {
-            ColumnConstraints col1 = new ColumnConstraints();
-            col1.setPercentWidth(1);
-            //ColumnConstraints col2 = new ColumnConstraints();
-            //col2.setPercentWidth(50);
-            root.getColumnConstraints().addAll(col1);
+        for(int i=0;i<200;i++) {
+            ColumnConstraints column = new ColumnConstraints();
+            column.setPercentWidth(0.5);
+            root.getColumnConstraints().addAll(column);
 
-            RowConstraints row1 = new RowConstraints();
-            row1.setPercentHeight(1);
-            //RowConstraints row2 = new RowConstraints();
-            //row2.setPercentHeight(50);
-            root.getRowConstraints().addAll(row1);
+            RowConstraints row = new RowConstraints();
+            row.setPercentHeight(0.5);
+            root.getRowConstraints().addAll(row);
         }
         
+        //Set background
         String image = App.class.getResource("plansza.png").toExternalForm();
         root.setStyle(
             "-fx-background-image: url('" + image + "'); " +
             "-fx-background-position: right center;" + 
             "-fx-background-repeat: no-repeat; " +
             "-fx-background-size: contain" 
-            //MOZNA ZMIENIC NA CONTAIN 
         );
-        stage.setResizable(false);
 
-        //Add deck to root
+        //Add elements to grid
         DeckView deckView=new DeckView(height,width);
-        root.add(deckView, 83, 55);
+        root.add(deckView, 166, 110);
+        /*Add more elements here*/
         
-        //Add scene to stage and show it
+        //Stage settings
+        stage.setTitle("Base Game");
+        stage.setFullScreen(true);
+        stage.setResizable(false);
         stage.setScene(new Scene(root,width,height));
         stage.show();
     }
