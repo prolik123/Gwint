@@ -60,7 +60,7 @@ public class App extends Application {
         stage.setResizable(false);
 
         //Add deck to root
-        DeckView deckView=new DeckView(height/width);
+        DeckView deckView=new DeckView(height,width);
         root.add(deckView, 83, 55);
         
         //Add scene to stage and show it
