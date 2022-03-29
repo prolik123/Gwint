@@ -48,19 +48,12 @@ public class App extends Application {
         GameEngine engine = new GameEngine();
         
         //BoardSlot.BoardView n = (engine.myCards).BoardView(100);
-        root.add(engine.myCards.getNewBoardView(1000),0,0);
-        BoardSlot.BoardView t = engine.opponentCards.getNewBoardView(1000);
-        root.add(t,0,500);
+        root.add(engine.myCards.getNewBoardView(1000),0,80);
+        //BoardSlot.BoardView t = engine.opponentCards.getNewBoardView(1000);
+        //root.add(t,500,0);
         
         stage.setScene(new Scene(root,width,height));
         stage.show();
-        engine.opponentCards.cardList.remove(0);
-        try{
-            TimeUnit.SECONDS.sleep(5);
-        }catch (Exception e){}
-
-        root.getChildren().remove(engine.opponentCards.getCurentBoardView());
-        root.add(engine.opponentCards.getNewBoardView(1000),0,500);
         stage.setResizable(false);
         
         //Add scene to stage and show it

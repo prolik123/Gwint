@@ -44,6 +44,8 @@ public class JsonCardParser {
 
             currentCard.value = getJsonIntegerAttribute(currentJsonCard, "value");
 
+            currentCard.boardType = getJsonIntegerAttribute(currentJsonCard, "board");
+
             int quantity = getJsonIntegerAttribute(currentJsonCard, "quantity");
             
             /// add qunatity times k-th Card to List

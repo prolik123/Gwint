@@ -12,6 +12,7 @@ import javafx.scene.layout.HBox;
 public class BoardSlot {
     public List<Card> cardList;
     public int value = 0;
+    boolean hand = false;
     BoardView curentView;
 
     BoardSlot() {
@@ -41,13 +42,15 @@ public class BoardSlot {
                 ImageView ImView = new ImageView(current);
                 Button btn = new Button();
                 btn.setGraphic(ImView);
-                /*btn.setOnAction(new EventHandler<ActionEvent>() {
+                btn.setOnAction(new EventHandler<ActionEvent>() {
 
                     @Override
                     public void handle(ActionEvent event) {
-                        System.out.println("Hello World!");
+                        getChildren().remove(btn);
+                        value += card.value;
+                        cardList.remove(card);
                     }
-                });*/
+                });
                 getChildren().add(btn);
             }
         }

@@ -14,8 +14,8 @@ public class GameEngine {
     int opponentBoardValue = 0;
     int startNumberOfCards = 7;
 
-    public BoardSlot myBoard[];
-    public BoardSlot opponentBoard[];
+    public BoardSlot myBoard[] = new BoardSlot[3];
+    public BoardSlot opponentBoard[] = new BoardSlot[3];
 
     GameEngine() {
         
@@ -24,6 +24,10 @@ public class GameEngine {
         myCards.cardList = JsonCardParser.getCardsList();
         getListPermutation(myCards.cardList);
         chooseHandCards(myCards.cardList, myCardStack);
+        myCards.hand = true;
+        for(int k=0;k<3;k++)
+            myBoard[k] = new BoardSlot();
+        myCards.setBords(myBoard);
 
         opponentCards = new BoardSlot();
         opponentCardStack = new Stack<>();
