@@ -33,8 +33,8 @@ public class App extends Application {
             "-fx-background-image: url('" + image + "'); " +
             "-fx-background-position: right center;" + 
             "-fx-background-repeat: no-repeat; " +
-            "-fx-background-size: cover" 
-            //MOZNA ZMIENIC NA CONTAIN 
+            "-fx-background-size: contain" 
+            //MOZNA ZMIENIC NA COVER 
         );
         stage.setResizable(false);
         
