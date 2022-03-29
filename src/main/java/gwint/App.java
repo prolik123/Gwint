@@ -16,8 +16,13 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.Screen;
 import javafx.geometry.Rectangle2D;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+import java.util.*;
 
 public class App extends Application {
 
@@ -37,16 +42,30 @@ public class App extends Application {
             "-fx-background-image: url('" + image + "'); " +
             "-fx-background-position: right center;" + 
             "-fx-background-repeat: no-repeat; " +
-            "-fx-background-size: cover" 
+            "-fx-background-size: contain" 
             //MOZNA ZMIENIC NA CONTAIN 
         );
         GameEngine engine = new GameEngine();
         
+        //BoardSlot.BoardView n = (engine.myCards).BoardView(100);
+        root.add(engine.myCards.getNewBoardView(1000),0,0);
+        BoardSlot.BoardView t = engine.opponentCards.getNewBoardView(1000);
+        root.add(t,0,500);
+        
+        stage.setScene(new Scene(root,width,height));
+        stage.show();
+        engine.opponentCards.cardList.remove(0);
+        try{
+            TimeUnit.SECONDS.sleep(5);
+        }catch (Exception e){}
+
+        root.getChildren().remove(engine.opponentCards.getCurentBoardView());
+        root.add(engine.opponentCards.getNewBoardView(1000),0,500);
         stage.setResizable(false);
         
         //Add scene to stage and show it
-        stage.setScene(new Scene(root,width,height));
-        stage.show();
+        //stage.setScene(new Scene(root,width,height));
+        //stage.show();
     }
 
     public static void main(String[] args) {
