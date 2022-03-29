@@ -16,9 +16,13 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.Screen;
 import javafx.geometry.Rectangle2D;
+<<<<<<< HEAD
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+=======
+import javafx.scene.layout.*;
+>>>>>>> remotes/origin/alpha
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -33,16 +37,28 @@ public class App extends Application {
         double height=screenBounds.getHeight();
         double width=screenBounds.getWidth();
 
-        //Set stage
-        stage.setTitle("Base Game");
-        stage.setFullScreen(true);
+        //Create 200x200 grid
         GridPane root = new GridPane();
+        //root.setGridLinesVisible(true);
+
+        for(int i=0;i<200;i++) {
+            ColumnConstraints column = new ColumnConstraints();
+            column.setPercentWidth(0.5);
+            root.getColumnConstraints().addAll(column);
+
+            RowConstraints row = new RowConstraints();
+            row.setPercentHeight(0.5);
+            root.getRowConstraints().addAll(row);
+        }
+        
+        //Set background
         String image = App.class.getResource("plansza.png").toExternalForm();
         root.setStyle(
             "-fx-background-image: url('" + image + "'); " +
             "-fx-background-position: right center;" + 
             "-fx-background-repeat: no-repeat; " +
             "-fx-background-size: contain" 
+<<<<<<< HEAD
             //MOZNA ZMIENIC NA CONTAIN 
         );
         GameEngine engine = new GameEngine();
@@ -61,6 +77,21 @@ public class App extends Application {
         //Add scene to stage and show it
         //stage.setScene(new Scene(root,width,height));
         //stage.show();
+=======
+        );
+
+        //Add elements to grid
+        DeckView deckView=new DeckView(height,width);
+        root.add(deckView, 166, 110);
+        /*Add more elements here*/
+        
+        //Stage settings
+        stage.setTitle("Base Game");
+        stage.setFullScreen(true);
+        stage.setResizable(false);
+        stage.setScene(new Scene(root,width,height));
+        stage.show();
+>>>>>>> remotes/origin/alpha
     }
 
     public static void main(String[] args) {
