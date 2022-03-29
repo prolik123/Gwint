@@ -49,6 +49,8 @@ public class App extends Application {
         
         //BoardSlot.BoardView n = (engine.myCards).BoardView(100);
         root.add(engine.myCards.getNewBoardView(1000),0,80);
+        for(int k=0;k<3;k++)
+            root.add(engine.myBoard[k].getNewBoardView(1000),0,30+10*k);
         //BoardSlot.BoardView t = engine.opponentCards.getNewBoardView(1000);
         //root.add(t,500,0);
         
