@@ -64,7 +64,6 @@ public class App extends Application {
     public static void main(String[] args) {
         //3 2 1 and launch 🚀
         launch(args);
-        
     }
 
 }

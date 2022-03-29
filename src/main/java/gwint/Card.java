@@ -5,6 +5,7 @@ public class Card {
     public int value;
     public String name;
 
+    //Debug mainly
     @Override
     public String toString() {
         return imageLink + " " + name + " "+ value;
