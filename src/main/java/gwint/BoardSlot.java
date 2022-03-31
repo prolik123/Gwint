@@ -53,8 +53,8 @@ public class BoardSlot {
                 ImageView ImView = new ImageView(current);
                 Button btn = new Button();
                 btn.setGraphic(ImView);
-                btn.setScaleX(ratio);
-                btn.setScaleY(ratio);
+                ImView.setFitHeight(200*ratio);
+                ImView.setFitWidth(150*ratio);
                 if(hand){
                     btn.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -64,11 +64,9 @@ public class BoardSlot {
                             Button copyButton = new Button();
                             copyButton.setGraphic(ImView);
                             copyButton.setStyle(DECK_STYLE);
-                            copyButton.setScaleX(ratio);
-                            copyButton.setScaleY(ratio);
                             value += card.value;
                             Bords[card.boardType].getCurentBoardView().getChildren().add(copyButton);
-                            Bords[card.boardType].getCurentBoardView().setSpacing(-30*(1/ratio));
+                            Bords[card.boardType].getCurentBoardView().setSpacing(1/ratio);
                             Bords[card.boardType].value+= card.value;
                             cardList.remove(card);
                         }
@@ -78,25 +76,22 @@ public class BoardSlot {
                         @Override
                         public void handle(MouseEvent arg0) {
                             //Niech ktos to zanimuje prosze
-                            //Niech ktos zmieni porządek w osi Z zeby dobra karta była na wierzchu
-                            btn.setScaleX(1.2*ratio);
-                            btn.setScaleY(1.2*ratio);
+                            btn.setScaleX(1.2);
+                            btn.setScaleY(1.2);
                         }
                     });
 
                     btn.setOnMouseExited(new EventHandler<MouseEvent>() {
                         @Override
                         public void handle(MouseEvent arg0) {
-                            btn.setScaleX(ratio);
-                            btn.setScaleY(ratio);
+                            btn.setScaleX(1);
+                            btn.setScaleY(1);
                         }
                     });
                 }
                 btn.setStyle(DECK_STYLE);
-                btn.setScaleX(ratio);
                 getChildren().add(btn);
-                setSpacing(-30*(1/ratio));
-                setMaxHeight(200*ratio);
+                setSpacing((1/ratio));
             }
         }
     }

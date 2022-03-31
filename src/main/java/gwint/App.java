@@ -33,7 +33,7 @@ public class App extends Application {
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         double height=screenBounds.getHeight();
         double width=screenBounds.getWidth();
-        double ratio=(225.1/170.1)*width/3366.1; //Const to scale cards etc. Lowered it btw
+        double ratio=(height*1286/1683)/width; //Const to scale cards etc. Lowered it btw
 
         //Create 200x200 grid
         GridPane root = new GridPane();
@@ -65,9 +65,8 @@ public class App extends Application {
         //Add elements to grid
         DeckView deckView=new DeckView(ratio,engine);
         root.add(deckView, 171, 110);
-        
-        for(int k=0;k<3;k++) root.add(engine.myBoard[k].getNewBoardView(ratio),67,148-26*k);
-        root.add(engine.myCards.getNewBoardView(ratio),52,174);
+        for(int k=0;k<3;k++) root.add(engine.myBoard[k].getNewBoardView(ratio),72,98+26*k);
+        root.add(engine.myCards.getNewBoardView(ratio),57,175);
         /*Add more elements here*/
         
         //Stage settings
