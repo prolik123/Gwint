@@ -36,7 +36,7 @@ public class App extends Application {
 
         //Create 600x400 grid
         GridPane root = new GridPane();
-        //root.setGridLinesVisible(true);
+        //.setGridLinesVisible(true);
 
         for(int i=0;i<800;i++) {
             RowConstraints row = new RowConstraints();
@@ -60,16 +60,16 @@ public class App extends Application {
         );
         GameEngine engine = new GameEngine();
 
-        //root.add(engine.myCards.getNewBoardView(1000),0,300);
-        //for(int k=0;k<3;k++)
-          //  root.add(engine.myBoard[k].getNewBoardView(1000),0,30+30*k);
+        engine.myCards.getNewBoardView(1000);
+        root.add(engine.myCards.getCurentBoardView(),0,600);
+        for(int k=0;k<3;k++)
+           root.add(engine.myBoard[k].getNewBoardView(1000),0,200*k);
 
         
 
         //Add elements to grid
         DeckView deckView=new DeckView(height,width,engine);
-        root.add(deckView, (int)Math.round(((16/9)*(height/width))*1970),
-                    (int)Math.round((((16/9)*(height/width))*657)));
+        root.add(deckView, 1329,438);
         /*Add more elements here*/
         
         //Stage settings
