@@ -48,6 +48,8 @@ public class App extends Application {
             row.setPercentHeight(0.5);
             root.getRowConstraints().addAll(row);
         }
+
+        root.setGridLinesVisible(true);
         
         //Set background
         String image = App.class.getResource("plansza.png").toExternalForm();
@@ -66,8 +68,9 @@ public class App extends Application {
         DeckView deckView=new DeckView(ratio,engine);
         deckView.toFront();
         root.add(deckView, 166, 110);
-        root.add(engine.myCards.getNewBoardView(ratio),52,174);
+        
         for(int k=0;k<3;k++) root.add(engine.myBoard[k].getNewBoardView(ratio),67,148-26*k);
+        root.add(engine.myCards.getNewBoardView(ratio),52,174);
         /*Add more elements here*/
         
         //Stage settings
