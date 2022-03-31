@@ -43,9 +43,9 @@ public class App extends Application {
             row.setPercentHeight(0.25);
             root.getRowConstraints().addAll(row);
         }
-        for(int i=0;i<600;i++) {
+        for(int i=0;i<800;i++) {
             ColumnConstraints column = new ColumnConstraints();
-            column.setPercentWidth(0.16);
+            column.setPercentWidth(0.125);
             root.getColumnConstraints().addAll(column);
         }
         
@@ -60,16 +60,15 @@ public class App extends Application {
         );
         GameEngine engine = new GameEngine();
 
-        root.add(engine.myCards.getNewBoardView(1000),0,300);
-        for(int k=0;k<3;k++)
-            root.add(engine.myBoard[k].getNewBoardView(1000),0,30+30*k);
+        //root.add(engine.myCards.getNewBoardView(1000),0,300);
+        //for(int k=0;k<3;k++)
+          //  root.add(engine.myBoard[k].getNewBoardView(1000),0,30+30*k);
 
         
 
         //Add elements to grid
         DeckView deckView=new DeckView(height,width,engine);
-        root.add(deckView, (int)(Math.round((height/width)*769)),
-                 (int)(Math.round((height/width)*328)));
+        root.add(deckView, 657,219);
         /*Add more elements here*/
         
         //Stage settings
