@@ -78,6 +78,7 @@ public class BoardSlot {
                         @Override
                         public void handle(MouseEvent arg0) {
                             //Niech ktos to zanimuje prosze
+                            //Niech ktos zmieni porządek w osi Z zeby dobra karta była na wierzchu
                             btn.setScaleX(1.2*ratio);
                             btn.setScaleY(1.2*ratio);
                         }
