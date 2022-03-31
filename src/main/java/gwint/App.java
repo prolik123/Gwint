@@ -38,14 +38,14 @@ public class App extends Application {
         GridPane root = new GridPane();
         //root.setGridLinesVisible(true);
 
-        for(int i=0;i<400;i++) {
+        for(int i=0;i<800;i++) {
             RowConstraints row = new RowConstraints();
-            row.setPercentHeight(0.25);
+            row.setPercentHeight(0.125);
             root.getRowConstraints().addAll(row);
         }
-        for(int i=0;i<800;i++) {
+        for(int i=0;i<1600;i++) {
             ColumnConstraints column = new ColumnConstraints();
-            column.setPercentWidth(0.125);
+            column.setPercentWidth(0.0625);
             root.getColumnConstraints().addAll(column);
         }
         
@@ -68,7 +68,8 @@ public class App extends Application {
 
         //Add elements to grid
         DeckView deckView=new DeckView(height,width,engine);
-        root.add(deckView, 657,219);
+        root.add(deckView, (int)Math.round(((16/9)*(height/width))*1970),
+                    (int)Math.round((((16/9)*(height/width))*657)));
         /*Add more elements here*/
         
         //Stage settings
