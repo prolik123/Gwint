@@ -34,18 +34,19 @@ public class App extends Application {
         double height=screenBounds.getHeight();
         double width=screenBounds.getWidth();
 
-        //Create 200x200 grid
+        //Create 600x400 grid
         GridPane root = new GridPane();
         //root.setGridLinesVisible(true);
 
-        for(int i=0;i<200;i++) {
-            ColumnConstraints column = new ColumnConstraints();
-            column.setPercentWidth(0.5);
-            root.getColumnConstraints().addAll(column);
-
+        for(int i=0;i<400;i++) {
             RowConstraints row = new RowConstraints();
-            row.setPercentHeight(0.5);
+            row.setPercentHeight(0.25);
             root.getRowConstraints().addAll(row);
+        }
+        for(int i=0;i<600;i++) {
+            ColumnConstraints column = new ColumnConstraints();
+            column.setPercentWidth(0.16);
+            root.getColumnConstraints().addAll(column);
         }
         
         //Set background
@@ -59,15 +60,16 @@ public class App extends Application {
         );
         GameEngine engine = new GameEngine();
 
-        root.add(engine.myCards.getNewBoardView(1000),0,150);
+        root.add(engine.myCards.getNewBoardView(1000),0,300);
         for(int k=0;k<3;k++)
             root.add(engine.myBoard[k].getNewBoardView(1000),0,30+30*k);
 
         
 
         //Add elements to grid
-        DeckView deckView=new DeckView(height,width);
-        root.add(deckView, 166, 110);
+        DeckView deckView=new DeckView(height,width,engine);
+        root.add(deckView, (int)(Math.round((height/width)*769)),
+                 (int)(Math.round((height/width)*328)));
         /*Add more elements here*/
         
         //Stage settings

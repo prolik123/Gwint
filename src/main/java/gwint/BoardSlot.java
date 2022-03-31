@@ -31,6 +31,7 @@ public class BoardSlot {
         cardList.add(card);
         value += card.value;
     }
+    
 
     public BoardView getNewBoardView(double ratio) {
         curentView = new BoardView(ratio);
