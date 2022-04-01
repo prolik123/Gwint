@@ -8,14 +8,24 @@ import javafx.scene.image.ImageView;
 
 public class Player {
     
+    /// field for hand
     public BoardSlot myCards;
+
+    /// the remaining cards from decks
     public Stack<Card> myCardStack;
+
+    /// Does the Player passed ?
     boolean myPass = false;
+
+    /// Current value on board for current player
     int myBoardValue = 0;
+
+    /// Array of rows of board
     public BoardSlot myBoard[] = new BoardSlot[3];
     int startNumberOfCards = GameEngine.defultNumberOfCards;
 
 
+    /// Basic Constructor for each field
     Player() {
         myCards = new BoardSlot();
         myCardStack = new Stack<>();
@@ -28,6 +38,7 @@ public class Player {
         myCards.Boards = myBoard;
     }
 
+    /// Function which excess( more than the start number of cards ) cards adds on Stack 
     private void chooseHandCards(List<Card> currList, Stack<Card> currStack){
         while(currList.size() > startNumberOfCards) {
             currStack.add(currList.get(currList.size()-1));
@@ -40,6 +51,7 @@ public class Player {
         Collections.shuffle(currList);
     }
 
+    /// If player has a card on hand and didn't passed it will throw random card (80%) or pass (20%)
     void move() {
         if(myCards.cardList.size()!=0 && !myPass) {
             Random makePass = new Random();
@@ -52,6 +64,7 @@ public class Player {
         }
     }
 
+    /// Function which gets a card and add it to current player View
     void throwCard(Card card) {
         Image current = new Image(App.class.getResource(Card.cardPathPrefix+card.imageLink).toExternalForm());
         ImageView ImView = new ImageView(current);
@@ -66,6 +79,7 @@ public class Player {
         myBoard[card.boardType].value+= card.value;
     }
 
+    /// Function will pass...
     void getPass(){
         myPass = true;
         /// ... wypisz odpowiednio passa 

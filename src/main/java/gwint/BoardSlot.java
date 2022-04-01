@@ -13,12 +13,26 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.HBox;
 
 public class BoardSlot {
+
+    /// List of Cards representing Cards on hand ( else null )
     public List<Card> cardList;
+
+    /// value of all boards for hand
     public int value = 0;
+
+    /// does this Boards Slot representing hand
     boolean hand = false;
+
+    /// View for current BoardSlot (it's null while you dont invoke getNewBoardView )
     BoardView currentView;
+
+    /// If current boards slot is hand it represend the rows on boards
     BoardSlot Boards[];
+
+    /// ratio for scaling images
     static double ratio;
+
+    /// Constant for style
     public static final String DECK_STYLE="-fx-background-color: transparent;";
 
     BoardSlot() {
@@ -26,23 +40,21 @@ public class BoardSlot {
         value = 0;
     }
 
-    public void addCardToBoardSlot(Card card)  {
-        cardList.add(card);
-        value += card.value;
-    }
-    
-
+    /// Create and return new BoardView for current BoardSlot, (ratio for images scalling )
     public BoardView getNewBoardView(double ratio) {
         currentView = new BoardView(ratio);
         return currentView;
     }
 
+    /// returns Current BoardView ( if eariler function getNewBoardView wasn't invoke it's return null)
     public BoardView getCurentBoardView(){
         return currentView;
     }
 
+    /// BoardView Class
     public class BoardView extends HBox {
 
+        /// Constructor (each card in cardList is added to View)
         public BoardView(double ratio) {
             BoardSlot.ratio = ratio;
             for(Card card : cardList) {
@@ -51,6 +63,7 @@ public class BoardSlot {
         }
     }
 
+    /// for given Viev and Card it will add it to the View (some of features are only for hands BoardSlot)
     public void addCardToBoardView(Card card,BoardView View) {
 
         Image current = new Image(App.class.getResource(Card.cardPathPrefix+card.imageLink).toExternalForm());
@@ -59,6 +72,7 @@ public class BoardSlot {
         btn.setGraphic(ImView);
         ImView.setFitHeight(200*ratio);
         ImView.setFitWidth(150*ratio);
+        /// if its hand give the Button actions and hovers
         if(hand){
             btn.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -74,6 +88,9 @@ public class BoardSlot {
                         Boards[card.boardType].getCurentBoardView().setSpacing(1/ratio);
                         Boards[card.boardType].value+= card.value;
                         cardList.remove(card);
+                        if(cardList.isEmpty()) {
+                            GameEngine.human.getPass();
+                        }
                         GameEngine.opponent.move();
                     }
                 }

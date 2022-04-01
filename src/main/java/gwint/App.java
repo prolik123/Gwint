@@ -66,13 +66,19 @@ public class App extends Application {
         //Add elements to grid
         DeckView deckView=new DeckView(ratio);
         root.add(deckView, 171, 110);
+        //Adds lines for Cards (Player)
         for(int k=0;k<3;k++) 
             root.add(GameEngine.human.myBoard[k].getNewBoardView(ratio),72,98+26*k);
+
+        //Add Cards hand
         root.add(GameEngine.human.myCards.getNewBoardView(ratio),57,175);
+
+        ///Adds lines for Cards (Bot)
         for(int k=0;k<3;k++)
             root.add(GameEngine.opponent.myBoard[2-k].getNewBoardView(ratio),72,15+26*k);
+            
         /*Add more elements here*/
-        
+
         //Stage settings
         stage.setTitle("Base Game");
         stage.setFullScreen(true);
