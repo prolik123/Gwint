@@ -19,7 +19,6 @@ public class GameEngine {
     public BoardSlot opponentBoard[] = new BoardSlot[3];
 
     GameEngine() {
-        
         myCards = new BoardSlot();
         myCardStack = new Stack<>();
         myCards.cardList = JsonCardParser.getCardsList();
