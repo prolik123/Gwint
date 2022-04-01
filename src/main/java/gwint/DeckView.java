@@ -10,15 +10,14 @@ import javafx.scene.image.*;
 
 
 public class DeckView extends HBox {
-    private static final String DECK_STYLE="-fx-background-color: transparent;";
-    public DeckView(double height, double width) {
-        //For now it's a button
+    private static final String DECK_STYLE="-fx-background-color: transparent;s";
+    public DeckView(double ratio, GameEngine ongoingGameEngine) {
+        //For now it's a buttons
         Button deckEntity=new Button();
-        deckEntity.setGraphic(new ImageView(new Image(App.class.getResource("back.png").toExternalForm())));
-
-        //To be rethinked later
-        deckEntity.setScaleX((225.1/150.1)*width/3366.1);
-        deckEntity.setScaleY((225.1/150.1)*width/3366.1);
+        ImageView imView=new ImageView(new Image(App.class.getResource("back.png").toExternalForm()));
+        imView.setFitHeight(200*ratio);
+        imView.setFitWidth(150*ratio);
+        deckEntity.setGraphic(imView);
         deckEntity.setStyle(DECK_STYLE);
 
         //Add it to layout

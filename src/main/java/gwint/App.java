@@ -33,6 +33,7 @@ public class App extends Application {
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         double height=screenBounds.getHeight();
         double width=screenBounds.getWidth();
+        double ratio=(height*1286/1683)/width; //Const to scale cards etc. Lowered it btw
 
         //Create 200x200 grid
         GridPane root = new GridPane();
@@ -57,17 +58,15 @@ public class App extends Application {
             "-fx-background-size: contain" 
             //MOZNA ZMIENIC NA cover 
         );
+
+        //Initialize the Game Engine
         GameEngine engine = new GameEngine();
 
-        root.add(engine.myCards.getNewBoardView(1000),0,150);
-        for(int k=0;k<3;k++)
-            root.add(engine.myBoard[k].getNewBoardView(1000),0,30+30*k);
-
-        
-
         //Add elements to grid
-        DeckView deckView=new DeckView(height,width);
-        root.add(deckView, 166, 110);
+        DeckView deckView=new DeckView(ratio,engine);
+        root.add(deckView, 171, 110);
+        for(int k=0;k<3;k++) root.add(engine.myBoard[k].getNewBoardView(ratio),72,98+26*k);
+        root.add(engine.myCards.getNewBoardView(ratio),57,175);
         /*Add more elements here*/
         
         //Stage settings
