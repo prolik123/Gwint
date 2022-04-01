@@ -19,15 +19,11 @@ public class BoardSlot {
     BoardView currentView;
     BoardSlot Boards[];
     static double ratio;
+    public static final String DECK_STYLE="-fx-background-color: transparent;";
 
     BoardSlot() {
         cardList = new ArrayList<>();
         value = 0;
-    }
-    public void setBoards(BoardSlot[] B) {
-        if(!hand)
-            return;
-        Boards = B;
     }
 
     public void addCardToBoardSlot(Card card)  {
@@ -47,7 +43,6 @@ public class BoardSlot {
 
     public class BoardView extends HBox {
 
-        private static final String DECK_STYLE="-fx-background-color: transparent;";
         public BoardView(double ratio) {
             BoardSlot.ratio = ratio;
             for(Card card : cardList) {
@@ -69,15 +64,18 @@ public class BoardSlot {
 
                 @Override
                 public void handle(ActionEvent event) {
-                    View.getChildren().remove(btn);
-                    Button copyButton = new Button();
-                    copyButton.setGraphic(ImView);
-                    copyButton.setStyle(BoardView.DECK_STYLE);
-                    value += card.value;
-                    Boards[card.boardType].getCurentBoardView().getChildren().add(copyButton);
-                    Boards[card.boardType].getCurentBoardView().setSpacing(1/ratio);
-                    Boards[card.boardType].value+= card.value;
-                    cardList.remove(card);
+                    if(!GameEngine.human.myPass) {
+                        View.getChildren().remove(btn);
+                        Button copyButton = new Button();
+                        copyButton.setGraphic(ImView);
+                        copyButton.setStyle(BoardSlot.DECK_STYLE);
+                        value += card.value;
+                        Boards[card.boardType].getCurentBoardView().getChildren().add(copyButton);
+                        Boards[card.boardType].getCurentBoardView().setSpacing(1/ratio);
+                        Boards[card.boardType].value+= card.value;
+                        cardList.remove(card);
+                        GameEngine.opponent.move();
+                    }
                 }
             });
 
@@ -98,7 +96,7 @@ public class BoardSlot {
                 }
             });
         }
-        btn.setStyle(BoardView.DECK_STYLE);
+        btn.setStyle(BoardSlot.DECK_STYLE);
         View.getChildren().add(btn);
         View.setSpacing((1/ratio));
     }
