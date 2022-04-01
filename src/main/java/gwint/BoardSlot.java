@@ -18,6 +18,7 @@ public class BoardSlot {
     boolean hand = false;
     BoardView currentView;
     BoardSlot Boards[];
+    static double ratio;
 
     BoardSlot() {
         cardList = new ArrayList<>();
@@ -45,8 +46,10 @@ public class BoardSlot {
     }
 
     public class BoardView extends HBox {
+
         private static final String DECK_STYLE="-fx-background-color: transparent;";
         public BoardView(double ratio) {
+            BoardSlot.ratio = ratio;
             for(Card card : cardList) {
                 addCardToBoardView(card, this);
             }
@@ -55,10 +58,12 @@ public class BoardSlot {
 
     public void addCardToBoardView(Card card,BoardView View) {
 
-        Image currentIm = new Image(App.class.getResource(Card.cardPathPrefix+card.imageLink).toExternalForm());
-        ImageView ImView = new ImageView(currentIm);
+        Image current = new Image(App.class.getResource(Card.cardPathPrefix+card.imageLink).toExternalForm());
+        ImageView ImView = new ImageView(current);
         Button btn = new Button();
         btn.setGraphic(ImView);
+        ImView.setFitHeight(200*ratio);
+        ImView.setFitWidth(150*ratio);
         if(hand){
             btn.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -70,12 +75,31 @@ public class BoardSlot {
                     copyButton.setStyle(BoardView.DECK_STYLE);
                     value += card.value;
                     Boards[card.boardType].getCurentBoardView().getChildren().add(copyButton);
+                    Boards[card.boardType].getCurentBoardView().setSpacing(1/ratio);
                     Boards[card.boardType].value+= card.value;
                     cardList.remove(card);
+                }
+            });
+
+            btn.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent arg0) {
+                    //Niech ktos to zanimuje prosze
+                    btn.setScaleX(1.2);
+                    btn.setScaleY(1.2);
+                }
+            });
+
+            btn.setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent arg0) {
+                    btn.setScaleX(1);
+                    btn.setScaleY(1);
                 }
             });
         }
         btn.setStyle(BoardView.DECK_STYLE);
         View.getChildren().add(btn);
+        View.setSpacing((1/ratio));
     }
 }

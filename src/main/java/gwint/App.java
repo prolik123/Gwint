@@ -35,19 +35,18 @@ public class App extends Application {
         double width=screenBounds.getWidth();
         double ratio=(height*1286/1683)/width; //Const to scale cards etc. Lowered it btw
 
-        //Create 600x400 grid
+        //Create 200x200 grid
         GridPane root = new GridPane();
-        //.setGridLinesVisible(true);
+        //root.setGridLinesVisible(true);
 
-        for(int i=0;i<800;i++) {
-            RowConstraints row = new RowConstraints();
-            row.setPercentHeight(0.125);
-            root.getRowConstraints().addAll(row);
-        }
-        for(int i=0;i<1600;i++) {
+        for(int i=0;i<200;i++) {
             ColumnConstraints column = new ColumnConstraints();
-            column.setPercentWidth(0.0625);
+            column.setPercentWidth(0.5);
             root.getColumnConstraints().addAll(column);
+
+            RowConstraints row = new RowConstraints();
+            row.setPercentHeight(0.5);
+            root.getRowConstraints().addAll(row);
         }
         
         //Set background
