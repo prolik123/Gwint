@@ -2,6 +2,7 @@ package gwint;
 
 import java.util.*;
 
+
 public class GameEngine {
     
     public BoardSlot myCards;
@@ -13,7 +14,6 @@ public class GameEngine {
     int myBoradValue = 0;
     int opponentBoardValue = 0;
     int startNumberOfCards = 7;
-    final String cardPathPrefix = "Cards/";
 
     public BoardSlot myBoard[] = new BoardSlot[3];
     public BoardSlot opponentBoard[] = new BoardSlot[3];
@@ -27,7 +27,7 @@ public class GameEngine {
         myCards.hand = true;
         for(int k=0;k<3;k++)
             myBoard[k] = new BoardSlot();
-        myCards.setBords(myBoard);
+        myCards.setBoards(myBoard);
 
         opponentCards = new BoardSlot();
         opponentCardStack = new Stack<>();
@@ -50,4 +50,14 @@ public class GameEngine {
         Collections.shuffle(currList);
     }
 
+    public void addCardToHand(BoardSlot Board,Stack<Card> Stack){
+        if(Stack.empty())
+            return;
+        Card New = Stack.lastElement();
+        Stack.pop();
+        Board.cardList.add(New);
+        Board.addCardToBoardView(New, Board.currentView);
+    }
+
 }
+

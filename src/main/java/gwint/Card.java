@@ -5,6 +5,7 @@ public class Card {
     public int value;
     public String name;
     public int boardType;
+    final static String cardPathPrefix = "Cards/";
 
     //Debug mainly
     @Override

@@ -4,6 +4,8 @@
 
 package gwint;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.image.*;
@@ -19,6 +21,14 @@ public class DeckView extends HBox {
         imView.setFitWidth(150*ratio);
         deckEntity.setGraphic(imView);
         deckEntity.setStyle(DECK_STYLE);
+        deckEntity.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                ongoingGameEngine.addCardToHand(ongoingGameEngine.myCards, ongoingGameEngine.myCardStack);
+            }
+        });
+
 
         //Add it to layout
         getChildren().add(deckEntity);

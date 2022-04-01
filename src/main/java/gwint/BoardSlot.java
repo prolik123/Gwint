@@ -16,83 +16,66 @@ public class BoardSlot {
     public List<Card> cardList;
     public int value = 0;
     boolean hand = false;
-    BoardView curentView;
-    BoardSlot Bords[];
-    final String cardPathPrefix = "Cards/";
+    BoardView currentView;
+    BoardSlot Boards[];
 
     BoardSlot() {
         cardList = new ArrayList<>();
         value = 0;
     }
-    public void setBords(BoardSlot[] B) {
+    public void setBoards(BoardSlot[] B) {
         if(!hand)
             return;
-        Bords = B;
+        Boards = B;
     }
 
     public void addCardToBoardSlot(Card card)  {
         cardList.add(card);
         value += card.value;
     }
+    
 
     public BoardView getNewBoardView(double ratio) {
-        curentView = new BoardView(ratio);
-        return curentView;
+        currentView = new BoardView(ratio);
+        return currentView;
     }
 
     public BoardView getCurentBoardView(){
-        return curentView;
+        return currentView;
     }
 
-    class BoardView extends HBox {
+    public class BoardView extends HBox {
         private static final String DECK_STYLE="-fx-background-color: transparent;";
         public BoardView(double ratio) {
             for(Card card : cardList) {
-                
-                Image current = new Image(App.class.getResource(cardPathPrefix+card.imageLink).toExternalForm());
-                ImageView ImView = new ImageView(current);
-                Button btn = new Button();
-                btn.setGraphic(ImView);
-                ImView.setFitHeight(200*ratio);
-                ImView.setFitWidth(150*ratio);
-                if(hand){
-                    btn.setOnAction(new EventHandler<ActionEvent>() {
-
-                        @Override
-                        public void handle(ActionEvent event) {
-                            getChildren().remove(btn);
-                            Button copyButton = new Button();
-                            copyButton.setGraphic(ImView);
-                            copyButton.setStyle(DECK_STYLE);
-                            value += card.value;
-                            Bords[card.boardType].getCurentBoardView().getChildren().add(copyButton);
-                            Bords[card.boardType].getCurentBoardView().setSpacing(1/ratio);
-                            Bords[card.boardType].value+= card.value;
-                            cardList.remove(card);
-                        }
-                    });
-
-                    btn.setOnMouseEntered(new EventHandler<MouseEvent>() {
-                        @Override
-                        public void handle(MouseEvent arg0) {
-                            //Niech ktos to zanimuje prosze
-                            btn.setScaleX(1.2);
-                            btn.setScaleY(1.2);
-                        }
-                    });
-
-                    btn.setOnMouseExited(new EventHandler<MouseEvent>() {
-                        @Override
-                        public void handle(MouseEvent arg0) {
-                            btn.setScaleX(1);
-                            btn.setScaleY(1);
-                        }
-                    });
-                }
-                btn.setStyle(DECK_STYLE);
-                getChildren().add(btn);
-                setSpacing((1/ratio));
+                addCardToBoardView(card, this);
             }
         }
+    }
+
+    public void addCardToBoardView(Card card,BoardView View) {
+
+        Image currentIm = new Image(App.class.getResource(Card.cardPathPrefix+card.imageLink).toExternalForm());
+        ImageView ImView = new ImageView(currentIm);
+        Button btn = new Button();
+        btn.setGraphic(ImView);
+        if(hand){
+            btn.setOnAction(new EventHandler<ActionEvent>() {
+
+                @Override
+                public void handle(ActionEvent event) {
+                    View.getChildren().remove(btn);
+                    Button copyButton = new Button();
+                    copyButton.setGraphic(ImView);
+                    copyButton.setStyle(BoardView.DECK_STYLE);
+                    value += card.value;
+                    Boards[card.boardType].getCurentBoardView().getChildren().add(copyButton);
+                    Boards[card.boardType].value+= card.value;
+                    cardList.remove(card);
+                }
+            });
+        }
+        btn.setStyle(BoardView.DECK_STYLE);
+        View.getChildren().add(btn);
     }
 }
