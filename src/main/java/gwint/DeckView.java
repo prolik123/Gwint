@@ -13,7 +13,7 @@ import javafx.scene.image.*;
 
 public class DeckView extends HBox {
     private static final String DECK_STYLE="-fx-background-color: transparent;s";
-    public DeckView(double ratio, GameEngine ongoingGameEngine) {
+    public DeckView(double ratio) {
         //For now it's a buttons
         Button deckEntity=new Button();
         ImageView imView=new ImageView(new Image(App.class.getResource("back.png").toExternalForm()));
@@ -25,7 +25,7 @@ public class DeckView extends HBox {
 
             @Override
             public void handle(ActionEvent event) {
-                ongoingGameEngine.addCardToHand(ongoingGameEngine.myCards, ongoingGameEngine.myCardStack);
+                GameEngine.addCardToHand(GameEngine.human.myCards, GameEngine.human.myCardStack);
             }
         });
 
