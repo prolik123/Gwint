@@ -12,7 +12,9 @@ public class GameEngine {
     public static Player human;
 
     /// How many cards Players gets on hand after starting the game
-    public static Integer defultNumberOfCards = 7;
+    public static final Integer defultNumberOfCards = 7;
+
+    public static final String pathToCardsConfig = "cardConfig.json";
 
     /// Constructor 
     GameEngine() {

@@ -100,8 +100,10 @@ public class BoardSlot {
                 @Override
                 public void handle(MouseEvent arg0) {
                     //Niech ktos to zanimuje prosze
-                    btn.setScaleX(1.2);
-                    btn.setScaleY(1.2);
+                    if(!GameEngine.human.myPass) {
+                        btn.setScaleX(1.2);
+                        btn.setScaleY(1.2);
+                    }
                 }
             });
 

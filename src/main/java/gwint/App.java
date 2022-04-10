@@ -12,8 +12,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.Screen;
 import javafx.geometry.Rectangle2D;
@@ -34,7 +36,7 @@ public class App extends Application {
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         double height=screenBounds.getHeight();
         double width=screenBounds.getWidth();
-        double ratio=(height*1286/1683)/width; //Const to scale cards etc. Lowered it btw
+        double ratio=Math.sqrt((width*height))/2300; //Const to scale cards etc. Lowered it btw
 
         //Create 200x200 grid
         GridPane root = new GridPane();
@@ -59,7 +61,6 @@ public class App extends Application {
             "-fx-background-size: contain" 
             //MOZNA ZMIENIC NA cover 
         );
-
         //Initialize the Game Engine
         GameEngine engine = new GameEngine();
 
@@ -68,23 +69,30 @@ public class App extends Application {
         root.add(deckView, 171, 110);
         //Adds lines for Cards (Player)
         for(int k=0;k<3;k++) 
-            root.add(GameEngine.human.myBoard[k].getNewBoardView(ratio),72,98+26*k);
+            root.add(GameEngine.human.myBoard[k].getNewBoardView(ratio),72,98+24*k);
 
         //Add Cards hand
-        root.add(GameEngine.human.myCards.getNewBoardView(ratio),57,175);
+        root.add(GameEngine.human.myCards.getNewBoardView(ratio),57,170);
 
         ///Adds lines for Cards (Bot)
         for(int k=0;k<3;k++)
             root.add(GameEngine.opponent.myBoard[2-k].getNewBoardView(ratio),72,15+26*k);
             
         /*Add more elements here*/
-
+        root.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.SHIFT) {
+                if(!GameEngine.human.myPass)
+                    GameEngine.human.getPass();
+            }
+        });
         //Stage settings
         stage.setTitle("Base Game");
         stage.setFullScreen(true);
         stage.setResizable(false);
         stage.setScene(new Scene(root,width,height));
         stage.show();
+        
+
     }
 
     public static void main(String[] args) {

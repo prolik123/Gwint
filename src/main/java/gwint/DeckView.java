@@ -9,10 +9,11 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.image.*;
+import javafx.scene.input.MouseEvent;
 
 
 public class DeckView extends HBox {
-    private static final String DECK_STYLE="-fx-background-color: transparent;s";
+    private static final String DECK_STYLE="-fx-background-color: transparent;";
     public DeckView(double ratio) {
         //For now it's a buttons
         Button deckEntity=new Button();
