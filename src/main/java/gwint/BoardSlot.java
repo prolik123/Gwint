@@ -2,6 +2,7 @@ package gwint;
 
 import java.util.*;
 
+import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -11,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.HBox;
+import javafx.util.Duration;
 
 public class BoardSlot {
 
@@ -65,13 +67,13 @@ public class BoardSlot {
 
     /// for given Viev and Card it will add it to the View (some of features are only for hands BoardSlot)
     public void addCardToBoardView(Card card,BoardView View) {
-
         Image current = new Image(App.class.getResource(Card.cardPathPrefix+card.imageLink).toExternalForm());
         ImageView ImView = new ImageView(current);
         Button btn = new Button();
         btn.setGraphic(ImView);
         ImView.setFitHeight(200*ratio);
         ImView.setFitWidth(150*ratio);
+
         /// if its hand give the Button actions and hovers
         if(hand){
             btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -85,6 +87,10 @@ public class BoardSlot {
                         copyButton.setStyle(BoardSlot.DECK_STYLE);
                         value += card.value;
                         Boards[card.boardType].getCurentBoardView().getChildren().add(copyButton);
+                        FadeTransition btnTrans=new FadeTransition(Duration.millis(500), copyButton);
+                        btnTrans.setFromValue(0.0);
+                        btnTrans.setToValue(1.0);
+                        btnTrans.play();
                         Boards[card.boardType].getCurentBoardView().setSpacing(1/ratio);
                         Boards[card.boardType].value+= card.value;
                         cardList.remove(card);
@@ -99,17 +105,20 @@ public class BoardSlot {
             btn.setOnMouseEntered(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent arg0) {
-                    //Niech ktos to zanimuje prosze
-                    btn.setScaleX(1.2);
-                    btn.setScaleY(1.2);
+                    ScaleTransition btnTrans=new ScaleTransition(Duration.millis(100), btn);
+                    btnTrans.setToX(1.2);
+                    btnTrans.setToY(1.2);
+                    btnTrans.play();
                 }
             });
 
             btn.setOnMouseExited(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent arg0) {
-                    btn.setScaleX(1);
-                    btn.setScaleY(1);
+                    ScaleTransition btnTrans=new ScaleTransition(Duration.millis(100), btn);
+                    btnTrans.setToX(1);
+                    btnTrans.setToY(1);
+                    btnTrans.play();
                 }
             });
         }
