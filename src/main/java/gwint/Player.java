@@ -15,7 +15,7 @@ public class Player {
     /// the remaining cards from decks
     public Stack<Card> myCardStack;
 
-    /// Does the Player passed ?
+    /// Did the Player pass ?
     boolean myPass = false;
 
     /// Current value on board for current player

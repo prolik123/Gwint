@@ -23,10 +23,11 @@ public class DeckView extends HBox {
         deckEntity.setGraphic(imView);
         deckEntity.setStyle(DECK_STYLE);
         deckEntity.setOnAction(new EventHandler<ActionEvent>() {
-
             @Override
             public void handle(ActionEvent event) {
-                GameEngine.addCardToHand(GameEngine.human.myCards, GameEngine.human.myCardStack);
+                if(!GameEngine.addCardToHand(GameEngine.human.myCards, GameEngine.human.myCardStack)) {
+                    deckEntity.setVisible(false);
+                }
             }
         });
 

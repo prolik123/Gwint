@@ -20,17 +20,17 @@ public class GameEngine {
     GameEngine() {
         human = new Player();
         opponent = new Player();
-
     }
 
     /// Function which gets hand, stack and add new card to hand ( and View ) 
-    public static void addCardToHand(BoardSlot Board,Stack<Card> Stack){
-        if(Stack.empty())
-            return;
+    public static Boolean addCardToHand(BoardSlot Board,Stack<Card> Stack){
+        if(Stack.empty()) return false;
         Card New = Stack.lastElement();
         Stack.pop();
         Board.cardList.add(New);
         Board.addCardToBoardView(New, Board.currentView);
+        if(Stack.empty()) return false;
+        return true;
     }
 
 }
