@@ -8,6 +8,14 @@ package gwint;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.Screen;
@@ -28,7 +36,7 @@ public class App extends Application {
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         double height=screenBounds.getHeight();
         double width=screenBounds.getWidth();
-        double ratio=Math.sqrt((width*height))/2300;
+        double ratio=Math.sqrt((width*height))/2300; //Const to scale cards etc. Lowered it btw
 
         //Create 200x200 grid
         GridPane root = new GridPane();
@@ -52,7 +60,6 @@ public class App extends Application {
             "-fx-background-repeat: no-repeat; " +
             "-fx-background-size: contain"
         );
-
         //Initialize the Game Engine
         GameEngine engine = new GameEngine();
 
@@ -71,6 +78,13 @@ public class App extends Application {
         for(int k=0;k<3;k++)
             root.add(GameEngine.opponent.myBoard[2-k].getNewBoardView(ratio),72,18+26*k);
             
+        /*Add more elements here*/
+        root.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.SHIFT) {
+                if(!GameEngine.human.myPass)
+                    GameEngine.human.getPass();
+            }
+        });
         Pass playerPass=new Pass(ratio);
         Pass opponentPass=new Pass(ratio);
         root.add(playerPass,11,119);
@@ -84,6 +98,8 @@ public class App extends Application {
         stage.setResizable(false);
         stage.setScene(new Scene(root,width,height));
         stage.show();
+        
+
     }
 
     public static void main(String[] args) {

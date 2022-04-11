@@ -26,8 +26,7 @@ public class JsonCardParser {
         List<Card> result = new ArrayList<>();
 
         /// getting array of Json Objects form cardConfig.json
-        JSONArray arr = new JSONArray(new JSONTokener(new FileReader(
-            App.class.getResource("cardConfig.json").getFile())));
+        JSONArray arr = getJsonArray(GameEngine.pathToCardsConfig);
 
 
         /// for each element of Json Array
@@ -66,4 +65,9 @@ public class JsonCardParser {
         return Integer.parseInt((String) object.get(attributeName));
     }
 
+    /// Returns the json array from given path
+    public static JSONArray getJsonArray(String path) throws JSONException, FileNotFoundException {
+        return new JSONArray(new JSONTokener(new FileReader(
+            App.class.getResource(path).getFile())));
+    }
 }

@@ -105,10 +105,12 @@ public class BoardSlot {
             btn.setOnMouseEntered(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent arg0) {
-                    ScaleTransition btnTrans=new ScaleTransition(Duration.millis(100), btn);
-                    btnTrans.setToX(1.2);
-                    btnTrans.setToY(1.2);
-                    btnTrans.play();
+                    if(!GameEngine.human.myPass) {
+                        ScaleTransition btnTrans=new ScaleTransition(Duration.millis(100), btn);
+                        btnTrans.setToX(1.2);
+                        btnTrans.setToY(1.2);
+                        btnTrans.play();
+                    }
                 }
             });
 

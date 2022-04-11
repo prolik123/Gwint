@@ -1,6 +1,7 @@
 package gwint;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -53,7 +54,16 @@ public class Player {
 
     /// If player has a card on hand and didn't passed it will throw random card (80%) or pass (20%)
     void move() {
+
         if(myCards.cardList.size()!=0 && !myPass) {
+            /*if(GameEngine.human.myPass) {
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                }
+                catch (Exception e) {
+                    
+                }
+            }*/
             Random makePass = new Random();
             if(makePass.nextInt(5) == 0)
                 getPass();
@@ -62,6 +72,10 @@ public class Player {
                 myCards.cardList.remove(0);
             }
         }
+        else if(!myPass)
+            getPass();
+        if(GameEngine.human.myPass && !GameEngine.opponent.myPass)
+            move();
     }
 
     /// Function which gets a card and add it to current player View
@@ -83,6 +97,10 @@ public class Player {
     void getPass(){
         myPass = true;
         /// ... wypisz odpowiednio passa 
+
+
+        if(this == GameEngine.human)
+            GameEngine.opponent.move();
     }
     
 }
