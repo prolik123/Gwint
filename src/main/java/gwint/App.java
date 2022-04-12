@@ -98,13 +98,11 @@ public class App extends Application {
         stage.setResizable(false);
         stage.setScene(new Scene(root,width,height));
         stage.show();
-        
-
     }
 
     public static void main(String[] args) {
         //Background music player 🔊
-        Media backgroundMusic=new Media(new File("sound/niesluchac.mp3").toURI().toString());
+        Media backgroundMusic=new Media(new File("sound/background.mp3").toURI().toString());
         MediaPlayer player=new MediaPlayer(backgroundMusic);
         player.play();
 
