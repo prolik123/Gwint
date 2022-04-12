@@ -2,9 +2,9 @@
 Nienazwany projekt na programowanie obiektowe.
 Ekipa tworząca w składzie:
 
- - **Jakub Binięda**
- - **Mateusz Hurkała**
- - **Maciej Sanocki**
+ - **[Jakub Binięda](https://github.com/jakubbinieda)**
+ - **[Mateusz Hurkała](https://github.com/prolik123)**
+ - **[Maciej Sanocki](https://github.com/msanock)**
  
 
 # Do zrobienia 
