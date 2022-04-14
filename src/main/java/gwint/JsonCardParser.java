@@ -26,7 +26,7 @@ public class JsonCardParser {
         List<Card> result = new ArrayList<>();
 
         /// getting array of Json Objects form cardConfig.json
-        JSONArray arr = getJsonArray(GameEngine.pathToCardsConfig);
+        JSONArray arr = getJsonArray(Constants.pathToCardsConfig);
 
 
         /// for each element of Json Array

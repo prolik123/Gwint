@@ -3,6 +3,13 @@ package gwint;
 import java.util.*;
 
 
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
+
+
 public class GameEngine {
     
     /// class for all bot's functions
@@ -11,15 +18,62 @@ public class GameEngine {
     /// class for all player's functions
     public static Player human;
 
-    /// How many cards Players gets on hand after starting the game
-    public static final Integer defultNumberOfCards = 7;
-
-    public static final String pathToCardsConfig = "cardConfig.json";
+    public static Pass playerPass;
+    public static Pass opponentPass;
+    public static GridPane root;
+    public static Label humanValue;
+    public static Label opponentValue;
+    //public static double ratio;
 
     /// Constructor 
-    GameEngine() {
+    GameEngine(GridPane root) {
         human = new Player();
         opponent = new Player();
+        GameEngine.root = root;
+        //GameEngine.ratio = ratio;
+
+        //Set background
+        String image = App.class.getResource("plansza.png").toExternalForm();
+        root.setStyle(
+            "-fx-background-image: url('" + image + "'); " +
+            "-fx-background-position: right center;" + 
+            "-fx-background-repeat: no-repeat; " +
+            "-fx-background-size: contain"
+        );
+        //Initialize the Game Engine
+        //Add elements to grid
+        DeckView deckView=new DeckView(Constants.ratio);
+        root.add(deckView, 171, 110);
+
+        //Adds lines for Cards (Player)
+        for(int k=0;k<3;k++) 
+            root.add(GameEngine.human.myBoard[k].getNewBoardView(Constants.ratio),72,98+24*k);
+
+        //Add Cards hand
+        root.add(GameEngine.human.myCards.getNewBoardView(Constants.ratio),57,170);
+
+        //Adds lines for Cards (Bot)
+        for(int k=0;k<3;k++)
+            root.add(GameEngine.opponent.myBoard[2-k].getNewBoardView(Constants.ratio),72,18+26*k);
+            
+        /*Add more elements here*/
+        root.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.SHIFT) {
+                if(!GameEngine.human.myPass)
+                    GameEngine.human.getPass();
+            }
+        });
+        humanValue = new Label("0");
+        
+        //humanValue.setMaxSize(10, 40);
+        root.add(humanValue, 11, 90);
+        opponentValue = new Label("0");
+        root.add(opponentValue,11,70);
+        /*playerPass=new Pass(ratio);
+        opponentPass=new Pass(ratio);
+        playerPass.setVisible(true);
+        root.add(playerPass,11,119);
+        root.add(opponentPass,11,46);*/
     }
 
     /// Function which gets hand, stack and add new card to hand ( and View ) 
@@ -31,6 +85,10 @@ public class GameEngine {
         Board.addCardToBoardView(New, Board.currentView);
         if(Stack.empty()) return false;
         return true;
+    }
+
+    public static void startNewRound() {
+
     }
 
 }

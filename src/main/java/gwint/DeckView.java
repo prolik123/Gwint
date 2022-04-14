@@ -13,7 +13,7 @@ import javafx.scene.input.MouseEvent;
 
 
 public class DeckView extends HBox {
-    private static final String DECK_STYLE="-fx-background-color: transparent;";
+    
     public DeckView(double ratio) {
         //For now it's a buttons
         Button deckEntity=new Button();
@@ -21,7 +21,7 @@ public class DeckView extends HBox {
         imView.setFitHeight(200*ratio);
         imView.setFitWidth(150*ratio);
         deckEntity.setGraphic(imView);
-        deckEntity.setStyle(DECK_STYLE);
+        deckEntity.setStyle(Constants.DECK_STYLE);
         deckEntity.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

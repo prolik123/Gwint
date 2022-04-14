@@ -32,10 +32,7 @@ public class BoardSlot {
     BoardSlot Boards[];
 
     /// ratio for scaling images
-    static double ratio;
-
-    /// Constant for style
-    public static final String DECK_STYLE="-fx-background-color: transparent;";
+    //static double ratio;
 
     BoardSlot() {
         cardList = new ArrayList<>();
@@ -58,7 +55,7 @@ public class BoardSlot {
 
         /// Constructor (each card in cardList is added to View)
         public BoardView(double ratio) {
-            BoardSlot.ratio = ratio;
+            Constants.ratio = ratio;
             for(Card card : cardList) {
                 addCardToBoardView(card, this);
             }
@@ -71,8 +68,8 @@ public class BoardSlot {
         ImageView ImView = new ImageView(current);
         Button btn = new Button();
         btn.setGraphic(ImView);
-        ImView.setFitHeight(200*ratio);
-        ImView.setFitWidth(150*ratio);
+        ImView.setFitHeight(200*Constants.ratio);
+        ImView.setFitWidth(150*Constants.ratio);
 
         /// if its hand give the Button actions and hovers
         if(hand){
@@ -84,16 +81,18 @@ public class BoardSlot {
                         View.getChildren().remove(btn);
                         Button copyButton = new Button();
                         copyButton.setGraphic(ImView);
-                        copyButton.setStyle(BoardSlot.DECK_STYLE);
+                        copyButton.setStyle(Constants.DECK_STYLE);
                         value += card.value;
                         Boards[card.boardType].getCurentBoardView().getChildren().add(copyButton);
                         FadeTransition btnTrans=new FadeTransition(Duration.millis(500), copyButton);
                         btnTrans.setFromValue(0.0);
                         btnTrans.setToValue(1.0);
                         btnTrans.play();
-                        Boards[card.boardType].getCurentBoardView().setSpacing(1/ratio);
+                        Boards[card.boardType].getCurentBoardView().setSpacing(1/Constants.ratio);
                         Boards[card.boardType].value+= card.value;
                         cardList.remove(card);
+                        GameEngine.human.myBoardValue += card.value;
+                        GameEngine.human.updateValue();
                         if(cardList.isEmpty()) {
                             GameEngine.human.getPass();
                         }
@@ -124,8 +123,8 @@ public class BoardSlot {
                 }
             });
         }
-        btn.setStyle(BoardSlot.DECK_STYLE);
+        btn.setStyle(Constants.DECK_STYLE);
         View.getChildren().add(btn);
-        View.setSpacing((1/ratio));
+        View.setSpacing((1/Constants.ratio));
     }
 }
