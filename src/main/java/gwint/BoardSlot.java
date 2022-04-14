@@ -79,20 +79,15 @@ public class BoardSlot {
                 public void handle(ActionEvent event) {
                     if(!GameEngine.human.myPass) {
                         View.getChildren().remove(btn);
-                        Button copyButton = new Button();
-                        copyButton.setGraphic(ImView);
-                        copyButton.setStyle(Constants.DECK_STYLE);
-                        value += card.value;
-                        Boards[card.boardType].getCurentBoardView().getChildren().add(copyButton);
+                        GameEngine.human.throwCard(card);
+                        /*Boards[card.boardType].getCurentBoardView().getChildren().add(copyButton);
                         FadeTransition btnTrans=new FadeTransition(Duration.millis(500), copyButton);
                         btnTrans.setFromValue(0.0);
                         btnTrans.setToValue(1.0);
                         btnTrans.play();
-                        Boards[card.boardType].getCurentBoardView().setSpacing(1/Constants.ratio);
-                        Boards[card.boardType].value+= card.value;
+                        Boards[card.boardType].getCurentBoardView().setSpacing(1/Constants.ratio);*/
                         cardList.remove(card);
-                        GameEngine.human.myBoardValue += card.value;
-                        GameEngine.human.updateValue();
+
                         if(cardList.isEmpty()) {
                             GameEngine.human.getPass();
                         }
