@@ -3,11 +3,13 @@ package gwint;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import javafx.animation.FadeTransition;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 public class Player {
     
@@ -87,14 +89,19 @@ public class Player {
         Image current = new Image(App.class.getResource(Card.cardPathPrefix+card.imageLink).toExternalForm());
         ImageView ImView = new ImageView(current);
         Button btn = new Button();
+        FadeTransition btnTrans=new FadeTransition(Duration.millis(500), btn);
+        btnTrans.setFromValue(0.0);
+        btnTrans.setToValue(1.0);
         btn.setGraphic(ImView);
         ImView.setFitHeight(200*Constants.ratio);
         ImView.setFitWidth(150*Constants.ratio);
         btn.setStyle(Constants.DECK_STYLE);
         myBoardValue += card.value;
         myBoard[card.boardType].getCurentBoardView().getChildren().add(btn);
+        btnTrans.play();
         myBoard[card.boardType].getCurentBoardView().setSpacing(1/Constants.ratio);
         myBoard[card.boardType].value+= card.value;
+        updateValue();
     }
 
     /// Function will pass...
