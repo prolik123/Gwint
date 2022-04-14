@@ -67,7 +67,7 @@ public class Player {
                 }
             }*/
             Random makePass = new Random();
-            if(makePass.nextInt(5) == -1)
+            if(makePass.nextInt(5) == 0)
                 getPass();
             else {
                 throwCard(myCards.cardList.get(0));

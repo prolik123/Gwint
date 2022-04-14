@@ -53,7 +53,7 @@ public class App extends Application {
             root.getRowConstraints().addAll(row);
         }
         
-        GameEngine engine = new GameEngine(root);
+        new GameEngine(root);
 
 
         /*Add more elements here*/

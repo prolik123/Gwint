@@ -99,7 +99,7 @@ public class GameEngine {
         for(int i=0;i<3;i++) {
             root.getChildren().remove(opponent.myBoard[2-i].currentView);
             opponent.myBoard[2-i].cardList.clear();
-            root.add(opponent.myBoard[2-i].getNewBoardView(Constants.ratio),18,26*i);
+            root.add(opponent.myBoard[2-i].getNewBoardView(Constants.ratio),72,18+26*i);
         }
         root.getChildren().remove(playerPass);
         playerPass = null;
