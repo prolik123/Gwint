@@ -119,15 +119,10 @@ public class Player {
 
     void updateValue(){
         if(this == GameEngine.human) {
-            GameEngine.root.getChildren().remove(GameEngine.humanValue);
-            GameEngine.humanValue = new Label(String.valueOf( myBoardValue));
-            
-            GameEngine.humanValue.setMaxWidth(100);
-            GameEngine.humanValue.setMaxSize(100, 100);
-            GameEngine.root.add(GameEngine.humanValue, 11, 90);
+            GameEngine.humanValue.setText("" +myBoardValue);
         }
         else 
-            GameEngine.opponentValue.setText(" " + myBoardValue);
+            GameEngine.opponentValue.setText("" + myBoardValue);
     }
     
 }

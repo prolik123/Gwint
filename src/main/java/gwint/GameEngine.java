@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 
@@ -21,8 +22,8 @@ public class GameEngine {
     public static Pass playerPass;
     public static Pass opponentPass;
     public static GridPane root;
-    public static Label humanValue;
-    public static Label opponentValue;
+    public static Text humanValue;
+    public static Text opponentValue;
     //public static double ratio;
 
     /// Constructor 
@@ -63,12 +64,14 @@ public class GameEngine {
                     GameEngine.human.getPass();
             }
         });
-        humanValue = new Label("0");
-        
+        humanValue = new Text("0");
+        humanValue.setFill(Color.WHITE);
+
         //humanValue.setMaxSize(10, 40);
-        root.add(humanValue, 11, 90);
-        opponentValue = new Label("0");
-        root.add(opponentValue,11,70);
+        root.add(humanValue, 20, 90);
+        opponentValue = new Text("0");
+        opponentValue.setFill(Color.WHITE);
+        root.add(opponentValue,20,75);
         /*playerPass=new Pass(ratio);
         opponentPass=new Pass(ratio);
         playerPass.setVisible(true);
