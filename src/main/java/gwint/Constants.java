@@ -13,6 +13,8 @@ public class Constants {
 
     public static final String DECK_STYLE="-fx-background-color: transparent;";
 
+    public static final int numberOfHearts = 2;
+
     Constants(double ratio) {
         Constants.ratio = ratio;
     }

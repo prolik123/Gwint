@@ -5,6 +5,8 @@ import java.util.*;
 import javafx.animation.FadeTransition;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -31,9 +33,9 @@ public class GameEngine {
     /// Constructor 
     GameEngine(GridPane root) {
 
-        human = new Player();
-        opponent = new Player();
         GameEngine.root = root;
+        human = new Player(92);
+        opponent = new Player(77);
         //GameEngine.ratio = ratio;
 
         //Set background
@@ -94,6 +96,21 @@ public class GameEngine {
     }
 
     public static void startNewRound() {
+        if(human.myBoardValue < opponent.myBoardValue) { 
+            if(!human.looseHeart())
+                return;
+        }
+        else if(human.myBoardValue > opponent.myBoardValue) {
+            if(!opponent.looseHeart())
+                return;
+
+        }
+        else {
+            boolean firstLoose = human.looseHeart();
+            boolean secLoose = opponent.looseHeart();
+            if(!firstLoose || !secLoose)
+                return;
+        }
         for(int i=0;i<3;i++) {
             FadeTransition btnTrans=new FadeTransition(Duration.millis(500),human.myBoard[i].currentView);
             btnTrans.setFromValue(1.0);
