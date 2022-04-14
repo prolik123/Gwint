@@ -52,7 +52,6 @@ public class App extends Application {
             row.setPercentHeight(0.5);
             root.getRowConstraints().addAll(row);
         }
-        
         new GameEngine(root);
 
 

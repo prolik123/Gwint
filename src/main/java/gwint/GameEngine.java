@@ -28,6 +28,7 @@ public class GameEngine {
 
     /// Constructor 
     GameEngine(GridPane root) {
+
         human = new Player();
         opponent = new Player();
         GameEngine.root = root;
@@ -67,16 +68,10 @@ public class GameEngine {
         humanValue = new Text("0");
         humanValue.setFill(Color.WHITE);
 
-        //humanValue.setMaxSize(10, 40);
         root.add(humanValue, 20, 90);
         opponentValue = new Text("0");
         opponentValue.setFill(Color.WHITE);
         root.add(opponentValue,20,75);
-        /*playerPass=new Pass(ratio);
-        opponentPass=new Pass(ratio);
-        playerPass.setVisible(true);
-        root.add(playerPass,11,119);
-        root.add(opponentPass,11,46);*/
     }
 
     /// Function which gets hand, stack and add new card to hand ( and View ) 
