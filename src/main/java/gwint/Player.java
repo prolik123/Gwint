@@ -4,8 +4,10 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 
 public class Player {
     
@@ -23,7 +25,7 @@ public class Player {
 
     /// Array of rows of board
     public BoardSlot myBoard[] = new BoardSlot[3];
-    int startNumberOfCards = GameEngine.defultNumberOfCards;
+    int startNumberOfCards = Constants.defultNumberOfCards;
 
 
     /// Basic Constructor for each field
@@ -69,7 +71,9 @@ public class Player {
                 getPass();
             else {
                 throwCard(myCards.cardList.get(0));
+               // myBoardValue += myCards.cardList.get(0).value;
                 myCards.cardList.remove(0);
+                updateValue();
             }
         }
         else if(!myPass)
@@ -84,12 +88,12 @@ public class Player {
         ImageView ImView = new ImageView(current);
         Button btn = new Button();
         btn.setGraphic(ImView);
-        ImView.setFitHeight(200*BoardSlot.ratio);
-        ImView.setFitWidth(150*BoardSlot.ratio);
-        btn.setStyle(BoardSlot.DECK_STYLE);
+        ImView.setFitHeight(200*Constants.ratio);
+        ImView.setFitWidth(150*Constants.ratio);
+        btn.setStyle(Constants.DECK_STYLE);
         myBoardValue += card.value;
         myBoard[card.boardType].getCurentBoardView().getChildren().add(btn);
-        myBoard[card.boardType].getCurentBoardView().setSpacing(1/BoardSlot.ratio);
+        myBoard[card.boardType].getCurentBoardView().setSpacing(1/Constants.ratio);
         myBoard[card.boardType].value+= card.value;
     }
 
@@ -97,10 +101,28 @@ public class Player {
     void getPass(){
         myPass = true;
         /// ... wypisz odpowiednio passa 
-
+        if(this == GameEngine.human) {
+            GameEngine.playerPass = new Pass(Constants.ratio);
+            GameEngine.root.add(GameEngine.playerPass,11,119);
+        }
+        else if(this == GameEngine.opponent) {
+            GameEngine.opponentPass = new Pass(Constants.ratio);
+            GameEngine.root.add(GameEngine.opponentPass,11,46);
+        }
 
         if(this == GameEngine.human)
             GameEngine.opponent.move();
+        if(GameEngine.opponent.myPass && GameEngine.human.myPass) {
+            GameEngine.startNewRound();
+        }
+    }
+
+    void updateValue(){
+        if(this == GameEngine.human) {
+            GameEngine.humanValue.setText("" +myBoardValue);
+        }
+        else 
+            GameEngine.opponentValue.setText("" + myBoardValue);
     }
     
 }

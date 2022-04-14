@@ -38,6 +38,7 @@ public class App extends Application {
         double width=screenBounds.getWidth();
         double ratio=Math.sqrt((width*height))/2300; //Const to scale cards etc. Lowered it btw
 
+        new Constants(ratio);
         //Create 200x200 grid
         GridPane root = new GridPane();
         //root.setGridLinesVisible(true);
@@ -51,44 +52,8 @@ public class App extends Application {
             row.setPercentHeight(0.5);
             root.getRowConstraints().addAll(row);
         }
-        
-        //Set background
-        String image = App.class.getResource("plansza.png").toExternalForm();
-        root.setStyle(
-            "-fx-background-image: url('" + image + "'); " +
-            "-fx-background-position: right center;" + 
-            "-fx-background-repeat: no-repeat; " +
-            "-fx-background-size: contain"
-        );
-        //Initialize the Game Engine
-        GameEngine engine = new GameEngine();
+        new GameEngine(root);
 
-        //Add elements to grid
-        DeckView deckView=new DeckView(ratio);
-        root.add(deckView, 171, 110);
-
-        //Adds lines for Cards (Player)
-        for(int k=0;k<3;k++) 
-            root.add(GameEngine.human.myBoard[k].getNewBoardView(ratio),72,98+24*k);
-
-        //Add Cards hand
-        root.add(GameEngine.human.myCards.getNewBoardView(ratio),57,170);
-
-        //Adds lines for Cards (Bot)
-        for(int k=0;k<3;k++)
-            root.add(GameEngine.opponent.myBoard[2-k].getNewBoardView(ratio),72,18+26*k);
-            
-        /*Add more elements here*/
-        root.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.SHIFT) {
-                if(!GameEngine.human.myPass)
-                    GameEngine.human.getPass();
-            }
-        });
-        Pass playerPass=new Pass(ratio);
-        Pass opponentPass=new Pass(ratio);
-        root.add(playerPass,11,119);
-        root.add(opponentPass,11,46);
 
         /*Add more elements here*/
         
