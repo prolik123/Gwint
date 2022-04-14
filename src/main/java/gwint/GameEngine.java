@@ -91,7 +91,26 @@ public class GameEngine {
     }
 
     public static void startNewRound() {
-
+        for(int i=0;i<3;i++) {
+            root.getChildren().remove(human.myBoard[i].currentView);
+            human.myBoard[i].cardList.clear();
+            root.add(human.myBoard[i].getNewBoardView(Constants.ratio),72,98+24*i);
+        }
+        for(int i=0;i<3;i++) {
+            root.getChildren().remove(opponent.myBoard[2-i].currentView);
+            opponent.myBoard[2-i].cardList.clear();
+            root.add(opponent.myBoard[2-i].getNewBoardView(Constants.ratio),18,26*i);
+        }
+        root.getChildren().remove(playerPass);
+        playerPass = null;
+        root.getChildren().remove(opponentPass);
+        opponentPass = null;
+        opponent.myBoardValue = 0;
+        opponent.updateValue();
+        human.myBoardValue = 0;
+        human.updateValue();
+        human.myPass = false;
+        opponent.myPass = false;
     }
 
 }
