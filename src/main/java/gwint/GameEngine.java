@@ -2,7 +2,7 @@ package gwint;
 
 import java.util.*;
 
-
+import javafx.animation.FadeTransition;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -10,7 +10,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 
 public class GameEngine {
@@ -38,12 +40,18 @@ public class GameEngine {
 
         //Set background
         String image = App.class.getResource("plansza.png").toExternalForm();
+        
+        root.getStylesheets().add("https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap");
+
         root.setStyle(
             "-fx-background-image: url('" + image + "'); " +
             "-fx-background-position: right center;" + 
             "-fx-background-repeat: no-repeat; " +
-            "-fx-background-size: contain"
+            "-fx-background-size: contain; " +
+            "-fx-font-family: MedievalSharp; " +
+            "-fx-font-size: 20 "
         );
+
         //Initialize the Game Engine
         //Add elements to grid
         DeckView deckView=new DeckView(Constants.ratio);
@@ -104,12 +112,24 @@ public class GameEngine {
                 return;
         }
         for(int i=0;i<3;i++) {
-            root.getChildren().remove(human.myBoard[i].currentView);
+            FadeTransition btnTrans=new FadeTransition(Duration.millis(500),human.myBoard[i].currentView);
+            btnTrans.setFromValue(1.0);
+            btnTrans.setToValue(0.0);
+            btnTrans.play();
+            //Not deleting the row may couse bugs later on
+            //Keep an eye for it
+            //root.getChildren().remove(human.myBoard[i].currentView);
             human.myBoard[i].cardList.clear();
             root.add(human.myBoard[i].getNewBoardView(Constants.ratio),72,98+24*i);
         }
         for(int i=0;i<3;i++) {
-            root.getChildren().remove(opponent.myBoard[2-i].currentView);
+            FadeTransition btnTrans=new FadeTransition(Duration.millis(500),opponent.myBoard[2-i].currentView);
+            btnTrans.setFromValue(1.0);
+            btnTrans.setToValue(0.0);
+            btnTrans.play();
+            //Not deleting the row may couse bugs later on
+            //Keep an eye for it
+            //root.getChildren().remove(opponent.myBoard[2-i].currentView);
             opponent.myBoard[2-i].cardList.clear();
             root.add(opponent.myBoard[2-i].getNewBoardView(Constants.ratio),72,18+26*i);
         }
