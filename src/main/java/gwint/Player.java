@@ -26,10 +26,15 @@ public class Player {
     /// Array of rows of board
     public BoardSlot myBoard[] = new BoardSlot[3];
     int startNumberOfCards = Constants.defultNumberOfCards;
+    
+    public List<Heart> myHearts;
+
+    int yOfHearts;
 
 
     /// Basic Constructor for each field
-    Player() {
+    Player(int locationOfHearts) {
+        yOfHearts = locationOfHearts;
         myCards = new BoardSlot();
         myCardStack = new Stack<>();
         myCards.cardList = JsonCardParser.getCardsList();
@@ -39,6 +44,11 @@ public class Player {
         for(int k=0;k<3;k++)
             myBoard[k] = new BoardSlot();
         myCards.Boards = myBoard;
+        myHearts = new ArrayList<>();
+        for(int k=0;k<Constants.numberOfHearts;k++) {
+            myHearts.add(new Heart());
+            GameEngine.root.add(myHearts.get(k).currentImage, 35+5*k, locationOfHearts);
+        }
     }
 
     /// Function which excess( more than the start number of cards ) cards adds on Stack 
@@ -71,9 +81,7 @@ public class Player {
                 getPass();
             else {
                 throwCard(myCards.cardList.get(0));
-               // myBoardValue += myCards.cardList.get(0).value;
                 myCards.cardList.remove(0);
-                updateValue();
             }
         }
         else if(!myPass)
@@ -95,6 +103,7 @@ public class Player {
         myBoard[card.boardType].getCurentBoardView().getChildren().add(btn);
         myBoard[card.boardType].getCurentBoardView().setSpacing(1/Constants.ratio);
         myBoard[card.boardType].value+= card.value;
+        updateValue();
     }
 
     /// Function will pass...
@@ -123,6 +132,36 @@ public class Player {
         }
         else 
             GameEngine.opponentValue.setText("" + myBoardValue);
+    }
+
+    boolean looseHeart(){
+        for(int k=0;k<myHearts.size();k++) {
+            if(myHearts.get(k).on) {
+                GameEngine.root.getChildren().remove(myHearts.get(k).currentImage);
+                myHearts.get(k).getHeartOff();
+                GameEngine.root.add(myHearts.get(k).currentImage,35+5*k,yOfHearts);
+                if(k==myHearts.size()-1)
+                    return false;
+                break;
+            }
+            else if(k==myHearts.size()-1)
+                return false;
+        }
+        return true;
+    }
+
+    class Heart {
+        boolean on = true;
+        ImageView currentImage;
+
+        Heart() {
+            currentImage = new ImageView(new Image(App.class.getResource("lifeOn.png").toExternalForm()));
+        }
+
+        void getHeartOff(){
+            on = false;
+            currentImage = new ImageView(new Image(App.class.getResource("lifeOff.png").toExternalForm()));
+        }
     }
     
 }
