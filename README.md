@@ -18,12 +18,12 @@ Ekipa tworząca w składzie:
 # Statystyki
 | język | pliki | linie kodu | komentarze | puste linie | razem |
 | :--- | ---: | ---: | ---: | ---: | ---: |
-| Java | 25 | 780 | 83 | 127 | 990 |
+| Java | 26 | 877 | 93 | 138 | 1,108 |
 | JSON | 2 | 166 | 0 | 0 | 166 |
 | XML | 1 | 59 | 2 | 1 | 62 |
-| Markdown | 1 | 22 | 0 | 7 | 29 |
+| Markdown | 1 | 23 | 0 | 7 | 30 |
 | Python | 1 | 10 | 6 | 6 | 22 |
 
-W sumie : 30 plików i 1269 linii
+W sumie : 31 plików i 1388 linii
 
 (Wszystkie dane są przybliżone i aktualizowane raz na czas)
