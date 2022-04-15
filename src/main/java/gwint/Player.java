@@ -1,13 +1,12 @@
 package gwint;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 import javafx.animation.FadeTransition;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -20,37 +19,46 @@ public class Player {
     public Stack<Card> myCardStack;
 
     /// Did the Player pass ?
-    boolean myPass = false;
+    public boolean myPass = false;
 
     /// Current value on board for current player
-    int myBoardValue = 0;
+    public int myBoardValue = 0;
 
     /// Array of rows of board
-    public BoardSlot myBoard[] = new BoardSlot[3];
-    int startNumberOfCards = Constants.defultNumberOfCards;
+    public BoardSlot myBoard[] = new BoardSlot[Constants.numberOfBoards];
+
+    public int startNumberOfCards = Constants.defultNumberOfCards;
     
     public List<Heart> myHearts;
 
-    int yOfHearts;
+    public Point positionOfHearts;
+
+    public Pass playerPass;
+
+    public Text playerValue;
+
+    public Point positionOfPass;
+
+    public Point positionOfBoards;
 
 
     /// Basic Constructor for each field
-    Player(int locationOfHearts) {
-        yOfHearts = locationOfHearts;
-        myCards = new BoardSlot();
-        myCardStack = new Stack<>();
-        myCards.cardList = JsonCardParser.getCardsList();
-        getListPermutation(myCards.cardList);
-        chooseHandCards(myCards.cardList, myCardStack);
-        myCards.hand = true;
-        for(int k=0;k<3;k++)
-            myBoard[k] = new BoardSlot();
-        myCards.Boards = myBoard;
-        myHearts = new ArrayList<>();
-        for(int k=0;k<Constants.numberOfHearts;k++) {
-            myHearts.add(new Heart());
-            GameEngine.root.add(myHearts.get(k).currentImage, 35+5*k, locationOfHearts);
-        }
+    Player(Point positionOfHearts, Point positionOfPass,Point positionOfBoards) {
+
+        this.positionOfHearts = positionOfHearts;
+        this.positionOfPass = positionOfPass;
+        this.positionOfBoards = positionOfBoards;
+
+        setBasicCardsInfo();
+
+        setBasicBoardsInfo();
+
+        setBasicHeartsInfo();
+
+        playerValue = new Text("0");
+        playerValue.setFill(Color.WHITE);
+
+        printNewBoards();
     }
 
     /// Function which excess( more than the start number of cards ) cards adds on Stack 
@@ -66,20 +74,34 @@ public class Player {
         Collections.shuffle(currList);
     }
 
+    void setBasicCardsInfo() {
+        myCards = new BoardSlot();
+        myCardStack = new Stack<>();
+        myCards.cardList = JsonCardParser.getCardsList();
+        getListPermutation(myCards.cardList);
+        chooseHandCards(myCards.cardList, myCardStack);
+    }
+
+    void setBasicBoardsInfo() {
+        myCards.hand = true;
+        for(int k=0;k<Constants.numberOfBoards;k++)
+            myBoard[k] = new BoardSlot();
+    }
+
+    void setBasicHeartsInfo() {
+        myHearts = new ArrayList<>();
+        for(int k=0;k<Constants.numberOfHearts;k++) {
+            myHearts.add(new Heart());
+            GameEngine.root.add(myHearts.get(k).currentImage, positionOfHearts.getX()+positionOfHearts.getModyfierX()*k, positionOfHearts.getY());
+        }
+    }
+
     /// If player has a card on hand and didn't passed it will throw random card (80%) or pass (20%)
     void move() {
 
-        if(myCards.cardList.size()!=0 && !myPass) {
-            /*if(GameEngine.human.myPass) {
-                try {
-                    TimeUnit.SECONDS.sleep(1);
-                }
-                catch (Exception e) {
-                    
-                }
-            }*/
+        if(!myCards.cardList.isEmpty() && !myPass) {
             Random makePass = new Random();
-            if(makePass.nextInt(5) == 0)
+            if(makePass.nextInt(Constants.botRandomBounds) == 0)
                 getPass();
             else {
                 throwCard(myCards.cardList.get(0));
@@ -108,22 +130,14 @@ public class Player {
         myBoard[card.boardType].getCurentBoardView().getChildren().add(btn);
         btnTrans.play();
         myBoard[card.boardType].getCurentBoardView().setSpacing(1/Constants.ratio);
-        myBoard[card.boardType].value+= card.value;
         updateValue();
     }
 
     /// Function will pass...
     void getPass(){
         myPass = true;
-        /// ... wypisz odpowiednio passa 
-        if(this == GameEngine.human) {
-            GameEngine.playerPass = new Pass(Constants.ratio);
-            GameEngine.root.add(GameEngine.playerPass,11,119);
-        }
-        else if(this == GameEngine.opponent) {
-            GameEngine.opponentPass = new Pass(Constants.ratio);
-            GameEngine.root.add(GameEngine.opponentPass,11,46);
-        }
+        playerPass = new Pass(Constants.ratio);
+        GameEngine.root.add(playerPass,positionOfPass.getX(),positionOfPass.getY());
 
         if(this == GameEngine.human)
             GameEngine.opponent.move();
@@ -133,11 +147,7 @@ public class Player {
     }
 
     void updateValue(){
-        if(this == GameEngine.human) {
-            GameEngine.humanValue.setText("" +myBoardValue);
-        }
-        else 
-            GameEngine.opponentValue.setText("" + myBoardValue);
+        playerValue.setText("" +myBoardValue);
     }
 
     boolean looseHeart(){
@@ -145,7 +155,11 @@ public class Player {
             if(myHearts.get(k).on) {
                 GameEngine.root.getChildren().remove(myHearts.get(k).currentImage);
                 myHearts.get(k).getHeartOff();
-                GameEngine.root.add(myHearts.get(k).currentImage,35+5*k,yOfHearts);
+                GameEngine.root.add(
+                    myHearts.get(k).currentImage,
+                        positionOfHearts.getX()+positionOfHearts.getModyfierX()*k,
+                            positionOfHearts.getY()+ positionOfHearts.getModyfierY()*k
+                );
                 if(k==myHearts.size()-1)
                     return false;
                 break;
@@ -156,17 +170,50 @@ public class Player {
         return true;
     }
 
-    class Heart {
+    void clearBoard() {
+        for(int i=0;i<Constants.numberOfBoards;i++) {
+            FadeTransition btnTrans=new FadeTransition(Duration.millis(500),myBoard[i].currentView);
+            btnTrans.setFromValue(1.0);
+            btnTrans.setToValue(0.0);
+            btnTrans.play();
+            //Not deleting the row may couse bugs later on
+            //Keep an eye for it
+            //root.getChildren().remove(opponent.myBoard[2-i].currentView);
+            myBoard[i].cardList.clear();
+        }
+        printNewBoards();
+    }
+
+    void preparePlayerForNextRound() {
+        clearBoard();
+        GameEngine.root.getChildren().remove(playerPass);
+        playerPass = null;
+        myBoardValue = 0;
+        updateValue();
+        myPass = false;
+    }
+
+    void printNewBoards() {
+        for(int k=0;k<Constants.numberOfBoards;k++) {
+            GameEngine.root.add(
+                myBoard[k].getNewBoardView(Constants.ratio),
+                    positionOfBoards.getX()+k*positionOfBoards.getModyfierX(),
+                            positionOfBoards.getY()+positionOfBoards.getModyfierY()*k
+                        );
+        }
+    }
+
+    public static class Heart {
         boolean on = true;
         ImageView currentImage;
 
         Heart() {
-            currentImage = new ImageView(new Image(App.class.getResource("lifeOn.png").toExternalForm()));
+            currentImage = new ImageView(new Image(App.class.getResource(Constants.pathToOnHeart).toExternalForm()));
         }
 
         void getHeartOff(){
             on = false;
-            currentImage = new ImageView(new Image(App.class.getResource("lifeOff.png").toExternalForm()));
+            currentImage = new ImageView(new Image(App.class.getResource(Constants.pathToOffHeart).toExternalForm()));
         }
     }
     

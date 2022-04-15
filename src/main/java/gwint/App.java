@@ -8,14 +8,6 @@ package gwint;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.Screen;
@@ -67,7 +59,7 @@ public class App extends Application {
 
     public static void main(String[] args) {
         //Background music player 🔊
-        Media backgroundMusic=new Media(new File("sound/background.mp3").toURI().toString());
+        Media backgroundMusic=new Media(new File(Constants.backgroundSoundPath).toURI().toString());
         MediaPlayer player=new MediaPlayer(backgroundMusic);
         player.play();
 

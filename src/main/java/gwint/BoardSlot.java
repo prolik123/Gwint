@@ -5,12 +5,10 @@ import java.util.*;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 
@@ -19,24 +17,14 @@ public class BoardSlot {
     /// List of Cards representing Cards on hand ( else null )
     public List<Card> cardList;
 
-    /// value of all boards for hand
-    public int value = 0;
-
     /// does this Boards Slot representing hand
     boolean hand = false;
 
     /// View for current BoardSlot (it's null while you dont invoke getNewBoardView )
     BoardView currentView;
 
-    /// If current boards slot is hand it represend the rows on boards
-    BoardSlot Boards[];
-
-    /// ratio for scaling images
-    //static double ratio;
-
     BoardSlot() {
         cardList = new ArrayList<>();
-        value = 0;
     }
 
     /// Create and return new BoardView for current BoardSlot, (ratio for images scalling )
@@ -80,12 +68,6 @@ public class BoardSlot {
                     if(!GameEngine.human.myPass) {
                         View.getChildren().remove(btn);
                         GameEngine.human.throwCard(card);
-                        /*Boards[card.boardType].getCurentBoardView().getChildren().add(copyButton);
-                        FadeTransition btnTrans=new FadeTransition(Duration.millis(500), copyButton);
-                        btnTrans.setFromValue(0.0);
-                        btnTrans.setToValue(1.0);
-                        btnTrans.play();
-                        Boards[card.boardType].getCurentBoardView().setSpacing(1/Constants.ratio);*/
                         cardList.remove(card);
 
                         if(cardList.isEmpty()) {
