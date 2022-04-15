@@ -5,12 +5,10 @@ import java.util.*;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 
@@ -80,12 +78,6 @@ public class BoardSlot {
                     if(!GameEngine.human.myPass) {
                         View.getChildren().remove(btn);
                         GameEngine.human.throwCard(card);
-                        /*Boards[card.boardType].getCurentBoardView().getChildren().add(copyButton);
-                        FadeTransition btnTrans=new FadeTransition(Duration.millis(500), copyButton);
-                        btnTrans.setFromValue(0.0);
-                        btnTrans.setToValue(1.0);
-                        btnTrans.play();
-                        Boards[card.boardType].getCurentBoardView().setSpacing(1/Constants.ratio);*/
                         cardList.remove(card);
 
                         if(cardList.isEmpty()) {
