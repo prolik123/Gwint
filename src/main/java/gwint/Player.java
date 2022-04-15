@@ -25,7 +25,7 @@ public class Player {
     public int myBoardValue = 0;
 
     /// Array of rows of board
-    public BoardSlot myBoard[] = new BoardSlot[3];
+    public BoardSlot myBoard[] = new BoardSlot[Constants.numberOfBoards];
 
     public int startNumberOfCards = Constants.defultNumberOfCards;
     
@@ -84,9 +84,8 @@ public class Player {
 
     void setBasicBoardsInfo() {
         myCards.hand = true;
-        for(int k=0;k<3;k++)
+        for(int k=0;k<Constants.numberOfBoards;k++)
             myBoard[k] = new BoardSlot();
-        myCards.Boards = myBoard;
     }
 
     void setBasicHeartsInfo() {
@@ -100,9 +99,9 @@ public class Player {
     /// If player has a card on hand and didn't passed it will throw random card (80%) or pass (20%)
     void move() {
 
-        if(myCards.cardList.size()!=0 && !myPass) {
+        if(!myCards.cardList.isEmpty() && !myPass) {
             Random makePass = new Random();
-            if(makePass.nextInt(5) == 0)
+            if(makePass.nextInt(Constants.botRandomBounds) == 0)
                 getPass();
             else {
                 throwCard(myCards.cardList.get(0));
@@ -131,7 +130,6 @@ public class Player {
         myBoard[card.boardType].getCurentBoardView().getChildren().add(btn);
         btnTrans.play();
         myBoard[card.boardType].getCurentBoardView().setSpacing(1/Constants.ratio);
-        myBoard[card.boardType].value+= card.value;
         updateValue();
     }
 
@@ -173,7 +171,7 @@ public class Player {
     }
 
     void clearBoard() {
-        for(int i=0;i<3;i++) {
+        for(int i=0;i<Constants.numberOfBoards;i++) {
             FadeTransition btnTrans=new FadeTransition(Duration.millis(500),myBoard[i].currentView);
             btnTrans.setFromValue(1.0);
             btnTrans.setToValue(0.0);
@@ -196,7 +194,7 @@ public class Player {
     }
 
     void printNewBoards() {
-        for(int k=0;k<3;k++) {
+        for(int k=0;k<Constants.numberOfBoards;k++) {
             GameEngine.root.add(
                 myBoard[k].getNewBoardView(Constants.ratio),
                     positionOfBoards.getX()+k*positionOfBoards.getModyfierX(),
@@ -205,7 +203,7 @@ public class Player {
         }
     }
 
-    class Heart {
+    public static class Heart {
         boolean on = true;
         ImageView currentImage;
 

@@ -9,6 +9,10 @@ public class Constants {
 
     public static final int numberOfHearts = 2;
 
+    public static final int botRandomBounds = 5;
+
+    public static final int numberOfBoards = 3;
+
 
     /// PATHS
 

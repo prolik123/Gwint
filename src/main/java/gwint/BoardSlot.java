@@ -17,24 +17,14 @@ public class BoardSlot {
     /// List of Cards representing Cards on hand ( else null )
     public List<Card> cardList;
 
-    /// value of all boards for hand
-    public int value = 0;
-
     /// does this Boards Slot representing hand
     boolean hand = false;
 
     /// View for current BoardSlot (it's null while you dont invoke getNewBoardView )
     BoardView currentView;
 
-    /// If current boards slot is hand it represend the rows on boards
-    BoardSlot Boards[];
-
-    /// ratio for scaling images
-    //static double ratio;
-
     BoardSlot() {
         cardList = new ArrayList<>();
-        value = 0;
     }
 
     /// Create and return new BoardView for current BoardSlot, (ratio for images scalling )
