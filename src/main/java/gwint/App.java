@@ -7,6 +7,7 @@
 package gwint;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -32,12 +33,13 @@ public class App extends Application {
     {
         try
         {
-            if(fxmlFile.equals("gwint/MainMenu.fxml"))
+            if(fxmlFile.equals("MainMenu.fxml"))
             {
                 loader = new FXMLLoader(App.class.getResource(fxmlFile));
                 root = (Parent)loader.load();
                 stage.setTitle("Main Menu");
             }
+            //chcemy to przerobic na fxml???
             else if(fxmlFile.equals("BaseGame"))
             {
                 root = new GridPane();
@@ -71,6 +73,7 @@ public class App extends Application {
         }
 
     }
+
     @Override
     public void start(Stage stage) throws IOException {
         App.stage = stage;
@@ -82,7 +85,6 @@ public class App extends Application {
         double ratio=Math.sqrt((width*height))/2300; //Const to scale cards etc. Lowered it btw
 
         new Constants(ratio);
-        //Create 200x200 grid
         try {
             loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
             root = (Parent) loader.load();
@@ -90,8 +92,6 @@ public class App extends Application {
         {
             e.printStackTrace();
         }
-
-        /*Add more elements here*/
         
         //Stage settings
         stage.setTitle("Main Menu");
@@ -99,6 +99,10 @@ public class App extends Application {
         stage.setResizable(false);
         stage.setScene(new Scene(root,width,height));
         stage.show();
+    }
+
+    public static void exit(){
+        Platform.exit();
     }
 
     public static void main(String[] args) {
