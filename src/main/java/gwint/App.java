@@ -7,6 +7,8 @@
 package gwint;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -21,9 +23,58 @@ import java.io.File;
 import java.io.IOException;
 
 public class App extends Application {
+    private static Stage stage;
+    private static FXMLLoader loader;
+    private static Parent root;
 
+
+    public static void switchScene(String fxmlFile)
+    {
+        try
+        {
+            if(fxmlFile.equals("MainMenu.fxml"))
+            {
+                loader = new FXMLLoader(App.class.getResource(fxmlFile));
+                root = (Parent)loader.load();
+                stage.setTitle("Main Menu");
+            }
+            else if(fxmlFile.equals("BaseGame"))
+            {
+                root = new GridPane();
+                //root.setGridLinesVisible(true);
+
+                for(int i=0;i<200;i++) {
+                    ColumnConstraints column = new ColumnConstraints();
+                    column.setPercentWidth(0.5);
+                    ((GridPane) root).getColumnConstraints().addAll(column);
+
+                    RowConstraints row = new RowConstraints();
+                    row.setPercentHeight(0.5);
+                    ((GridPane) root).getRowConstraints().addAll(row);
+                }
+                new GameEngine((GridPane) root);
+
+
+                /*Add more elements here*/
+
+                //Stage settings
+
+            }
+            stage.setFullScreen(true);
+            stage.setResizable(false);
+            stage.getScene().setRoot(root);
+            stage.show();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+    }
     @Override
     public void start(Stage stage) throws IOException {
+        App.stage = stage;
+
         //Get screen dimentions and set ratio
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         double height=screenBounds.getHeight();
@@ -32,25 +83,18 @@ public class App extends Application {
 
         new Constants(ratio);
         //Create 200x200 grid
-        GridPane root = new GridPane();
-        //root.setGridLinesVisible(true);
-
-        for(int i=0;i<200;i++) {
-            ColumnConstraints column = new ColumnConstraints();
-            column.setPercentWidth(0.5);
-            root.getColumnConstraints().addAll(column);
-
-            RowConstraints row = new RowConstraints();
-            row.setPercentHeight(0.5);
-            root.getRowConstraints().addAll(row);
+        try {
+            loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
+            root = (Parent) loader.load();
+        }catch (IOException e)
+        {
+            e.printStackTrace();
         }
-        new GameEngine(root);
-
 
         /*Add more elements here*/
         
         //Stage settings
-        stage.setTitle("Base Game");
+        stage.setTitle("Main Menu");
         stage.setFullScreen(true);
         stage.setResizable(false);
         stage.setScene(new Scene(root,width,height));
