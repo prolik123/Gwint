@@ -32,7 +32,7 @@ public class App extends Application {
     {
         try
         {
-            if(fxmlFile.equals("MainMenu.fxml"))
+            if(fxmlFile.equals("gwint/MainMenu.fxml"))
             {
                 loader = new FXMLLoader(App.class.getResource(fxmlFile));
                 root = (Parent)loader.load();

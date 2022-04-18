@@ -1,0 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap');
+overall{
+    -fx-font-family: 'MedievalSharp', cursive;
+    -fx-background-colour: black;
+}
