@@ -29,19 +29,21 @@ public class App extends Application {
     private static Parent root;
 
 
-    public static void switchScene(String fxmlFile)
+    public static void switchScene(String rootName)
     {
         try
         {
-            if(fxmlFile.equals("MainMenu.fxml"))
-            {
-                loader = new FXMLLoader(App.class.getResource(fxmlFile));
-                root = (Parent)loader.load();
+            if(rootName.equals("MainMenu.fxml")) {
+                loader = new FXMLLoader(App.class.getResource(rootName));
+                root = (Parent) loader.load();
                 stage.setTitle("Main Menu");
             }
-            //chcemy to przerobic na fxml???
-            else if(fxmlFile.equals("BaseGame"))
+
+            else if(rootName.equals("BaseGame"))
             {
+                //
+                //proponuje przenieść to do GameEngine
+                //
                 root = new GridPane();
                 //root.setGridLinesVisible(true);
 
@@ -55,7 +57,6 @@ public class App extends Application {
                     ((GridPane) root).getRowConstraints().addAll(row);
                 }
                 new GameEngine((GridPane) root);
-
 
                 /*Add more elements here*/
 

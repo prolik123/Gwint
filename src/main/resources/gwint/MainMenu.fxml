@@ -9,8 +9,7 @@
 <?import javafx.scene.text.Font?>
 <!--potrzebny pomysl jak to ma wygladac i dzialajacy css-->
 
-<HBox id="overall"
-      alignment="CENTER"
+<HBox alignment="CENTER"
       maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
 
       stylesheets="@MainMenu.css"
@@ -34,7 +33,7 @@
                     fx:id="playButton"
                     onAction="#handlePlayButtonAction">
                <font>
-                  <Font name="Arial" size="36.0" />
+                  <Font name="MedivalSharp" size="36.0" />
                </font>
             </Button>
             <Button prefHeight="50.0" prefWidth="600.0"

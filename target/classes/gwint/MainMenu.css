@@ -1,7 +1,14 @@
+/* medievalsharp-regular - latin */
+@font-face {
+  font-family: 'MedievalSharp';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/medievalsharp-v22-latin-regular.eot'); /* IE9 Compat Modes */
+
+}
 @import url('https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap');
 
-//fajnie jakby to dzialalo
-overall{
+.root{
     -fx-background-colour: black;
     -fx-font-family: 'MedievalSharp', cursive;
 }
