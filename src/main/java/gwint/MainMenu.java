@@ -1,9 +1,13 @@
 package gwint;
 
+import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseDragEvent;
+
+import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
 
 public class MainMenu {
 @FXML
@@ -19,10 +23,19 @@ public void handlePlayButtonAction(ActionEvent e){
 public void handleExitButtonAction(ActionEvent e){
     App.exit();
 }
-public void handleDrag(MouseDragEvent e){
-    Button button = (Button) e.getGestureSource();
-    button.setText("adfdsafdafa");
+public void handleEntered(MouseEvent e){
+    ScaleTransition btnTrans=new ScaleTransition(Duration.millis(100), (Node) e.getSource());
+    btnTrans.setToX(1.2);
+    btnTrans.setToY(1.2);
+    btnTrans.play();
 }
+public void handleExited(MouseEvent e){
+    ScaleTransition btnTrans=new ScaleTransition(Duration.millis(100), (Node) e.getSource());
+    btnTrans.setToX(1);
+    btnTrans.setToY(1);
+    btnTrans.play();
+}
+
 
 
 

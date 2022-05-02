@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<!--potrzebny pomysl jak to ma wygladac i dzialajacy css-->
+
 
 <?import java.net.URL?>
 <HBox alignment="CENTER"
@@ -25,19 +25,24 @@
                </VBox.margin>
             </ImageView>
             <Button prefHeight="50.0"
-                    text="PLAY"
+                    text=" P L A Y "
                     fx:id="playButton"
                     id="playButton"
+                    onMouseEntered= "#handleEntered"
+                    onMouseExited="#handleExited"
                     onAction="#handlePlayButtonAction">
             </Button>
-            <Button prefHeight="50.0" prefWidth="600.0"
-                    text="HOW TO PLAY"
+            <Button prefHeight="50.0"
+                    text=" H O W    T O    P L A Y "
+                    onMouseEntered= "#handleEntered"
+                    onMouseExited="#handleExited"
                     fx:id="hTPButton">
             </Button>
-            <Button prefHeight="50.0" prefWidth="600.0"
-                    text="EXIT"
+            <Button prefHeight="50.0"
+                    text=" E X I T "
                     fx:id="exitButton"
-                    onMouseDragEntered= "#handleDrag"
+                    onMouseEntered= "#handleEntered"
+                    onMouseExited="#handleExited"
                     onAction="#handleExitButtonAction">
             </Button>
          </children>
