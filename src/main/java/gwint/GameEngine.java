@@ -126,7 +126,7 @@ public class GameEngine {
 
             @Override
             public void handle(ActionEvent arg0) {
-                App.switchScene("MainMenu.fxml");
+                App.switchScene("MainMenu");
             }
             
         });
