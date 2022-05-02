@@ -65,7 +65,7 @@ public class BoardSlot {
 
                 @Override
                 public void handle(ActionEvent event) {
-                    if(!GameEngine.human.myPass) {
+                    if(!GameEngine.human.myPass && GameEngine.ablePlayerMove) {
                         View.getChildren().remove(btn);
                         GameEngine.human.throwCard(card);
                         cardList.remove(card);
@@ -73,7 +73,8 @@ public class BoardSlot {
                         if(cardList.isEmpty()) {
                             GameEngine.human.getPass();
                         }
-                        GameEngine.opponent.move();
+                        GameEngine.ablePlayerMove = false;            
+                        GameEngine.opponent.ThreadMove(1000);
                     }
                 }
             });
