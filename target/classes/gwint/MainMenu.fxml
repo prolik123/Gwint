@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<!--potrzebny pomysl jak to ma wygladac i dzialajacy css-->
+
+<HBox alignment="CENTER"
+      maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+
+      stylesheets="@MainMenu.css"
+      style="-fx-background-color: black;"
+      fx:controller="gwint.MainMenu"
+      xmlns:fx="http://javafx.com/fxml"
+      styleClass="root">
+   <children>
+      <VBox alignment="CENTER"  spacing="40.0">
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@tcs.png" />
+               </image>
+               <VBox.margin>
+                  <Insets bottom="100.0" />
+               </VBox.margin>
+            </ImageView>
+            <Button prefHeight="50.0" prefWidth="600.0"
+                    text="PLAY"
+                    fx:id="playButton"
+                    onAction="#handlePlayButtonAction">
+               <font>
+                  <Font name="MedivalSharp" size="36.0" />
+               </font>
+            </Button>
+            <Button prefHeight="50.0" prefWidth="600.0"
+                    text="HOW TO PLAY"
+                    fx:id="hTPButton">
+               <font>
+                  <Font name="Arial" size="36.0" />
+               </font>
+            </Button>
+            <Button prefHeight="50.0" prefWidth="600.0"
+                    text="EXIT"
+                    fx:id="exitButton"
+                    onAction="#handleExitButtonAction">
+               <font>
+                  <Font name="Arial" size="36.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+   </children>
+</HBox>
