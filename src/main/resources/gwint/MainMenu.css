@@ -1,8 +1,16 @@
-
-@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap');
-
+@font-face {
+    font-family: 'MedievalSharp';
+    src: url('MedievalSharp-regular.ttf');
+}
 
 .root{
-    -fx-background-colour: black;
-    -fx-font-family: 'MedievalSharp', cursive;
+    -fx-background-color: #000000;
+    -fx-font-family: 'MedievalSharp';
+    -fx-font-size:48;
+}
+
+.button {
+    -fx-text-fill: #926AA6;
+    -fx-border-style: none;
+    -fx-background-color: transparent;
 }

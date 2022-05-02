@@ -1,14 +1,16 @@
-/* medievalsharp-regular - latin */
 @font-face {
-  font-family: 'MedievalSharp';
-  font-style: normal;
-  font-weight: 400;
-  src: url('../fonts/medievalsharp-v22-latin-regular.eot'); /* IE9 Compat Modes */
-
+    font-family: 'MedievalSharp';
+    src: url('MedievalSharp-regular.ttf');
 }
-@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap');
 
 .root{
-    -fx-background-colour: black;
-    -fx-font-family: 'MedievalSharp', cursive;
+    -fx-background-color: #000000;
+    -fx-font-family: 'MedievalSharp';
+    -fx-font-size:48;
+}
+
+.button {
+    -fx-text-fill: #926AA6;
+    -fx-border-style: none;
+    -fx-background-color: transparent;
 }

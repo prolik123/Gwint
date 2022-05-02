@@ -36,7 +36,7 @@ public class GameEngine {
             "-fx-background-repeat: no-repeat; " +
             "-fx-background-size: contain; " +
             "-fx-font-family: MedievalSharp; " +
-            "-fx-font-size: 20 "
+            "-fx-font-size: 20; "
         );
 
         //Initialize the Game Engine

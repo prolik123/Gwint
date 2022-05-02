@@ -3,6 +3,7 @@ package gwint;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseDragEvent;
 
 public class MainMenu {
 @FXML
@@ -18,7 +19,10 @@ public void handlePlayButtonAction(ActionEvent e){
 public void handleExitButtonAction(ActionEvent e){
     App.exit();
 }
-
+public void handleDrag(MouseDragEvent e){
+    Button button = (Button) e.getGestureSource();
+    button.setText("adfdsafdafa");
+}
 
 
 

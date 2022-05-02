@@ -16,6 +16,8 @@ import javafx.stage.Stage;
 import javafx.stage.Screen;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -33,9 +35,9 @@ public class App extends Application {
     {
         try
         {
-            if(rootName.equals("MainMenu.fxml")) {
-                loader = new FXMLLoader(App.class.getResource(rootName));
-                root = (Parent) loader.load();
+            if(rootName.equals("MainMenu")) {
+                loader = new FXMLLoader(App.class.getResource("MainMenu.fxml"));
+                root = loader.load();
                 stage.setTitle("Main Menu");
             }
 
@@ -85,10 +87,13 @@ public class App extends Application {
         double width=screenBounds.getWidth();
         double ratio=Math.sqrt((width*height))/2300; //Const to scale cards etc. Lowered it btw
 
+
         new Constants(ratio);
         try {
+
             loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
-            root = (Parent) loader.load();
+            root =  loader.load();
+
         }catch (IOException e)
         {
             e.printStackTrace();
