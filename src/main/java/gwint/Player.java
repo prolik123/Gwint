@@ -3,6 +3,7 @@ package gwint;
 import java.util.*;
 
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -98,7 +99,6 @@ public class Player {
 
     /// If player has a card on hand and didn't passed it will throw random card (80%) or pass (20%)
     void move() {
-
         if(!myCards.cardList.isEmpty() && !myPass) {
             Random makePass = new Random();
             if(makePass.nextInt(Constants.botRandomBounds) == 0)
@@ -111,7 +111,8 @@ public class Player {
         else if(!myPass)
             getPass();
         if(GameEngine.human.myPass && !GameEngine.opponent.myPass)
-            move();
+            GameEngine.opponent.ThreadMove(1000);
+        GameEngine.ablePlayerMove = true;
     }
 
     /// Function which gets a card and add it to current player View
@@ -127,9 +128,9 @@ public class Player {
         ImView.setFitWidth(150*Constants.ratio);
         btn.setStyle(Constants.DECK_STYLE);
         myBoardValue += card.value;
-        myBoard[card.boardType].getCurentBoardView().getChildren().add(btn);
+        Platform.runLater(()->{myBoard[card.boardType].getCurentBoardView().getChildren().add(btn);});
         btnTrans.play();
-        myBoard[card.boardType].getCurentBoardView().setSpacing(1/Constants.ratio);
+        Platform.runLater(()->{myBoard[card.boardType].getCurentBoardView().setSpacing(1/Constants.ratio);});
         updateValue();
     }
 
@@ -137,17 +138,39 @@ public class Player {
     void getPass(){
         myPass = true;
         playerPass = new Pass(Constants.ratio);
-        GameEngine.root.add(playerPass,positionOfPass.getX(),positionOfPass.getY());
+        Platform.runLater(()->{GameEngine.root.add(playerPass,positionOfPass.getX(),positionOfPass.getY());});
 
-        if(this == GameEngine.human)
-            GameEngine.opponent.move();
+        if(this == GameEngine.human) {
+            GameEngine.opponent.ThreadMove(1000);
+        }
         if(GameEngine.opponent.myPass && GameEngine.human.myPass) {
-            GameEngine.startNewRound();
+            new Thread(()->{
+                try {
+                    Platform.runLater(()->{GameEngine.PrintResult();});
+                    Thread.sleep(2000);
+                    Platform.runLater(()->{GameEngine.startNewRound();});
+                }
+                catch (Exception e) {
+
+                }}).start();
         }
     }
 
     void updateValue(){
         playerValue.setText("" +myBoardValue);
+    }
+
+    void ThreadMove(long waitTime) {
+        new Thread(()->
+            {
+                try{
+                    Thread.sleep(waitTime);
+                    move();
+                }
+                catch(Exception e) {
+
+                }
+            }).start();
     }
 
     boolean looseHeart(){
@@ -168,6 +191,14 @@ public class Player {
                 return false;
         }
         return true;
+    }
+
+    boolean hasOnHeart() {
+        for(Heart t : myHearts) {
+            if(t.on)
+                return true;
+        }
+        return false;
     }
 
     void clearBoard() {
