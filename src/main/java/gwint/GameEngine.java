@@ -2,8 +2,17 @@ package gwint;
 
 import java.util.*;
 
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+//import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 
 public class GameEngine {
@@ -15,7 +24,11 @@ public class GameEngine {
     public static Player human;
 
     public static GridPane root;
+
+    public static volatile boolean ablePlayerMove = true;
     //public static double ratio;
+
+    public static Result res;
 
     /// Constructor 
     GameEngine(GridPane root) {
@@ -71,24 +84,77 @@ public class GameEngine {
 
     public static void startNewRound() {
         if(human.myBoardValue < opponent.myBoardValue) { 
-            if(!human.looseHeart())
+            if(!human.looseHeart()){
+                endGame();
                 return;
+            }
         }
         else if(human.myBoardValue > opponent.myBoardValue) {
-            if(!opponent.looseHeart())
+            if(!opponent.looseHeart()) {
+                endGame();
                 return;
+            }
 
         }
         else {
             boolean firstLoose = human.looseHeart();
             boolean secLoose = opponent.looseHeart();
-            if(!firstLoose || !secLoose)
+            if(!firstLoose || !secLoose){
+                endGame();
                 return;
+            }
         }
+        root.getChildren().remove(res);
+        res = null;
         human.preparePlayerForNextRound();
         opponent.preparePlayerForNextRound();
 
     }
 
+    public static void endGame() {
+        root.getChildren().remove(res);
+        res = null;
+        if(human.hasOnHeart())  
+            res = new Result("You Won", 60, Color.RED);
+        else if(opponent.hasOnHeart()) 
+            res = new Result("You Loose", 60, Color.BLUE);
+        else 
+            res = new Result("It's Draw", 60, Color.WHITE);
+        Platform.runLater(()->{root.add(res, Constants.positionOfResult.getX(), Constants.positionOfResult.getY());});
+        Button back = new Button("Back to Main Menu");
+        back.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent arg0) {
+                App.switchScene("MainMenu.fxml");
+            }
+            
+        });
+        Platform.runLater(()->{root.add(back, Constants.positionOfBackToMainMenu.getX(), Constants.positionOfBackToMainMenu.getY());});
+    }
+
+    public static void PrintResult(){
+        if(human.myBoardValue < opponent.myBoardValue)  
+            res = new Result("Defeat", 60, Color.RED);
+        else if(human.myBoardValue > opponent.myBoardValue) 
+            res = new Result("Victory", 60, Color.BLUE);
+        else 
+            res = new Result("Draw", 60, Color.WHITE);
+        root.add(res, Constants.positionOfResult.getX(), Constants.positionOfResult.getY());
+    }
+
+    public static class Result extends HBox {
+    
+        public Result(String Name,int size,Color Col) {
+            Text res=new Text();
+            res.setFill(Col);
+            res.setText(Name);
+            res.setFont(Font.font("MedievalSharp",size));
+
+    
+            getChildren().add(res);
+        }
+        
+    }
 }
 
