@@ -56,8 +56,9 @@ public class BoardSlot {
         ImageView ImView = new ImageView(current);
         Button btn = new Button();
         btn.setGraphic(ImView);
-        ImView.setFitHeight(200*Constants.ratio);
-        ImView.setFitWidth(150*Constants.ratio);
+        ImView.setFitHeight((Constants.height-84.0)/7.0);
+        ImView.setFitWidth(((Constants.height-84.0)/7.0/200.0)*150.0);
+        //ImView.setFitWidth(150*Constants.ratio);
 
         /// if its hand give the Button actions and hovers
         if(hand){

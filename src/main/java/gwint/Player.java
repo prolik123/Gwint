@@ -4,9 +4,12 @@ import java.util.*;
 
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -93,7 +96,7 @@ public class Player {
         myHearts = new ArrayList<>();
         for(int k=0;k<Constants.numberOfHearts;k++) {
             myHearts.add(new Heart());
-            GameEngine.root.add(myHearts.get(k).currentImage, positionOfHearts.getX()+positionOfHearts.getModyfierX()*k, positionOfHearts.getY());
+            //GameEngine.root.add(myHearts.get(k).currentImage, positionOfHearts.getX()+positionOfHearts.getModyfierX()*k, positionOfHearts.getY());
         }
     }
 
@@ -124,8 +127,8 @@ public class Player {
         btnTrans.setFromValue(0.0);
         btnTrans.setToValue(1.0);
         btn.setGraphic(ImView);
-        ImView.setFitHeight(200*Constants.ratio);
-        ImView.setFitWidth(150*Constants.ratio);
+        ImView.setFitHeight((Constants.height-84.0)/7.0);
+        ImView.setFitWidth(((Constants.height-84.0)/7.0/200.0)*150.0);
         btn.setStyle(Constants.DECK_STYLE);
         myBoardValue += card.value;
         Platform.runLater(()->{myBoard[card.boardType].getCurentBoardView().getChildren().add(btn);});
@@ -138,7 +141,7 @@ public class Player {
     void getPass(){
         myPass = true;
         playerPass = new Pass(Constants.ratio);
-        Platform.runLater(()->{GameEngine.root.add(playerPass,positionOfPass.getX(),positionOfPass.getY());});
+        //Platform.runLater(()->{GameEngine.root.add(playerPass,positionOfPass.getX(),positionOfPass.getY());});
 
         if(this == GameEngine.human) {
             GameEngine.opponent.ThreadMove(1000);
@@ -178,11 +181,11 @@ public class Player {
             if(myHearts.get(k).on) {
                 GameEngine.root.getChildren().remove(myHearts.get(k).currentImage);
                 myHearts.get(k).getHeartOff();
-                GameEngine.root.add(
+                /*GameEngine.root.add(
                     myHearts.get(k).currentImage,
                         positionOfHearts.getX()+positionOfHearts.getModyfierX()*k,
                             positionOfHearts.getY()+ positionOfHearts.getModyfierY()*k
-                );
+                );*/
                 if(k==myHearts.size()-1)
                     return false;
                 break;
@@ -226,11 +229,23 @@ public class Player {
 
     void printNewBoards() {
         for(int k=0;k<Constants.numberOfBoards;k++) {
-            GameEngine.root.add(
+            HBox secondBox=new HBox();
+            HBox.setMargin(secondBox, new Insets(12,12,12,12)); // optional
+
+            //secondBox.setBackground(new Background(new BackgroundFill(Color.GREEN,null,null)));
+            secondBox=myBoard[k].getNewBoardView(Constants.ratio);
+            secondBox.setMinWidth(Constants.width/1.5);
+            secondBox.setMaxWidth(Constants.width/1.5);
+            secondBox.setMinHeight((Constants.height-84)/7.0);
+            secondBox.setMaxHeight((Constants.height-84)/7.0);
+            secondBox.setAlignment(Pos.CENTER);
+
+            GameEngine.centerBox.getChildren().add(secondBox);
+            /*GameEngine.root.add(
                 myBoard[k].getNewBoardView(Constants.ratio),
                     positionOfBoards.getX()+k*positionOfBoards.getModyfierX(),
                             positionOfBoards.getY()+positionOfBoards.getModyfierY()*k
-                        );
+                        );*/
         }
     }
 

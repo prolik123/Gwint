@@ -7,6 +7,10 @@ public class Constants {
 
     public static double ratio;
 
+    public static double width;
+
+    public static double height;
+
     public static final int numberOfHearts = 2;
 
     public static final int botRandomBounds = 5;
@@ -63,8 +67,10 @@ public class Constants {
 
 
 
-    Constants(double ratio) {
+    Constants(double ratio, double width, double height) {
         Constants.ratio = ratio;
+        Constants.width = width;
+        Constants.height = height;
     }
     
 }

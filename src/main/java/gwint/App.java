@@ -11,7 +11,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.Screen;
 import javafx.geometry.Rectangle2D;
@@ -41,27 +40,9 @@ public class App extends Application {
 
             else if(rootName.equals("BaseGame"))
             {
-                //
-                //proponuje przenieść to do GameEngine
-                //
-                root = new GridPane();
-                //root.setGridLinesVisible(true);
+                root=new BorderPane();
 
-                for(int i=0;i<200;i++) {
-                    ColumnConstraints column = new ColumnConstraints();
-                    column.setPercentWidth(0.5);
-                    ((GridPane) root).getColumnConstraints().addAll(column);
-
-                    RowConstraints row = new RowConstraints();
-                    row.setPercentHeight(0.5);
-                    ((GridPane) root).getRowConstraints().addAll(row);
-                }
-                new GameEngine((GridPane) root);
-
-                /*Add more elements here*/
-
-                //Stage settings
-
+                new GameEngine((BorderPane)root);
             }
             stage.setFullScreen(true);
             stage.setResizable(false);
@@ -85,7 +66,7 @@ public class App extends Application {
         double width=screenBounds.getWidth();
         double ratio=Math.sqrt((width*height))/2300; //Const to scale cards etc. Lowered it btw
 
-        new Constants(ratio);
+        new Constants(ratio,width,height);
         try {
             loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
             root = (Parent) loader.load();

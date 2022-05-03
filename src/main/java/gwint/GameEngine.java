@@ -7,12 +7,15 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 //import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+
+import javafx.scene.effect.PerspectiveTransform;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 
 
 public class GameEngine {
@@ -23,23 +26,23 @@ public class GameEngine {
     /// class for all player's functions
     public static Player human;
 
-    public static GridPane root;
+    public static BorderPane root;
 
     public static volatile boolean ablePlayerMove = true;
     //public static double ratio;
 
     public static Result res;
 
+    public static VBox centerBox;
+
     /// Constructor 
-    GameEngine(GridPane root) {
+    GameEngine(BorderPane root) {
 
         GameEngine.root = root;
-        human = new Player(Constants.positionOfHumanHearts,Constants.positionOfHumanPass,Constants.positionOfHumanBoards);
-        opponent = new Player(Constants.positionOfOpponentHearts,Constants.positionOfOpponentPass,Constants.positionOfOpponentBoards);
         //GameEngine.ratio = ratio;
 
         //Set background
-        String image = App.class.getResource("plansza.png").toExternalForm();
+        /*String image = App.class.getResource("plansza.png").toExternalForm();
         
         root.getStylesheets().add(Constants.linkToFontDownload);
 
@@ -50,15 +53,80 @@ public class GameEngine {
             "-fx-background-size: contain; " +
             "-fx-font-family: MedievalSharp; " +
             "-fx-font-size: 20 "
+        );*/
+        String image = App.class.getResource("sth.jpg").toExternalForm();
+        root.setStyle(
+            "-fx-background-image: url('" + image + "'); " +
+            "-fx-background-position: center;" + 
+            "-fx-background-repeat: no-repeat; " +
+            "-fx-background-size: auto 100%; " +
+            "-fx-font-family: MedievalSharp; " +
+            "-fx-font-size: 20 "
         );
+
+        BorderPane centerPane=new BorderPane();
+        centerBox=new VBox(10);
+        centerBox.setMinWidth(Constants.width/1.5);
+        centerBox.setMaxWidth(Constants.width/1.5);
+        //centerBox.setMinHeight(700);
+        centerBox.setMaxHeight(Constants.height-Constants.height/7.0-84.0);
+
+        opponent = new Player(Constants.positionOfOpponentHearts,Constants.positionOfOpponentPass,Constants.positionOfOpponentBoards);
+        human = new Player(Constants.positionOfHumanHearts,Constants.positionOfHumanPass,Constants.positionOfHumanBoards);
+
+        centerPane.setCenter(centerBox);
+        BorderPane.setAlignment(centerBox, Pos.CENTER);
+
+        HBox bottomBox=new HBox();
+        bottomBox=GameEngine.human.myCards.getNewBoardView(Constants.ratio);
+        //bottomBox.setBackground(new Background(new BackgroundFill(Color.BLUE,null,null)));
+        bottomBox.setMinWidth(Constants.width/1.5);
+        bottomBox.setMaxWidth(Constants.width/1.5);
+        bottomBox.setMinHeight((Constants.height-84.0)/7.0);
+        bottomBox.setMaxHeight((Constants.height-84.0)/7.0);
+        bottomBox.setAlignment(Pos.CENTER);
+
+        BorderPane.setAlignment(bottomBox, Pos.BOTTOM_CENTER);
+        centerPane.setBottom(bottomBox);
+
+        ((BorderPane)root).setCenter(centerPane);
+
+        System.out.println(Constants.width+" "+Constants.height);
+
+        PerspectiveTransform perspectiveTrasform = new PerspectiveTransform();
+        perspectiveTrasform.setUlx(Constants.width/14.0); //gora lewy
+        perspectiveTrasform.setUly(0.0); //gora lewy
+        perspectiveTrasform.setUrx(Constants.width/1.5-Constants.width/14.0); //gora prawy
+        perspectiveTrasform.setUry(0.0); //gora prawy
+        perspectiveTrasform.setLrx(Constants.width/1.5); //dol prawy
+        perspectiveTrasform.setLry(Constants.height-(Constants.height/7.0)-24); //dol prawy
+        perspectiveTrasform.setLlx(0.0); //dol lewy
+        perspectiveTrasform.setLly(Constants.height-(Constants.height/7.0)-24); //dol lewy
+
+        centerBox.setEffect(perspectiveTrasform);
+
+        VBox rightBox=new VBox();
+        rightBox.setBackground(new Background(new BackgroundFill(Color.RED,null,null)));
+        rightBox.setMinWidth(100);
+        rightBox.setMaxWidth(100);
+        rightBox.setMinHeight(Constants.height);
+        rightBox.setMaxHeight(Constants.height);
+        ((BorderPane)root).setRight(rightBox);
+
+        VBox leftBox=new VBox();
+        leftBox.setMinWidth(100);
+        leftBox.setMaxWidth(100);
+        leftBox.setMinHeight(Constants.height);
+        leftBox.setMaxHeight(Constants.height);
+        ((BorderPane)root).setLeft(leftBox);
 
         //Initialize the Game Engine
         //Add elements to grid
-        DeckView deckView=new DeckView(Constants.ratio);
-        root.add(deckView, Constants.positionOfDeck.getX(),Constants.positionOfDeck.getY());
+        ///DeckView deckView=new DeckView(Constants.ratio);
+        ///root.add(deckView, Constants.positionOfDeck.getX(),Constants.positionOfDeck.getY());
 
         //Add Cards hand
-        root.add(GameEngine.human.myCards.getNewBoardView(Constants.ratio),Constants.positionOfHumanHand.getX(),Constants.positionOfHumanHand.getY());
+        ///root.add(GameEngine.human.myCards.getNewBoardView(Constants.ratio),Constants.positionOfHumanHand.getX(),Constants.positionOfHumanHand.getY());
             
         /*Add more elements here*/
         root.setOnKeyPressed(e -> {
@@ -67,8 +135,8 @@ public class GameEngine {
                     GameEngine.human.getPass();
             }
         });
-        root.add(human.playerValue, 20, 90);
-        root.add(opponent.playerValue,20,75);
+        ///root.add(human.playerValue, 20, 90);
+        ///root.add(opponent.playerValue,20,75);
     }
 
     /// Function which gets hand, stack and add new card to hand ( and View ) 
@@ -120,7 +188,7 @@ public class GameEngine {
             res = new Result("You Loose", 60, Color.BLUE);
         else 
             res = new Result("It's Draw", 60, Color.WHITE);
-        Platform.runLater(()->{root.add(res, Constants.positionOfResult.getX(), Constants.positionOfResult.getY());});
+        //Platform.runLater(()->{root.add(res, Constants.positionOfResult.getX(), Constants.positionOfResult.getY());});
         Button back = new Button("Back to Main Menu");
         back.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -130,7 +198,7 @@ public class GameEngine {
             }
             
         });
-        Platform.runLater(()->{root.add(back, Constants.positionOfBackToMainMenu.getX(), Constants.positionOfBackToMainMenu.getY());});
+        //Platform.runLater(()->{root.add(back, Constants.positionOfBackToMainMenu.getX(), Constants.positionOfBackToMainMenu.getY());});
     }
 
     public static void PrintResult(){
@@ -140,7 +208,7 @@ public class GameEngine {
             res = new Result("Victory", 60, Color.BLUE);
         else 
             res = new Result("Draw", 60, Color.WHITE);
-        root.add(res, Constants.positionOfResult.getX(), Constants.positionOfResult.getY());
+        //root.add(res, Constants.positionOfResult.getX(), Constants.positionOfResult.getY());
     }
 
     public static class Result extends HBox {
