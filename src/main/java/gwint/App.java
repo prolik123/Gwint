@@ -28,6 +28,8 @@ public class App extends Application {
     private static Parent root;
 
 
+    //This method changes scenes 
+    //menu->game and game->menu
     public static void switchScene(String rootName)
     {
         try
@@ -60,13 +62,14 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         App.stage = stage;
 
-        //Get screen dimentions and set ratio
+        //This here gets the screen resolution and saves it into Constants
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         double height=screenBounds.getHeight();
         double width=screenBounds.getWidth();
-        double ratio=Math.sqrt((width*height))/2300; //Const to scale cards etc. Lowered it btw
 
-        new Constants(ratio,width,height);
+        new Constants(width,height);
+
+        //We start in the menu
         try {
             loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
             root = (Parent) loader.load();
@@ -83,6 +86,9 @@ public class App extends Application {
         stage.show();
     }
 
+    //Geralt: bywaj
+    //Talar: ja ... jestem a nie bywam
+    //In other words, closes the app
     public static void exit(){
         Platform.exit();
     }
