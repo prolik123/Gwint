@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -38,21 +39,20 @@ public class Player {
 
     public Point positionOfHearts;
 
-    public Pass playerPass;
-
     public Text playerValue;
 
     public Point positionOfPass;
 
     public Point positionOfBoards;
 
+    Boolean isHuman;
 
     /// Basic Constructor for each field
-    Player(Point positionOfHearts, Point positionOfPass,Point positionOfBoards) {
-
-        this.positionOfHearts = positionOfHearts;
-        this.positionOfPass = positionOfPass;
-        this.positionOfBoards = positionOfBoards;
+    Player(boolean isHuman) {
+        this.isHuman=isHuman;
+        //this.positionOfHearts = positionOfHearts;
+        //this.positionOfPass = positionOfPass;
+        //this.positionOfBoards = positionOfBoards;
 
         setBasicCardsInfo();
 
@@ -61,7 +61,9 @@ public class Player {
         setBasicHeartsInfo();
 
         playerValue = new Text("0");
+        playerValue.setFont(Font.font("MedievalSharp",48));
         playerValue.setFill(Color.WHITE);
+        GameEngine.mainValues.getChildren().add(playerValue);
 
         printNewBoards();
     }
@@ -98,6 +100,8 @@ public class Player {
         for(int k=0;k<Constants.numberOfHearts;k++) {
             myHearts.add(new Heart());
             //GameEngine.root.add(myHearts.get(k).currentImage, positionOfHearts.getX()+positionOfHearts.getModyfierX()*k, positionOfHearts.getY());
+            if(isHuman) GameEngine.playerHeart.getChildren().add(myHearts.get(k).currentImage);
+            else GameEngine.enemyHeart.getChildren().add(myHearts.get(k).currentImage);
         }
     }
 
@@ -141,8 +145,9 @@ public class Player {
     /// Function will pass...
     void getPass(){
         myPass = true;
-        playerPass = new Pass(Constants.ratio);
         //Platform.runLater(()->{GameEngine.root.add(playerPass,positionOfPass.getX(),positionOfPass.getY());});
+        if(isHuman) Platform.runLater(()->{GameEngine.playerPass.setVisible(true);;});
+        else Platform.runLater(()->{GameEngine.enemyPass.setVisible(true);;});
 
         if(this == GameEngine.human) {
             GameEngine.opponent.ThreadMove(1000);
@@ -180,13 +185,23 @@ public class Player {
     boolean loseHeart(){
         for(int k=0;k<myHearts.size();k++) {
             if(myHearts.get(k).on) {
-                GameEngine.root.getChildren().remove(myHearts.get(k).currentImage);
+                /*GameEngine.root.getChildren().remove(myHearts.get(k).currentImage);
                 myHearts.get(k).getHeartOff();
-                /*GameEngine.root.add(
+                GameEngine.root.add(
                     myHearts.get(k).currentImage,
                         positionOfHearts.getX()+positionOfHearts.getModyfierX()*k,
                             positionOfHearts.getY()+ positionOfHearts.getModyfierY()*k
                 );*/
+                if(isHuman) {
+                    GameEngine.playerHeart.getChildren().remove(myHearts.get(k).currentImage);
+                    myHearts.get(k).getHeartOff();
+                    GameEngine.playerHeart.getChildren().add(myHearts.get(k).currentImage);
+                } else {
+                    GameEngine.enemyHeart.getChildren().remove(myHearts.get(k).currentImage);
+                    myHearts.get(k).getHeartOff();
+                    GameEngine.enemyHeart.getChildren().add(myHearts.get(k).currentImage);
+                }
+
                 if(k==myHearts.size()-1)
                     return false;
                 break;
@@ -221,32 +236,48 @@ public class Player {
 
     void preparePlayerForNextRound() {
         clearBoard();
-        GameEngine.root.getChildren().remove(playerPass);
-        playerPass = null;
+        //GameEngine.root.getChildren().remove(playerPass);
+        //playerPass = null;
+        if(isHuman) GameEngine.playerPass.setVisible(false);
+        else GameEngine.enemyPass.setVisible(false);
+
         myBoardValue = 0;
         updateValue();
         myPass = false;
     }
 
     void printNewBoards() {
-        for(int k=0;k<Constants.numberOfBoards;k++) {
-            HBox secondBox=new HBox();
-            HBox.setMargin(secondBox, new Insets(12,12,12,12)); // optional
-
-            //secondBox.setBackground(new Background(new BackgroundFill(Color.GREEN,null,null)));
-            secondBox=myBoard[k].getNewBoardView(Constants.ratio);
-            secondBox.setMinWidth(Constants.width/1.5);
-            secondBox.setMaxWidth(Constants.width/1.5);
-            secondBox.setMinHeight((Constants.height-84)/7.0);
-            secondBox.setMaxHeight((Constants.height-84)/7.0);
-            secondBox.setAlignment(Pos.CENTER);
-
-            GameEngine.centerBox.getChildren().add(secondBox);
-            /*GameEngine.root.add(
-                myBoard[k].getNewBoardView(Constants.ratio),
-                    positionOfBoards.getX()+k*positionOfBoards.getModyfierX(),
-                            positionOfBoards.getY()+positionOfBoards.getModyfierY()*k
-                        );*/
+        //My God, why have you forsaken me
+        if(!isHuman) {
+            for(int k=Constants.numberOfBoards-1;k>=0;k--) {
+                HBox secondBox=new HBox();
+                HBox.setMargin(secondBox, new Insets(12,12,12,12)); // optional
+    
+                //secondBox.setBackground(new Background(new BackgroundFill(Color.GREEN,null,null)));
+                secondBox=myBoard[k].getNewBoardView(Constants.ratio);
+                secondBox.setMinWidth(Constants.width/1.5);
+                secondBox.setMaxWidth(Constants.width/1.5);
+                secondBox.setMinHeight((Constants.height-84)/7.0);
+                secondBox.setMaxHeight((Constants.height-84)/7.0);
+                secondBox.setAlignment(Pos.CENTER);
+    
+                GameEngine.centerBox.getChildren().add(secondBox);
+            }
+        } else {
+            for(int k=0;k<Constants.numberOfBoards;k++) {
+                HBox secondBox=new HBox();
+                HBox.setMargin(secondBox, new Insets(12,12,12,12)); // optional
+    
+                //secondBox.setBackground(new Background(new BackgroundFill(Color.GREEN,null,null)));
+                secondBox=myBoard[k].getNewBoardView(Constants.ratio);
+                secondBox.setMinWidth(Constants.width/1.5);
+                secondBox.setMaxWidth(Constants.width/1.5);
+                secondBox.setMinHeight((Constants.height-84)/7.0);
+                secondBox.setMaxHeight((Constants.height-84)/7.0);
+                secondBox.setAlignment(Pos.CENTER);
+    
+                GameEngine.centerBox.getChildren().add(secondBox);
+            }
         }
     }
 

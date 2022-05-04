@@ -14,6 +14,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.PerspectiveTransform;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
@@ -34,6 +36,12 @@ public class GameEngine {
     public static Result res;
 
     public static VBox centerBox;
+
+    public static HBox playerHeart;
+    public static HBox enemyHeart;
+    public static VBox mainValues;
+    public static HBox playerPass;
+    public static HBox enemyPass;
 
     /// Constructor 
     GameEngine(StackPane root) {
@@ -62,8 +70,14 @@ public class GameEngine {
         //centerBox.setMinHeight(700);
         centerBox.setMaxHeight(Constants.height-Constants.height/7.0-84.0);
 
-        opponent = new Player(Constants.positionOfOpponentHearts,Constants.positionOfOpponentPass,Constants.positionOfOpponentBoards);
-        human = new Player(Constants.positionOfHumanHearts,Constants.positionOfHumanPass,Constants.positionOfHumanBoards);
+        enemyHeart=new HBox(5);
+        playerHeart=new HBox(5);
+        mainValues=new VBox(5);
+
+        opponent = new Player(false);
+        Button passBtn=new Button();
+        mainValues.getChildren().add(passBtn);
+        human = new Player(true);
 
         centerPane.setCenter(centerBox);
         StackPane.setAlignment(centerPane, Pos.TOP_CENTER);
@@ -98,21 +112,68 @@ public class GameEngine {
 
         centerBox.setEffect(perspectiveTrasform);
 
+        Text passText=new Text("Passed");
+        passText.setFont(Font.font("MedievalSharp",60));
+        passText.setFill(Color.WHITE);
+
+        playerPass=new HBox();
+        playerPass.getChildren().add(passText);
+        playerPass.setMinWidth(Constants.width);
+        playerPass.setMinHeight((Constants.height-84.0)/7.0);
+        playerPass.setMaxHeight((Constants.height-84.0)/7.0);
+        playerPass.setVisible(false);
+        playerPass.setAlignment(Pos.CENTER);
+
+        playerPass.setStyle("-fx-background-color: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.4) 80%, rgba(255,255,255,0) 100%)");
+        StackPane.setAlignment(playerPass, Pos.BOTTOM_CENTER);
+        
+        Text passText2=new Text("Passed");
+        passText2.setFont(Font.font("MedievalSharp",60));
+        passText2.setFill(Color.WHITE);
+        
+        enemyPass=new HBox();
+        enemyPass.getChildren().add(passText2);
+        enemyPass.setMinWidth(Constants.width);
+        enemyPass.setMinHeight((Constants.height-84.0)/7.0);
+        enemyPass.setMaxHeight((Constants.height-84.0)/7.0);
+        enemyPass.setVisible(false);
+        enemyPass.setAlignment(Pos.CENTER);
+
+        enemyPass.setStyle("-fx-background-color: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.4) 80%, rgba(255,255,255,0) 100%)");
+        StackPane.setAlignment(enemyPass, Pos.TOP_CENTER);
+        root.getChildren().addAll(playerPass,enemyPass);
+
         VBox rightBox=new VBox();
-        rightBox.setBackground(new Background(new BackgroundFill(Color.RED,null,null)));
         rightBox.setMinWidth(100);
         rightBox.setMaxWidth(100);
         rightBox.setMinHeight(Constants.height);
         rightBox.setMaxHeight(Constants.height);
 
-        root.getChildren().addAll(rightBox);
-        StackPane.setAlignment(rightBox, Pos.CENTER_RIGHT);
+        enemyHeart.setAlignment(Pos.CENTER);
+        enemyHeart.setMinWidth(100);
+        enemyHeart.setMinHeight(50);
+        enemyHeart.setMaxHeight(50);
+        
+        mainValues.setMinWidth(100);
+        mainValues.setMinHeight(Constants.height-100);
+        mainValues.setMaxHeight(Constants.height-100);
+        mainValues.setAlignment(Pos.CENTER);
 
-        /*VBox leftBox=new VBox();
-        leftBox.setMinWidth(100);
-        leftBox.setMaxWidth(100);
-        leftBox.setMinHeight(Constants.height);
-        leftBox.setMaxHeight(Constants.height);*/
+        ImageView imView=new ImageView(new Image(App.class.getResource("coin.png").toExternalForm()));
+        imView.setFitHeight(100);
+        imView.setFitWidth(100);
+        passBtn.setGraphic(imView);
+        passBtn.setStyle(Constants.DECK_STYLE);
+        
+        playerHeart.setAlignment(Pos.CENTER);
+        playerHeart.setMinWidth(100);
+        playerHeart.setMinHeight(50);
+        playerHeart.setMaxHeight(50);
+        
+        rightBox.getChildren().addAll(enemyHeart,mainValues,playerHeart);
+
+        root.getChildren().add(rightBox);
+        StackPane.setAlignment(rightBox, Pos.CENTER_RIGHT);
             
         /*Add more elements here*/
         root.setOnKeyPressed(e -> {
@@ -208,7 +269,7 @@ public class GameEngine {
             res.setText(Name);
             res.setFont(Font.font("MedievalSharp",size));
             
-            setStyle("-fx-background-color: linear-gradient(to bottom, rgba(0,0,0,0) 20%,rgba(0,0,0,0.9) 40%,rgba(0,0,0,0.9) 60%,rgba(0,0,0,0)) 80%");
+            setStyle("-fx-background-color: linear-gradient(to bottom, rgba(0,0,0,0) 20%,rgba(0,0,0,0.9) 40%,rgba(0,0,0,0.9) 60%,rgba(0,0,0,0) 80%)");
 
             setAlignment(Pos.CENTER);
             setMaxHeight(Constants.height/2);
