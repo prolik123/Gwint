@@ -104,10 +104,16 @@ public class GameEngine {
                 return;
             }
         }
-        root.getChildren().remove(res);
-        res = null;
-        human.preparePlayerForNextRound();
-        opponent.preparePlayerForNextRound();
+        Platform.runLater(()->{
+            root.getChildren().remove(res);
+            res = null;
+            human.preparePlayerForNextRound();
+            opponent.preparePlayerForNextRound();
+            if(opponent.myPass && human.myPass)
+                startNewRoundThred();
+            else if(human.myPass)
+                opponent.ThreadMove(1000);
+        });
 
     }
 
@@ -141,6 +147,18 @@ public class GameEngine {
         else 
             res = new Result("Draw", 60, Color.WHITE);
         root.add(res, Constants.positionOfResult.getX(), Constants.positionOfResult.getY());
+    }
+
+    public static void startNewRoundThred() {
+        new Thread(()->{
+            try {
+                Platform.runLater(()->{GameEngine.PrintResult();});
+                Thread.sleep(2000);
+                Platform.runLater(()->{GameEngine.startNewRound();});
+            }
+            catch (Exception e) {
+
+            }}).start();
     }
 
     public static class Result extends HBox {

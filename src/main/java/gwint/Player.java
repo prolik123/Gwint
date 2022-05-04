@@ -144,15 +144,7 @@ public class Player {
             GameEngine.opponent.ThreadMove(1000);
         }
         if(GameEngine.opponent.myPass && GameEngine.human.myPass) {
-            new Thread(()->{
-                try {
-                    Platform.runLater(()->{GameEngine.PrintResult();});
-                    Thread.sleep(2000);
-                    Platform.runLater(()->{GameEngine.startNewRound();});
-                }
-                catch (Exception e) {
-
-                }}).start();
+            GameEngine.startNewRoundThred();
         }
     }
 
@@ -217,11 +209,13 @@ public class Player {
 
     void preparePlayerForNextRound() {
         clearBoard();
-        GameEngine.root.getChildren().remove(playerPass);
-        playerPass = null;
         myBoardValue = 0;
         updateValue();
-        myPass = false;
+        if(!myCards.cardList.isEmpty()) {
+            GameEngine.root.getChildren().remove(playerPass);
+            playerPass = null;
+            myPass = false;
+        }
     }
 
     void printNewBoards() {
