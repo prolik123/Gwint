@@ -58,6 +58,8 @@ public class BoardSlot {
         btn.setGraphic(ImView);
         ImView.setFitHeight((Constants.height-84.0)/7.0);
         ImView.setFitWidth(((Constants.height-84.0)/7.0/200.0)*150.0);
+        ImView.maxHeight((Constants.height-84.0)/7.0);
+        ImView.maxWidth(((Constants.height-84.0)/7.0/200.0)*150.0);
         //ImView.setFitWidth(150*Constants.ratio);
 
         /// if its hand give the Button actions and hovers
@@ -104,6 +106,6 @@ public class BoardSlot {
         }
         btn.setStyle(Constants.DECK_STYLE);
         View.getChildren().add(btn);
-        View.setSpacing((1/Constants.ratio));
+        View.setSpacing(-15);
     }
 }

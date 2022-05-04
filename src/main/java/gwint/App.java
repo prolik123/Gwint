@@ -40,9 +40,9 @@ public class App extends Application {
 
             else if(rootName.equals("BaseGame"))
             {
-                root=new BorderPane();
+                root=new StackPane();
 
-                new GameEngine((BorderPane)root);
+                new GameEngine((StackPane)root);
             }
             stage.setFullScreen(true);
             stage.setResizable(false);

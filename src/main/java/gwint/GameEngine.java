@@ -8,11 +8,11 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.paint.*;
 //import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-
+import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.PerspectiveTransform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -26,7 +26,7 @@ public class GameEngine {
     /// class for all player's functions
     public static Player human;
 
-    public static BorderPane root;
+    public static StackPane root;
 
     public static volatile boolean ablePlayerMove = true;
     //public static double ratio;
@@ -36,24 +36,10 @@ public class GameEngine {
     public static VBox centerBox;
 
     /// Constructor 
-    GameEngine(BorderPane root) {
+    GameEngine(StackPane root) {
 
         GameEngine.root = root;
-        //GameEngine.ratio = ratio;
-
-        //Set background
-        /*String image = App.class.getResource("plansza.png").toExternalForm();
         
-        root.getStylesheets().add(Constants.linkToFontDownload);
-
-        root.setStyle(
-            "-fx-background-image: url('" + image + "'); " +
-            "-fx-background-position: right center;" + 
-            "-fx-background-repeat: no-repeat; " +
-            "-fx-background-size: contain; " +
-            "-fx-font-family: MedievalSharp; " +
-            "-fx-font-size: 20 "
-        );*/
         String image = App.class.getResource("sth.jpg").toExternalForm();
         root.setStyle(
             "-fx-background-image: url('" + image + "'); " +
@@ -64,7 +50,12 @@ public class GameEngine {
             "-fx-font-size: 20 "
         );
 
+        //ZMIEN BORDERPANE NA COS LEPSZEGO
         BorderPane centerPane=new BorderPane();
+
+        //TO ROBI ZEBY KARTY BYLY PRZESUNIETE TROCHE W GORE
+        //centerPane.setMaxHeight(Constants.height-Constants.height/7.0-84.0);
+
         centerBox=new VBox(10);
         centerBox.setMinWidth(Constants.width/1.5);
         centerBox.setMaxWidth(Constants.width/1.5);
@@ -75,7 +66,9 @@ public class GameEngine {
         human = new Player(Constants.positionOfHumanHearts,Constants.positionOfHumanPass,Constants.positionOfHumanBoards);
 
         centerPane.setCenter(centerBox);
-        BorderPane.setAlignment(centerBox, Pos.CENTER);
+        StackPane.setAlignment(centerPane, Pos.TOP_CENTER);
+        root.getChildren().add(centerPane);
+        //BorderPane.setAlignment(centerBox, Pos.CENTER);
 
         HBox bottomBox=new HBox();
         bottomBox=GameEngine.human.myCards.getNewBoardView(Constants.ratio);
@@ -86,12 +79,12 @@ public class GameEngine {
         bottomBox.setMaxHeight((Constants.height-84.0)/7.0);
         bottomBox.setAlignment(Pos.CENTER);
 
-        BorderPane.setAlignment(bottomBox, Pos.BOTTOM_CENTER);
-        centerPane.setBottom(bottomBox);
+        //BorderPane.setAlignment(bottomBox, Pos.BOTTOM_CENTER);
+        //centerPane.setBottom(bottomBox);
+        root.getChildren().add(bottomBox);
+        StackPane.setAlignment(bottomBox, Pos.BOTTOM_CENTER);
 
-        ((BorderPane)root).setCenter(centerPane);
-
-        System.out.println(Constants.width+" "+Constants.height);
+        //System.out.println(Constants.width+" "+Constants.height);
 
         PerspectiveTransform perspectiveTrasform = new PerspectiveTransform();
         perspectiveTrasform.setUlx(Constants.width/14.0); //gora lewy
@@ -111,22 +104,15 @@ public class GameEngine {
         rightBox.setMaxWidth(100);
         rightBox.setMinHeight(Constants.height);
         rightBox.setMaxHeight(Constants.height);
-        ((BorderPane)root).setRight(rightBox);
 
-        VBox leftBox=new VBox();
+        root.getChildren().addAll(rightBox);
+        StackPane.setAlignment(rightBox, Pos.CENTER_RIGHT);
+
+        /*VBox leftBox=new VBox();
         leftBox.setMinWidth(100);
         leftBox.setMaxWidth(100);
         leftBox.setMinHeight(Constants.height);
-        leftBox.setMaxHeight(Constants.height);
-        ((BorderPane)root).setLeft(leftBox);
-
-        //Initialize the Game Engine
-        //Add elements to grid
-        ///DeckView deckView=new DeckView(Constants.ratio);
-        ///root.add(deckView, Constants.positionOfDeck.getX(),Constants.positionOfDeck.getY());
-
-        //Add Cards hand
-        ///root.add(GameEngine.human.myCards.getNewBoardView(Constants.ratio),Constants.positionOfHumanHand.getX(),Constants.positionOfHumanHand.getY());
+        leftBox.setMaxHeight(Constants.height);*/
             
         /*Add more elements here*/
         root.setOnKeyPressed(e -> {
@@ -152,74 +138,80 @@ public class GameEngine {
 
     public static void startNewRound() {
         if(human.myBoardValue < opponent.myBoardValue) { 
-            if(!human.looseHeart()){
+            if(!human.loseHeart()){
                 endGame();
                 return;
             }
         }
         else if(human.myBoardValue > opponent.myBoardValue) {
-            if(!opponent.looseHeart()) {
+            if(!opponent.loseHeart()) {
                 endGame();
                 return;
             }
 
         }
         else {
-            boolean firstLoose = human.looseHeart();
-            boolean secLoose = opponent.looseHeart();
-            if(!firstLoose || !secLoose){
+            boolean firstlose = human.loseHeart();
+            boolean seclose = opponent.loseHeart();
+            if(!firstlose || !seclose){
                 endGame();
                 return;
             }
         }
         root.getChildren().remove(res);
         res = null;
-        human.preparePlayerForNextRound();
+        GameEngine.centerBox.getChildren().clear();
         opponent.preparePlayerForNextRound();
-
+        human.preparePlayerForNextRound();
     }
 
     public static void endGame() {
         root.getChildren().remove(res);
         res = null;
         if(human.hasOnHeart())  
-            res = new Result("You Won", 60, Color.RED);
+            res = new Result("Victory is ours!", 60, Color.BLUE);
         else if(opponent.hasOnHeart()) 
-            res = new Result("You Loose", 60, Color.BLUE);
+            res = new Result("Defeat is upon us", 60, Color.RED);
         else 
-            res = new Result("It's Draw", 60, Color.WHITE);
-        //Platform.runLater(()->{root.add(res, Constants.positionOfResult.getX(), Constants.positionOfResult.getY());});
+            res = new Result("It is a draw", 60, Color.WHITE);
+        StackPane.setAlignment(res, Pos.CENTER);
+        Platform.runLater(()->{root.getChildren().add(res);});
         Button back = new Button("Back to Main Menu");
         back.setOnAction(new EventHandler<ActionEvent>() {
-
             @Override
             public void handle(ActionEvent arg0) {
                 App.switchScene("MainMenu.fxml");
             }
             
         });
-        //Platform.runLater(()->{root.add(back, Constants.positionOfBackToMainMenu.getX(), Constants.positionOfBackToMainMenu.getY());});
+        res.getChildren().add(back);
+        //Platform.runLater(()->{root.getChildren().add(back);});
     }
 
     public static void PrintResult(){
         if(human.myBoardValue < opponent.myBoardValue)  
-            res = new Result("Defeat", 60, Color.RED);
+            res = new Result("You lost the round!", 60, Color.RED);
         else if(human.myBoardValue > opponent.myBoardValue) 
-            res = new Result("Victory", 60, Color.BLUE);
+            res = new Result("You won the round!", 60, Color.BLUE);
         else 
-            res = new Result("Draw", 60, Color.WHITE);
+            res = new Result("You drew the round!", 60, Color.WHITE);
         //root.add(res, Constants.positionOfResult.getX(), Constants.positionOfResult.getY());
+        StackPane.setAlignment(res, Pos.CENTER);
+        root.getChildren().add(res);
     }
 
-    public static class Result extends HBox {
+    public static class Result extends VBox {
     
         public Result(String Name,int size,Color Col) {
             Text res=new Text();
             res.setFill(Col);
             res.setText(Name);
             res.setFont(Font.font("MedievalSharp",size));
+            
+            setStyle("-fx-background-color: linear-gradient(to bottom, rgba(0,0,0,0) 20%,rgba(0,0,0,0.9) 40%,rgba(0,0,0,0.9) 60%,rgba(0,0,0,0)) 80%");
 
-    
+            setAlignment(Pos.CENTER);
+            setMaxHeight(Constants.height/2);
             getChildren().add(res);
         }
         

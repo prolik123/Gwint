@@ -6,6 +6,7 @@ import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -133,7 +134,7 @@ public class Player {
         myBoardValue += card.value;
         Platform.runLater(()->{myBoard[card.boardType].getCurentBoardView().getChildren().add(btn);});
         btnTrans.play();
-        Platform.runLater(()->{myBoard[card.boardType].getCurentBoardView().setSpacing(1/Constants.ratio);});
+        Platform.runLater(()->{myBoard[card.boardType].getCurentBoardView().setSpacing(-15);});
         updateValue();
     }
 
@@ -176,7 +177,7 @@ public class Player {
             }).start();
     }
 
-    boolean looseHeart(){
+    boolean loseHeart(){
         for(int k=0;k<myHearts.size();k++) {
             if(myHearts.get(k).on) {
                 GameEngine.root.getChildren().remove(myHearts.get(k).currentImage);
@@ -210,7 +211,7 @@ public class Player {
             btnTrans.setFromValue(1.0);
             btnTrans.setToValue(0.0);
             btnTrans.play();
-            //Not deleting the row may couse bugs later on
+            //Not deleting the row may cause bugs later on
             //Keep an eye for it
             //root.getChildren().remove(opponent.myBoard[2-i].currentView);
             myBoard[i].cardList.clear();
