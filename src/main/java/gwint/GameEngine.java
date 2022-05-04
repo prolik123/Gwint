@@ -115,9 +115,9 @@ public class GameEngine {
         root.getChildren().remove(res);
         res = null;
         if(human.hasOnHeart())  
-            res = new Result("You Won", 60, Color.RED);
+            res = new Result("You Won", 60, Color.BLUE);
         else if(opponent.hasOnHeart()) 
-            res = new Result("You Loose", 60, Color.BLUE);
+            res = new Result("You Loose", 60, Color.RED);
         else 
             res = new Result("It's Draw", 60, Color.WHITE);
         Platform.runLater(()->{root.add(res, Constants.positionOfResult.getX(), Constants.positionOfResult.getY());});

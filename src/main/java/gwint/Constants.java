@@ -46,7 +46,7 @@ public class Constants {
 
     public static final Point positionOfDeck = new Point(171,110);
 
-    public static final Point positionOfResult = new Point(171,80);
+    public static final Point positionOfResult = new Point(150,80);
 
     public static final Point positionOfBackToMainMenu = new Point(171, 95);
 
