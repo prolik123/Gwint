@@ -62,7 +62,7 @@ public class GameEngine {
             "-fx-background-repeat: no-repeat; " +
             "-fx-background-size: auto 100%; " +
             "-fx-font-family: MedievalSharp; " +
-            "-fx-font-size: 20 "
+            "-fx-font-size: 20; "
         );
 
         //Lets create the UI. Do note, that we create objects from the "furthest" to the "nearest".
@@ -269,7 +269,7 @@ public class GameEngine {
         back.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent arg0) {
-                App.switchScene("MainMenu.fxml");
+                App.switchScene("MainMenu");
             }
             
         });

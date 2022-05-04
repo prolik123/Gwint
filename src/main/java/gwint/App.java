@@ -16,6 +16,7 @@ import javafx.stage.Screen;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.layout.*;
 
+
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import java.io.File;
@@ -34,9 +35,9 @@ public class App extends Application {
     {
         try
         {
-            if(rootName.equals("MainMenu.fxml")) {
-                loader = new FXMLLoader(App.class.getResource(rootName));
-                root = (Parent) loader.load();
+            if(rootName.equals("MainMenu")) {
+                loader = new FXMLLoader(App.class.getResource("MainMenu.fxml"));
+                root = loader.load();
                 stage.setTitle("Main Menu");
             }
 
@@ -71,8 +72,10 @@ public class App extends Application {
 
         //We start in the menu
         try {
+
             loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
-            root = (Parent) loader.load();
+            root =  loader.load();
+
         }catch (IOException e)
         {
             e.printStackTrace();
