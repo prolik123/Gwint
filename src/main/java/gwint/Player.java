@@ -148,7 +148,7 @@ public class Player {
         myPass = true;
         Platform.runLater(()->{playerPass.setVisible(true);;});
 
-        if(this == GameEngine.human) {
+        if(this == GameEngine.human && GameEngine.ablePlayerMove) {
             GameEngine.opponent.ThreadMove(1000);
         }
         if(GameEngine.opponent.myPass && GameEngine.human.myPass) {
@@ -262,8 +262,6 @@ public class Player {
         playerPass.setMaxHeight((Constants.height-84.0)/7.0);
         playerPass.setVisible(false);
         playerPass.setAlignment(Pos.CENTER);
-
-        playerPass.setStyle("-fx-background-color: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.4) 80%, rgba(255,255,255,0) 100%)");
         
     }
 

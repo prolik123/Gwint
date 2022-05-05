@@ -130,8 +130,10 @@ public class GameEngine {
         //Here is the pass, which is the worst part of this whole app. This should be a class I know.
         //However, Java didn't want to cooperate and so, it is bruteforced here. What you gonna do?
         human.makePassView();
+        human.playerPass.setStyle(Constants.HUMAN_PASS_STYLE);
         StackPane.setAlignment(human.playerPass, Pos.BOTTOM_CENTER);
         opponent.makePassView();
+        opponent.playerPass.setStyle(Constants.OPONENT_PASS_STYLE);
         StackPane.setAlignment(opponent.playerPass, Pos.TOP_CENTER);
         root.getChildren().addAll(opponent.playerPass,human.playerPass);
 
