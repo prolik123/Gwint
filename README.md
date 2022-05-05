@@ -30,6 +30,6 @@ Ekipa tworząca w składzie:
 | CSS | 2 | 28 | 0 | 4 | 32 |
 | Python | 1 | 10 | 6 | 6 | 22 |
 
-W sumie : 37 plików i 1670 linii
+W sumie : 37 plików i 2018 linii
 
 (Wszystkie dane są przybliżone i aktualizowane raz na czas)
