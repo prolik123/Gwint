@@ -16,20 +16,20 @@ Ekipa tworząca w składzie:
 # Changelog
  ### 05.05.2022
   - [x] Podstawowe mechaniki gry
-  - [x] Podstawowa grafika (i prawie gotowa nowa i ulepszona) 
+  - [x] Ulepszona grafika
   - [x] Podstawowe dźwięki 
   - [x] Podstawowy przeciwnik
 
 # Statystyki
 | język | pliki | linie kodu | komentarze | puste linie | razem |
 | :--- | ---: | ---: | ---: | ---: | ---: |
-| Java | 32 | 1,168 | 70 | 218 | 1,456 |
+| Java | 28 | 1,278 | 95 | 219 | 1,592 |
 | JSON | 2 | 166 | 0 | 0 | 166 |
-| XML | 3 | 165 | 4 | 9 | 178 |
-| Markdown | 1 | 23 | 0 | 7 | 30 |
-| CSS | 2 | 16 | 1 | 5 | 22 |
+| XML | 3 | 159 | 2 | 9 | 170 |
+| Markdown | 1 | 29 | 0 | 7 | 36 |
+| CSS | 2 | 28 | 0 | 4 | 32 |
 | Python | 1 | 10 | 6 | 6 | 22 |
 
-W sumie : 41 plików i 1874 linii
+W sumie : 37 plików i 1670 linii
 
 (Wszystkie dane są przybliżone i aktualizowane raz na czas)
