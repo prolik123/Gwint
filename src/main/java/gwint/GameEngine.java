@@ -37,15 +37,7 @@ public class GameEngine {
     //Following objects are the side effect of my i̶n̶c̶o̶m̶p̶e̶t̶a̶n̶c̶e̶ love for simple solutions
     public static VBox centerBox;
 
-    public static HBox playerHeart;
-
-    public static HBox enemyHeart;
-
     public static VBox mainValues;
-
-    public static HBox playerPass;
-
-    public static HBox enemyPass;
 
 
     //Constructor 
@@ -93,19 +85,18 @@ public class GameEngine {
         //that we can use them while creating the players, and have the correct references without
         //having to worry about it later. It's quite smart if you think about it.
 
-        enemyHeart=new HBox(5);
-        playerHeart=new HBox(5);
         mainValues=new VBox(5);
 
         //The pass button is between the opponent and player so it is in correct spot in right-hand
         //side "menu" without having to add extra code and static objects
-        opponent = new Player(false);
+        opponent = new Player();
 
         Button passBtn=new Button();
         mainValues.getChildren().add(passBtn);
 
-        human = new Player(true);
-
+        human = new Player();
+        opponent.printNewBoards();
+        human.printNewBoards();
         centerPane.setCenter(centerBox);
         StackPane.setAlignment(centerPane, Pos.TOP_CENTER);
         root.getChildren().add(centerPane);
@@ -138,36 +129,13 @@ public class GameEngine {
 
         //Here is the pass, which is the worst part of this whole app. This should be a class I know.
         //However, Java didn't want to cooperate and so, it is bruteforced here. What you gonna do?
-        Text passText=new Text("Passed");
-        passText.setFont(Font.font("MedievalSharp",60));
-        passText.setFill(Color.WHITE);
-
-        playerPass=new HBox();
-        playerPass.getChildren().add(passText);
-        playerPass.setMinWidth(Constants.width);
-        playerPass.setMinHeight((Constants.height-84.0)/7.0);
-        playerPass.setMaxHeight((Constants.height-84.0)/7.0);
-        playerPass.setVisible(false);
-        playerPass.setAlignment(Pos.CENTER);
-
-        playerPass.setStyle("-fx-background-color: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.4) 80%, rgba(255,255,255,0) 100%)");
-        StackPane.setAlignment(playerPass, Pos.BOTTOM_CENTER);
-        
-        Text passText2=new Text("Passed");
-        passText2.setFont(Font.font("MedievalSharp",60));
-        passText2.setFill(Color.WHITE);
-        
-        enemyPass=new HBox();
-        enemyPass.getChildren().add(passText2);
-        enemyPass.setMinWidth(Constants.width);
-        enemyPass.setMinHeight((Constants.height-84.0)/7.0);
-        enemyPass.setMaxHeight((Constants.height-84.0)/7.0);
-        enemyPass.setVisible(false);
-        enemyPass.setAlignment(Pos.CENTER);
-
-        enemyPass.setStyle("-fx-background-color: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.4) 80%, rgba(255,255,255,0) 100%)");
-        StackPane.setAlignment(enemyPass, Pos.TOP_CENTER);
-        root.getChildren().addAll(playerPass,enemyPass);
+        human.makePassView();
+        human.playerPass.setStyle(Constants.HUMAN_PASS_STYLE);
+        StackPane.setAlignment(human.playerPass, Pos.BOTTOM_CENTER);
+        opponent.makePassView();
+        opponent.playerPass.setStyle(Constants.OPONENT_PASS_STYLE);
+        StackPane.setAlignment(opponent.playerPass, Pos.TOP_CENTER);
+        root.getChildren().addAll(opponent.playerPass,human.playerPass);
 
         //Wow, that was a trainwreck. Glad that is done.
         //rightBox contains everything that appears on the "menu" in the right. So button to pass,
@@ -179,10 +147,7 @@ public class GameEngine {
         rightBox.setMinHeight(Constants.height);
         rightBox.setMaxHeight(Constants.height);
 
-        enemyHeart.setAlignment(Pos.CENTER);
-        enemyHeart.setMinWidth(100);
-        enemyHeart.setMinHeight(50);
-        enemyHeart.setMaxHeight(50);
+        opponent.makeHeartView();
         
         mainValues.setMinWidth(100);
         mainValues.setMinHeight(Constants.height-100);
@@ -194,13 +159,9 @@ public class GameEngine {
         imView.setFitWidth(100);
         passBtn.setGraphic(imView);
         passBtn.setStyle(Constants.DECK_STYLE);
+        human.makeHeartView();
         
-        playerHeart.setAlignment(Pos.CENTER);
-        playerHeart.setMinWidth(100);
-        playerHeart.setMinHeight(50);
-        playerHeart.setMaxHeight(50);
-        
-        rightBox.getChildren().addAll(enemyHeart,mainValues,playerHeart);
+        rightBox.getChildren().addAll(opponent.playerHeart,mainValues,human.playerHeart);
 
         root.getChildren().add(rightBox);
         StackPane.setAlignment(rightBox, Pos.CENTER_RIGHT);
@@ -215,7 +176,7 @@ public class GameEngine {
     }
 
     /// Function which gets hand, stack and add new card to hand ( and View ) 
-    public static Boolean addCardToHand(BoardSlot Board,Stack<Card> Stack){
+    public static synchronized Boolean addCardToHand(BoardSlot Board,Stack<Card> Stack){
         if(Stack.empty()) return false;
         Card New = Stack.lastElement();
         Stack.pop();
@@ -247,11 +208,30 @@ public class GameEngine {
                 return;
             }
         }
-        root.getChildren().remove(res);
-        res = null;
+
         GameEngine.centerBox.getChildren().clear();
-        opponent.preparePlayerForNextRound();
-        human.preparePlayerForNextRound();
+        Platform.runLater(()->{
+            root.getChildren().remove(res);
+            res = null;
+            opponent.preparePlayerForNextRound();
+            human.preparePlayerForNextRound();
+            if(opponent.myPass && human.myPass)
+                startNewRoundThred();
+            else if(human.myPass)
+                opponent.ThreadMove(1000);
+        });
+    }
+
+    public static void startNewRoundThred() {
+        new Thread(()->{
+            try {
+                Platform.runLater(()->{GameEngine.PrintResult();});
+                Thread.sleep(2000);
+                Platform.runLater(()->{GameEngine.startNewRound();});
+            }
+            catch (Exception e) {
+
+            }}).start();
     }
 
     public static void endGame() {

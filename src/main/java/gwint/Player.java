@@ -38,11 +38,14 @@ public class Player {
 
     public Text playerValue;
 
-    Boolean isHuman;
+    public HBox playerPass;
+
+    public HBox playerHeart;
+    //Boolean isHuman;
 
     /// Basic Constructor for each field
-    Player(boolean isHuman) {
-        this.isHuman=isHuman;
+    Player() {
+        //this.isHuman=isHuman;
 
         setBasicCardsInfo();
 
@@ -54,8 +57,6 @@ public class Player {
         playerValue.setFont(Font.font("MedievalSharp",48));
         playerValue.setFill(Color.WHITE);
         GameEngine.mainValues.getChildren().add(playerValue);
-
-        printNewBoards();
     }
 
     /// Function which excess( more than the start number of cards ) cards adds on Stack 
@@ -81,16 +82,17 @@ public class Player {
 
     void setBasicBoardsInfo() {
         myCards.hand = true;
+        myCards.getNewBoardView();
         for(int k=0;k<Constants.numberOfBoards;k++)
             myBoard[k] = new BoardSlot();
     }
 
     void setBasicHeartsInfo() {
+        playerHeart=new HBox(5);
         myHearts = new ArrayList<>();
         for(int k=0;k<Constants.numberOfHearts;k++) {
             myHearts.add(new Heart());
-            if(isHuman) GameEngine.playerHeart.getChildren().add(myHearts.get(k).currentImage);
-            else GameEngine.enemyHeart.getChildren().add(myHearts.get(k).currentImage);
+            playerHeart.getChildren().add(myHearts.get(k).currentImage);
         }
     }
 
@@ -114,7 +116,17 @@ public class Player {
 
     /// Function which gets a card and add it to current player View
     void throwCard(Card card) {
-        Image current = new Image(App.class.getResource(Card.cardPathPrefix+card.imageLink).toExternalForm());
+        boolean cardThrowed = false;
+        for(PlayInterface effect:card.effectArray)
+            cardThrowed = cardThrowed || effect.playEffect(card, this);
+        if(!cardThrowed)
+            throwCardWithoutInterface(card);
+        if(myCards.cardList.isEmpty())
+            getPass();
+    }
+
+    void throwCardWithoutInterface(Card card) {
+        Image current = new Image(App.class.getResource(Constants.cardPathPrefix+card.imageLink).toExternalForm());
         ImageView ImView = new ImageView(current);
         Button btn = new Button();
         FadeTransition btnTrans=new FadeTransition(Duration.millis(500), btn);
@@ -134,22 +146,13 @@ public class Player {
     /// Function will pass...
     void getPass(){
         myPass = true;
-        if(isHuman) Platform.runLater(()->{GameEngine.playerPass.setVisible(true);;});
-        else Platform.runLater(()->{GameEngine.enemyPass.setVisible(true);;});
+        Platform.runLater(()->{playerPass.setVisible(true);;});
 
-        if(this == GameEngine.human) {
+        if(this == GameEngine.human && GameEngine.ablePlayerMove) {
             GameEngine.opponent.ThreadMove(1000);
         }
         if(GameEngine.opponent.myPass && GameEngine.human.myPass) {
-            new Thread(()->{
-                try {
-                    Platform.runLater(()->{GameEngine.PrintResult();});
-                    Thread.sleep(2000);
-                    Platform.runLater(()->{GameEngine.startNewRound();});
-                }
-                catch (Exception e) {
-
-                }}).start();
+            GameEngine.startNewRoundThred();
         }
     }
 
@@ -173,15 +176,10 @@ public class Player {
     boolean loseHeart(){
         for(int k=0;k<myHearts.size();k++) {
             if(myHearts.get(k).on) {
-                if(isHuman) {
-                    GameEngine.playerHeart.getChildren().remove(myHearts.get(k).currentImage);
-                    myHearts.get(k).getHeartOff();
-                    GameEngine.playerHeart.getChildren().add(myHearts.get(k).currentImage);
-                } else {
-                    GameEngine.enemyHeart.getChildren().remove(myHearts.get(k).currentImage);
-                    myHearts.get(k).getHeartOff();
-                    GameEngine.enemyHeart.getChildren().add(myHearts.get(k).currentImage);
-                }
+                playerHeart.getChildren().remove(myHearts.get(k).currentImage);
+                myHearts.get(k).getHeartOff();
+                playerHeart.getChildren().add(myHearts.get(k).currentImage);
+
 
                 if(k==myHearts.size()-1)
                     return false;
@@ -214,47 +212,64 @@ public class Player {
 
     void preparePlayerForNextRound() {
         clearBoard();
-        if(isHuman) GameEngine.playerPass.setVisible(false);
-        else GameEngine.enemyPass.setVisible(false);
 
         myBoardValue = 0;
         updateValue();
-        myPass = false;
+        if(!myCards.cardList.isEmpty()) {  
+            playerPass.setVisible(false);
+            //playerPass = null;
+            myPass = false;
+        }
     }
 
     void printNewBoards() {
         //My God, why have you forsaken me
         //I know it is a poor solution, but it works and doesn't really have
         //any negative impact on the app, soooooooo it stays for now
-        if(!isHuman) {
+        if(this != GameEngine.human) {
             for(int k=Constants.numberOfBoards-1;k>=0;k--) {
-                HBox secondBox=new HBox();
-                HBox.setMargin(secondBox, new Insets(12,12,12,12));
-    
-                secondBox=myBoard[k].getNewBoardView();
-                secondBox.setMinWidth(Constants.width/1.5);
-                secondBox.setMaxWidth(Constants.width/1.5);
-                secondBox.setMinHeight((Constants.height-84)/7.0);
-                secondBox.setMaxHeight((Constants.height-84)/7.0);
-                secondBox.setAlignment(Pos.CENTER);
-    
-                GameEngine.centerBox.getChildren().add(secondBox);
+                printBoxBoard(k);
             }
         } else {
             for(int k=0;k<Constants.numberOfBoards;k++) {
-                HBox secondBox=new HBox();
-                HBox.setMargin(secondBox, new Insets(12,12,12,12));
-    
-                secondBox=myBoard[k].getNewBoardView();
-                secondBox.setMinWidth(Constants.width/1.5);
-                secondBox.setMaxWidth(Constants.width/1.5);
-                secondBox.setMinHeight((Constants.height-84)/7.0);
-                secondBox.setMaxHeight((Constants.height-84)/7.0);
-                secondBox.setAlignment(Pos.CENTER);
-    
-                GameEngine.centerBox.getChildren().add(secondBox);
+                printBoxBoard(k);
             }
         }
+    }
+
+    void printBoxBoard(int k) {
+        HBox secondBox=new HBox();
+        HBox.setMargin(secondBox, new Insets(12,12,12,12));
+
+        secondBox=myBoard[k].getNewBoardView();
+        secondBox.setMinWidth(Constants.width/1.5);
+        secondBox.setMaxWidth(Constants.width/1.5);
+        secondBox.setMinHeight((Constants.height-84)/7.0);
+        secondBox.setMaxHeight((Constants.height-84)/7.0);
+        secondBox.setAlignment(Pos.CENTER);
+
+        GameEngine.centerBox.getChildren().add(secondBox);
+    }
+
+    public void makePassView() {
+        Text passText=new Text("Passed");
+        passText.setFont(Font.font("MedievalSharp",60));
+        passText.setFill(Color.WHITE);
+        playerPass=new HBox();
+        playerPass.getChildren().add(passText);
+        playerPass.setMinWidth(Constants.width);
+        playerPass.setMinHeight((Constants.height-84.0)/7.0);
+        playerPass.setMaxHeight((Constants.height-84.0)/7.0);
+        playerPass.setVisible(false);
+        playerPass.setAlignment(Pos.CENTER);
+        
+    }
+
+    void makeHeartView() {
+        playerHeart.setAlignment(Pos.CENTER);
+        playerHeart.setMinWidth(100);
+        playerHeart.setMinHeight(50);
+        playerHeart.setMaxHeight(50);
     }
 
     public static class Heart {
