@@ -3,6 +3,8 @@ package gwint;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.*;
+
+
 import org.json.*;
 
 public class JsonCardParser {
@@ -47,6 +49,21 @@ public class JsonCardParser {
 
             int quantity = getJsonIntegerAttribute(currentJsonCard, "quantity");
             
+            for(int It = 0;It<Constants.effectName.length;It++) {
+                try{
+                    String currInterface = getJsonStringAttribute(currentJsonCard, Constants.effectName[It]);
+                    if(currInterface.equals("true")) {
+                        Class<?>[] classArr = PlayInterfaces.class.getClasses();
+                        for(Class<?> classIt:classArr) {
+                            if(classIt.getName().equals(Constants.effectClassNames[It])) 
+                                currentCard.effectArray.add((PlayInterface)classIt.newInstance());
+                        }
+                    }
+                }
+                catch(Exception e) {
+                    /// Card does not has that interface
+                }
+            }
             /// add qunatity times k-th Card to List
             for(int j=0;j<quantity;j++)
                 result.add(currentCard);

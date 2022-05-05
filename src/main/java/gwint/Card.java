@@ -1,11 +1,12 @@
 package gwint;
+import java.util.*;
 
 public class Card {
     public String imageLink;
     public int value;
     public String name;
     public int boardType;
-    final static String cardPathPrefix = "Cards/";
+    public ArrayList<PlayInterface> effectArray = new ArrayList<>();
 
     //Debug mainly
     @Override

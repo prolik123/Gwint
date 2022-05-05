@@ -51,7 +51,7 @@ public class BoardSlot {
 
     /// for given Viev and Card it will add it to the View (some of features are only for hands BoardSlot)
     public void addCardToBoardView(Card card,BoardView View) {
-        Image current = new Image(App.class.getResource(Card.cardPathPrefix+card.imageLink).toExternalForm());
+        Image current = new Image(App.class.getResource(Constants.cardPathPrefix+card.imageLink).toExternalForm());
         ImageView ImView = new ImageView(current);
         Button btn = new Button();
         btn.setGraphic(ImView);
@@ -68,12 +68,8 @@ public class BoardSlot {
                 public void handle(ActionEvent event) {
                     if(!GameEngine.human.myPass && GameEngine.ablePlayerMove) {
                         View.getChildren().remove(btn);
-                        GameEngine.human.throwCard(card);
                         cardList.remove(card);
-
-                        if(cardList.isEmpty()) {
-                            GameEngine.human.getPass();
-                        }
+                        GameEngine.human.throwCard(card);
                         GameEngine.ablePlayerMove = false;            
                         GameEngine.opponent.ThreadMove(1000);
                     }

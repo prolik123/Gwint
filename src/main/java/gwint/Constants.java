@@ -15,8 +15,13 @@ public class Constants {
 
     public static final int numberOfBoards = 3;
 
+    public static final int numberOfDrawnCardBySpy = 2;
+
 
     /// PATHS
+
+    
+    public static final String cardPathPrefix = "Cards/";
 
     public static final String backgroundSoundPath = "sound/background.mp3";
 
@@ -36,8 +41,11 @@ public class Constants {
 
     public static final String DECK_STYLE="-fx-background-color: transparent;";
 
+    /// CARDS EFFECTS
 
+    public static final String[] effectName = {"isSpy"};
 
+    public static final String[] effectClassNames = {"gwint.PlayInterfaces$SpyClass"};
 
 
     Constants(double width, double height) {

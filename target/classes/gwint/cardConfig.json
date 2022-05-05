@@ -5,7 +5,8 @@
             "quantity" : "3",
             "link": "1.png",
             "value": "1",
-            "board": "0"
+            "board": "0",
+            "isSpy": "true"
         }
     },
     {
