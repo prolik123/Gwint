@@ -11,12 +11,10 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.Screen;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
 
 
 import javafx.scene.media.Media;
@@ -31,6 +29,8 @@ public class App extends Application {
     private static Parent root;
 
 
+    //This method changes scenes 
+    //menu->game and game->menu
     public static void switchScene(String rootName)
     {
         try
@@ -43,27 +43,9 @@ public class App extends Application {
 
             else if(rootName.equals("BaseGame"))
             {
-                //
-                //proponuje przenieść to do GameEngine
-                //
-                root = new GridPane();
-                //root.setGridLinesVisible(true);
+                root=new StackPane();
 
-                for(int i=0;i<200;i++) {
-                    ColumnConstraints column = new ColumnConstraints();
-                    column.setPercentWidth(0.5);
-                    ((GridPane) root).getColumnConstraints().addAll(column);
-
-                    RowConstraints row = new RowConstraints();
-                    row.setPercentHeight(0.5);
-                    ((GridPane) root).getRowConstraints().addAll(row);
-                }
-                new GameEngine((GridPane) root);
-
-                /*Add more elements here*/
-
-                //Stage settings
-
+                new GameEngine((StackPane)root);
             }
             stage.setFullScreen(true);
             stage.setResizable(false);
@@ -81,14 +63,14 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         App.stage = stage;
 
-        //Get screen dimentions and set ratio
+        //This here gets the screen resolution and saves it into Constants
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         double height=screenBounds.getHeight();
         double width=screenBounds.getWidth();
-        double ratio=Math.sqrt((width*height))/2300; //Const to scale cards etc. Lowered it btw
 
+        new Constants(width,height);
 
-        new Constants(ratio);
+        //We start in the menu
         try {
 
             loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
@@ -107,6 +89,9 @@ public class App extends Application {
         stage.show();
     }
 
+    //Geralt: bywaj
+    //Talar: ja ... jestem a nie bywam
+    //In other words, closes the app
     public static void exit(){
         Platform.exit();
     }

@@ -28,8 +28,8 @@ public class BoardSlot {
     }
 
     /// Create and return new BoardView for current BoardSlot, (ratio for images scalling )
-    public BoardView getNewBoardView(double ratio) {
-        currentView = new BoardView(ratio);
+    public BoardView getNewBoardView() {
+        currentView = new BoardView();
         return currentView;
     }
 
@@ -42,8 +42,7 @@ public class BoardSlot {
     public class BoardView extends HBox {
 
         /// Constructor (each card in cardList is added to View)
-        public BoardView(double ratio) {
-            Constants.ratio = ratio;
+        public BoardView() {
             for(Card card : cardList) {
                 addCardToBoardView(card, this);
             }
@@ -56,8 +55,10 @@ public class BoardSlot {
         ImageView ImView = new ImageView(current);
         Button btn = new Button();
         btn.setGraphic(ImView);
-        ImView.setFitHeight(200*Constants.ratio);
-        ImView.setFitWidth(150*Constants.ratio);
+        ImView.setFitHeight((Constants.height-84.0)/7.0);
+        ImView.setFitWidth(((Constants.height-84.0)/7.0/200.0)*150.0);
+        ImView.maxHeight((Constants.height-84.0)/7.0);
+        ImView.maxWidth(((Constants.height-84.0)/7.0/200.0)*150.0);
 
         /// if its hand give the Button actions and hovers
         if(hand){
@@ -103,6 +104,6 @@ public class BoardSlot {
         }
         btn.setStyle(Constants.DECK_STYLE);
         View.getChildren().add(btn);
-        View.setSpacing((1/Constants.ratio));
+        View.setSpacing(-15);
     }
 }

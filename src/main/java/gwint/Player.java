@@ -4,10 +4,14 @@ import java.util.*;
 
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -32,23 +36,13 @@ public class Player {
     
     public List<Heart> myHearts;
 
-    public Point positionOfHearts;
-
-    public Pass playerPass;
-
     public Text playerValue;
 
-    public Point positionOfPass;
-
-    public Point positionOfBoards;
-
+    Boolean isHuman;
 
     /// Basic Constructor for each field
-    Player(Point positionOfHearts, Point positionOfPass,Point positionOfBoards) {
-
-        this.positionOfHearts = positionOfHearts;
-        this.positionOfPass = positionOfPass;
-        this.positionOfBoards = positionOfBoards;
+    Player(boolean isHuman) {
+        this.isHuman=isHuman;
 
         setBasicCardsInfo();
 
@@ -57,7 +51,9 @@ public class Player {
         setBasicHeartsInfo();
 
         playerValue = new Text("0");
+        playerValue.setFont(Font.font("MedievalSharp",48));
         playerValue.setFill(Color.WHITE);
+        GameEngine.mainValues.getChildren().add(playerValue);
 
         printNewBoards();
     }
@@ -93,7 +89,8 @@ public class Player {
         myHearts = new ArrayList<>();
         for(int k=0;k<Constants.numberOfHearts;k++) {
             myHearts.add(new Heart());
-            GameEngine.root.add(myHearts.get(k).currentImage, positionOfHearts.getX()+positionOfHearts.getModyfierX()*k, positionOfHearts.getY());
+            if(isHuman) GameEngine.playerHeart.getChildren().add(myHearts.get(k).currentImage);
+            else GameEngine.enemyHeart.getChildren().add(myHearts.get(k).currentImage);
         }
     }
 
@@ -124,27 +121,35 @@ public class Player {
         btnTrans.setFromValue(0.0);
         btnTrans.setToValue(1.0);
         btn.setGraphic(ImView);
-        ImView.setFitHeight(200*Constants.ratio);
-        ImView.setFitWidth(150*Constants.ratio);
+        ImView.setFitHeight((Constants.height-84.0)/7.0);
+        ImView.setFitWidth(((Constants.height-84.0)/7.0/200.0)*150.0);
         btn.setStyle(Constants.DECK_STYLE);
         myBoardValue += card.value;
         Platform.runLater(()->{myBoard[card.boardType].getCurentBoardView().getChildren().add(btn);});
         btnTrans.play();
-        Platform.runLater(()->{myBoard[card.boardType].getCurentBoardView().setSpacing(1/Constants.ratio);});
+        Platform.runLater(()->{myBoard[card.boardType].getCurentBoardView().setSpacing(-15);});
         updateValue();
     }
 
     /// Function will pass...
     void getPass(){
         myPass = true;
-        playerPass = new Pass(Constants.ratio);
-        Platform.runLater(()->{GameEngine.root.add(playerPass,positionOfPass.getX(),positionOfPass.getY());});
+        if(isHuman) Platform.runLater(()->{GameEngine.playerPass.setVisible(true);;});
+        else Platform.runLater(()->{GameEngine.enemyPass.setVisible(true);;});
 
         if(this == GameEngine.human) {
             GameEngine.opponent.ThreadMove(1000);
         }
         if(GameEngine.opponent.myPass && GameEngine.human.myPass) {
-            GameEngine.startNewRoundThred();
+            new Thread(()->{
+                try {
+                    Platform.runLater(()->{GameEngine.PrintResult();});
+                    Thread.sleep(2000);
+                    Platform.runLater(()->{GameEngine.startNewRound();});
+                }
+                catch (Exception e) {
+
+                }}).start();
         }
     }
 
@@ -165,16 +170,19 @@ public class Player {
             }).start();
     }
 
-    boolean looseHeart(){
+    boolean loseHeart(){
         for(int k=0;k<myHearts.size();k++) {
             if(myHearts.get(k).on) {
-                GameEngine.root.getChildren().remove(myHearts.get(k).currentImage);
-                myHearts.get(k).getHeartOff();
-                GameEngine.root.add(
-                    myHearts.get(k).currentImage,
-                        positionOfHearts.getX()+positionOfHearts.getModyfierX()*k,
-                            positionOfHearts.getY()+ positionOfHearts.getModyfierY()*k
-                );
+                if(isHuman) {
+                    GameEngine.playerHeart.getChildren().remove(myHearts.get(k).currentImage);
+                    myHearts.get(k).getHeartOff();
+                    GameEngine.playerHeart.getChildren().add(myHearts.get(k).currentImage);
+                } else {
+                    GameEngine.enemyHeart.getChildren().remove(myHearts.get(k).currentImage);
+                    myHearts.get(k).getHeartOff();
+                    GameEngine.enemyHeart.getChildren().add(myHearts.get(k).currentImage);
+                }
+
                 if(k==myHearts.size()-1)
                     return false;
                 break;
@@ -199,9 +207,6 @@ public class Player {
             btnTrans.setFromValue(1.0);
             btnTrans.setToValue(0.0);
             btnTrans.play();
-            //Not deleting the row may couse bugs later on
-            //Keep an eye for it
-            //root.getChildren().remove(opponent.myBoard[2-i].currentView);
             myBoard[i].cardList.clear();
         }
         printNewBoards();
@@ -209,22 +214,46 @@ public class Player {
 
     void preparePlayerForNextRound() {
         clearBoard();
+        if(isHuman) GameEngine.playerPass.setVisible(false);
+        else GameEngine.enemyPass.setVisible(false);
+
         myBoardValue = 0;
         updateValue();
-        if(!myCards.cardList.isEmpty()) {
-            GameEngine.root.getChildren().remove(playerPass);
-            playerPass = null;
-            myPass = false;
-        }
+        myPass = false;
     }
 
     void printNewBoards() {
-        for(int k=0;k<Constants.numberOfBoards;k++) {
-            GameEngine.root.add(
-                myBoard[k].getNewBoardView(Constants.ratio),
-                    positionOfBoards.getX()+k*positionOfBoards.getModyfierX(),
-                            positionOfBoards.getY()+positionOfBoards.getModyfierY()*k
-                        );
+        //My God, why have you forsaken me
+        //I know it is a poor solution, but it works and doesn't really have
+        //any negative impact on the app, soooooooo it stays for now
+        if(!isHuman) {
+            for(int k=Constants.numberOfBoards-1;k>=0;k--) {
+                HBox secondBox=new HBox();
+                HBox.setMargin(secondBox, new Insets(12,12,12,12));
+    
+                secondBox=myBoard[k].getNewBoardView();
+                secondBox.setMinWidth(Constants.width/1.5);
+                secondBox.setMaxWidth(Constants.width/1.5);
+                secondBox.setMinHeight((Constants.height-84)/7.0);
+                secondBox.setMaxHeight((Constants.height-84)/7.0);
+                secondBox.setAlignment(Pos.CENTER);
+    
+                GameEngine.centerBox.getChildren().add(secondBox);
+            }
+        } else {
+            for(int k=0;k<Constants.numberOfBoards;k++) {
+                HBox secondBox=new HBox();
+                HBox.setMargin(secondBox, new Insets(12,12,12,12));
+    
+                secondBox=myBoard[k].getNewBoardView();
+                secondBox.setMinWidth(Constants.width/1.5);
+                secondBox.setMaxWidth(Constants.width/1.5);
+                secondBox.setMinHeight((Constants.height-84)/7.0);
+                secondBox.setMaxHeight((Constants.height-84)/7.0);
+                secondBox.setAlignment(Pos.CENTER);
+    
+                GameEngine.centerBox.getChildren().add(secondBox);
+            }
         }
     }
 
