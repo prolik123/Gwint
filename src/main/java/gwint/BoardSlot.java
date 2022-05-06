@@ -6,8 +6,6 @@ import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
@@ -51,14 +49,7 @@ public class BoardSlot {
 
     /// for given Viev and Card it will add it to the View (some of features are only for hands BoardSlot)
     public void addCardToBoardView(Card card,BoardView View) {
-        Image current = new Image(App.class.getResource(Constants.cardPathPrefix+card.imageLink).toExternalForm());
-        ImageView ImView = new ImageView(current);
-        Button btn = new Button();
-        btn.setGraphic(ImView);
-        ImView.setFitHeight((Constants.height-84.0)/7.0);
-        ImView.setFitWidth(((Constants.height-84.0)/7.0/200.0)*150.0);
-        ImView.maxHeight((Constants.height-84.0)/7.0);
-        ImView.maxWidth(((Constants.height-84.0)/7.0/200.0)*150.0);
+        Button btn = card.genCardView();
 
         /// if its hand give the Button actions and hovers
         if(hand){
