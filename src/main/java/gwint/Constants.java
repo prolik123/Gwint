@@ -25,7 +25,7 @@ public class Constants {
 
     public static final String cardPartsPathPrefix = "cardParts/";
 
-    public static final String backgroundSoundPath = "sound/background.mp3";
+    public static final String backgroundSoundPath = "src/main/resources/gwint/sound/background.mp3";
 
     public static final String pathToOnHeart = "lifeOn.png";
 

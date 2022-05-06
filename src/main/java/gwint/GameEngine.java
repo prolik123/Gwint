@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.Font;
@@ -39,11 +40,13 @@ public class GameEngine {
 
     public static VBox mainValues;
 
+    public static Text passText;
+
 
     //Constructor 
     //Let's get rollin' 🏎
     GameEngine(StackPane root) {
-        this.root = root;
+        GameEngine.root = root;
 
         //This here sets up the background, font and the general settings for the scene
         
@@ -56,6 +59,15 @@ public class GameEngine {
             "-fx-font-family: MedievalSharp; " +
             "-fx-font-size: 20; "
         );
+
+        //This thing enables you to press shift to pass
+
+        root.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                if(!GameEngine.human.myPass)
+                    GameEngine.human.getPass();
+            }
+        });
 
         //Lets create the UI. Do note, that we create objects from the "furthest" to the "nearest".
 
@@ -157,22 +169,29 @@ public class GameEngine {
         ImageView imView=new ImageView(new Image(App.class.getResource("coin.png").toExternalForm()));
         imView.setFitHeight(100);
         imView.setFitWidth(100);
-        passBtn.setGraphic(imView);
+
+        passText=new Text("PASS");
+        passText.setFont((Font.font("MedievalSharp",22)));
+        passText.setFill(Color.WHITE);
+
+        StackPane passBtnGraphic=new StackPane(imView,passText);
+
+        passBtn.setGraphic(passBtnGraphic);
         passBtn.setStyle(Constants.DECK_STYLE);
+
+        passBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent arg0) {
+                GameEngine.human.getPass();
+            }
+        });
+
         human.makeHeartView();
         
         rightBox.getChildren().addAll(opponent.playerHeart,mainValues,human.playerHeart);
 
         root.getChildren().add(rightBox);
         StackPane.setAlignment(rightBox, Pos.CENTER_RIGHT);
-            
-        //This thing enables you to press shift to pass
-        root.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.SHIFT) {
-                if(!GameEngine.human.myPass)
-                    GameEngine.human.getPass();
-            }
-        });
     }
 
     /// Function which gets hand, stack and add new card to hand ( and View ) 
@@ -209,6 +228,8 @@ public class GameEngine {
             }
         }
 
+        passText.setText("PASS");
+        
         GameEngine.centerBox.getChildren().clear();
         Platform.runLater(()->{
             root.getChildren().remove(res);

@@ -41,11 +41,9 @@ public class Player {
     public HBox playerPass;
 
     public HBox playerHeart;
-    //Boolean isHuman;
 
     /// Basic Constructor for each field
     Player() {
-        //this.isHuman=isHuman;
 
         setBasicCardsInfo();
 
@@ -136,6 +134,7 @@ public class Player {
     /// Function will pass...
     void getPass(){
         myPass = true;
+        if(this.equals(GameEngine.human)) GameEngine.passText.setText("PASSED");
         Platform.runLater(()->{playerPass.setVisible(true);;});
 
         if(this == GameEngine.human && GameEngine.ablePlayerMove) {

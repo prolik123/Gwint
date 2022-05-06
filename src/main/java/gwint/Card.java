@@ -14,6 +14,9 @@ public class Card {
     public int value;
     public String name;
     public int boardType;
+
+    //He is shouting some java nonsense here, so I muted him
+    @SuppressWarnings("all")
     public ArrayList<PlayInterface> effectArray = new ArrayList<>();
 
     //Debug mainly
@@ -35,6 +38,9 @@ public class Card {
         Image shieldImage = new Image(App.class.getResource("cardParts/shield.png").toExternalForm());
         ImageView shieldView = new ImageView(shieldImage);
 
+        Image lineImage = new Image(App.class.getResource("cardParts/"+String.valueOf(boardType)+".png").toExternalForm());
+        ImageView lineView = new ImageView(lineImage);
+
         Text cardVal=new Text(String.valueOf(value));
         cardVal.setFont((Font.font("MedievalSharp",16)));
 
@@ -42,13 +48,15 @@ public class Card {
 
         VBox icons=new VBox(5);
         icons.setMaxWidth(shieldImage.getWidth());
-        icons.getChildren().add(shieldVal);
+        icons.getChildren().addAll(shieldVal,lineView);
 
-        //TODO: ZMIEN TO JAK JUZ TO WRZUCICIE DO JSONA
-        if(name.equals("1")) {
-            Image eyeImage = new Image(App.class.getResource("cardParts/eye.png").toExternalForm());
-            ImageView eyeView = new ImageView(eyeImage);
-            icons.getChildren().add(eyeView);
+        getCardClass();
+
+        String cardClass=getCardClass();
+        if(cardClass!=null) {
+            Image classImage = new Image(App.class.getResource("cardParts/"+cardClass+".png").toExternalForm());
+            ImageView classView = new ImageView(classImage);
+            icons.getChildren().add(classView);
         }
 
         double newWidth=((Constants.height-84.0)/7.0/200.0)*150.0;
@@ -74,5 +82,10 @@ public class Card {
         btnTrans.play();
 
         return btn;
+    }
+
+    public String getCardClass() {
+        if(effectArray.size()==0) return null;
+        return effectArray.get(0).getClass().getSimpleName().toString();
     }
 }
