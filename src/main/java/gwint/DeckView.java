@@ -14,6 +14,7 @@ public class DeckView {
     Text cnt;
     Button btn;
 
+    //Constructor sets us the values that will be important later
     public DeckView() {
         width=((Constants.height-84.0)/7.0/200.0)*150.0;
         height=(Constants.height-84.0)/7.0;
@@ -23,6 +24,7 @@ public class DeckView {
         cnt.setFill(Color.WHITE);
     }
     
+    //Creates the deck object
     public Button genDeckView() {
         btn=new Button();
         setStyle("back.png");
@@ -31,11 +33,13 @@ public class DeckView {
         return btn;
     }
 
+    //Changes the number of available cards
     public void changeDeckVal(int newVal) {
         if(newVal>0) cnt.setText(String.valueOf(newVal));
         else btn.setVisible(false);
     }
 
+    //Creates the dead (cards) object
     public Button genDeadView() {
         btn=new Button();
         setStyle("dead.png");
@@ -45,11 +49,13 @@ public class DeckView {
         return btn;
     }
 
+    //Changes the number of dead cards
     public void changeDeadVal(int newVal) {
         if(Integer.parseInt(cnt.getText())==0 && newVal!=0) btn.setVisible(true);
         cnt.setText(String.valueOf(Integer.parseInt(cnt.getText())+newVal));
     }
 
+    //Sets the style of the button
     void setStyle(String url) {
         ImageView imView=new ImageView(new Image(App.class.getResource(url).toExternalForm()));
         imView.setFitHeight(height);
