@@ -15,6 +15,7 @@ import javafx.scene.text.Text;
 import javafx.scene.effect.PerspectiveTransform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
 
@@ -41,6 +42,10 @@ public class GameEngine {
     public static VBox mainValues;
 
     public static Text passText;
+
+    public static DeckView deckView;
+
+    public static DeckView deadView;
 
 
     //Constructor 
@@ -75,7 +80,7 @@ public class GameEngine {
         //For now it does it's job, but is it the best option?
         //Center Pane is the most important object here, as it contains the cards on the table
         //and the players hand
-        BorderPane centerPane=new BorderPane();
+        StackPane centerPane=new StackPane();
 
         //This here changes layout so that the cards don't overlap
         //centerPane.setMaxHeight(Constants.height-Constants.height/7.0-84.0);
@@ -109,9 +114,23 @@ public class GameEngine {
         human = new Player();
         opponent.printNewBoards();
         human.printNewBoards();
-        centerPane.setCenter(centerBox);
-        StackPane.setAlignment(centerPane, Pos.TOP_CENTER);
+        centerPane.getChildren().add(centerBox);
+        //StackPane.setAlignment(centerBox, Pos.TOP_CENTER);
+        centerPane.setMinWidth(Constants.width);
+        centerPane.setMinHeight(Constants.height);
         root.getChildren().add(centerPane);
+
+        deckView=new DeckView();
+        Button deck=deckView.genDeckView();
+        centerPane.getChildren().add(deck);
+        StackPane.setAlignment(deck, Pos.BOTTOM_RIGHT);
+        StackPane.setMargin(deck, new Insets(0,Constants.width/10.0,0,0));
+
+        deadView=new DeckView();
+        Button dead=deadView.genDeadView();
+        centerPane.getChildren().add(dead);
+        StackPane.setAlignment(dead, Pos.BOTTOM_RIGHT);
+        StackPane.setMargin(dead, new Insets(0,Constants.width/10.0+5.0+deckView.width,0,0));
 
         //Here we create the bottomBox, which stores the cards that player has on hand
         HBox bottomBox=new HBox();
@@ -130,14 +149,14 @@ public class GameEngine {
         PerspectiveTransform perspectiveTrasform = new PerspectiveTransform();
         perspectiveTrasform.setUlx(Constants.width/14.0);                       //upper left x
         perspectiveTrasform.setUly(0.0);                                        //upper left y
-        perspectiveTrasform.setUrx(Constants.width/1.5-Constants.width/14.0);   //upper right x
+        perspectiveTrasform.setUrx(Constants.width-Constants.width/14.0);       //upper right x
         perspectiveTrasform.setUry(0.0);                                        //upper right y
-        perspectiveTrasform.setLrx(Constants.width/1.5);                        //lower left x
-        perspectiveTrasform.setLry(Constants.height-(Constants.height/7.0)-24); //lower left y
-        perspectiveTrasform.setLlx(0.0);                                        //lower right x
-        perspectiveTrasform.setLly(Constants.height-(Constants.height/7.0)-24); //lower right y
+        perspectiveTrasform.setLrx(Constants.width);                            //lower right x
+        perspectiveTrasform.setLry(Constants.height);                           //lower right y
+        perspectiveTrasform.setLlx(0.0);                                        //lower left x
+        perspectiveTrasform.setLly(Constants.height);                           //lower left y
 
-        centerBox.setEffect(perspectiveTrasform);
+        centerPane.setEffect(perspectiveTrasform);
 
         //Here is the pass, which is the worst part of this whole app. This should be a class I know.
         //However, Java didn't want to cooperate and so, it is bruteforced here. What you gonna do?
@@ -201,6 +220,7 @@ public class GameEngine {
         Stack.pop();
         Board.cardList.add(New);
         Board.addCardToBoardView(New, Board.currentView);
+        deckView.changeDeckVal(Stack.size());
         if(Stack.empty()) return false;
         return true;
     }
@@ -230,6 +250,12 @@ public class GameEngine {
 
         passText.setText("PASS");
         
+        int deadCards=0;
+        for(int i=0;i<Constants.numberOfBoards;i++) {
+            deadCards+=human.myBoard[i].getCurentBoardView().getChildren().size();
+        }
+        deadView.changeDeadVal(deadCards);
+
         GameEngine.centerBox.getChildren().clear();
         Platform.runLater(()->{
             root.getChildren().remove(res);

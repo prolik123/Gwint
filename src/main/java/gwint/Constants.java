@@ -17,6 +17,7 @@ public class Constants {
 
     public static final int numberOfDrawnCardBySpy = 2;
 
+    public static final int  numberOfAllCards = 12;
 
     /// PATHS
 
