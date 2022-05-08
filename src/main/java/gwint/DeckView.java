@@ -1,37 +1,71 @@
-/*
- * Creates a deck of cards to placed on table
- */
-
 package gwint;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
 import javafx.scene.image.*;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.*;
 
+public class DeckView {
+    public double width;
+    public double height;
+    Text cnt;
+    Button btn;
 
-public class DeckView extends HBox {
+    //Constructor sets us the values that will be important later
+    public DeckView() {
+        width=((Constants.height-84.0)/7.0/200.0)*150.0;
+        height=(Constants.height-84.0)/7.0;
+
+        cnt=new Text();
+        cnt.setFont((Font.font("MedievalSharp",32)));
+        cnt.setFill(Color.WHITE);
+    }
     
-    public DeckView(double ratio) {
-        //For now it's a buttons
-        Button deckEntity=new Button();
-        ImageView imView=new ImageView(new Image(App.class.getResource("back.png").toExternalForm()));
-        imView.setFitHeight(200*ratio);
-        imView.setFitWidth(150*ratio);
-        deckEntity.setGraphic(imView);
-        deckEntity.setStyle(Constants.DECK_STYLE);
-        deckEntity.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(!GameEngine.addCardToHand(GameEngine.human.myCards, GameEngine.human.myCardStack)) {
-                    deckEntity.setVisible(false);
-                }
-            }
-        });
+    //Creates the deck object
+    public Button genDeckView() {
+        btn=new Button();
+        setStyle("back.png");
+        cnt.setText(String.valueOf(Constants.numberOfAllCards-Constants.defultNumberOfCards));
 
+        return btn;
+    }
 
-        //Add it to layout
-        getChildren().add(deckEntity);
+    //Changes the number of available cards
+    public void changeDeckVal(int newVal) {
+        if(newVal>0) cnt.setText(String.valueOf(newVal));
+        else btn.setVisible(false);
+    }
+
+    //Creates the dead (cards) object
+    public Button genDeadView() {
+        btn=new Button();
+        setStyle("dead.png");
+        btn.setVisible(false);
+        cnt.setText(String.valueOf(0));
+
+        return btn;
+    }
+
+    //Changes the number of dead cards
+    public void changeDeadVal(int newVal) {
+        if(Integer.parseInt(cnt.getText())==0 && newVal!=0) btn.setVisible(true);
+        cnt.setText(String.valueOf(Integer.parseInt(cnt.getText())+newVal));
+    }
+
+    //Sets the style of the button
+    void setStyle(String url) {
+        ImageView imView=new ImageView(new Image(App.class.getResource(url).toExternalForm()));
+        imView.setFitHeight(height);
+        imView.setFitWidth(width);
+
+        StackPane cardView=new StackPane(imView,cnt);
+        StackPane.setAlignment(cnt, Pos.TOP_CENTER);
+        StackPane.setMargin(cnt, new Insets(5));
+
+        btn.setGraphic(cardView);
+        btn.setStyle(Constants.DECK_STYLE);
     }
 }   

@@ -17,13 +17,16 @@ public class Constants {
 
     public static final int numberOfDrawnCardBySpy = 2;
 
+    public static final int  numberOfAllCards = 12;
 
     /// PATHS
 
     
     public static final String cardPathPrefix = "Cards/";
 
-    public static final String backgroundSoundPath = "sound/background.mp3";
+    public static final String cardPartsPathPrefix = "cardParts/";
+
+    public static final String backgroundSoundPath = "src/main/resources/gwint/sound/background.mp3";
 
     public static final String pathToOnHeart = "lifeOn.png";
 

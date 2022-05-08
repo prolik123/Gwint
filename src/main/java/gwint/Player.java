@@ -41,11 +41,9 @@ public class Player {
     public HBox playerPass;
 
     public HBox playerHeart;
-    //Boolean isHuman;
 
     /// Basic Constructor for each field
     Player() {
-        //this.isHuman=isHuman;
 
         setBasicCardsInfo();
 
@@ -126,19 +124,9 @@ public class Player {
     }
 
     void throwCardWithoutInterface(Card card) {
-        Image current = new Image(App.class.getResource(Constants.cardPathPrefix+card.imageLink).toExternalForm());
-        ImageView ImView = new ImageView(current);
-        Button btn = new Button();
-        FadeTransition btnTrans=new FadeTransition(Duration.millis(500), btn);
-        btnTrans.setFromValue(0.0);
-        btnTrans.setToValue(1.0);
-        btn.setGraphic(ImView);
-        ImView.setFitHeight((Constants.height-84.0)/7.0);
-        ImView.setFitWidth(((Constants.height-84.0)/7.0/200.0)*150.0);
-        btn.setStyle(Constants.DECK_STYLE);
+        Button btn=card.genCardView();
         myBoardValue += card.value;
         Platform.runLater(()->{myBoard[card.boardType].getCurentBoardView().getChildren().add(btn);});
-        btnTrans.play();
         Platform.runLater(()->{myBoard[card.boardType].getCurentBoardView().setSpacing(-15);});
         updateValue();
     }
@@ -146,6 +134,7 @@ public class Player {
     /// Function will pass...
     void getPass(){
         myPass = true;
+        if(this.equals(GameEngine.human)) GameEngine.passText.setText("PASSED");
         Platform.runLater(()->{playerPass.setVisible(true);;});
 
         if(this == GameEngine.human && GameEngine.ablePlayerMove) {
