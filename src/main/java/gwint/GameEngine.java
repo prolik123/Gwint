@@ -217,6 +217,10 @@ public class GameEngine {
 
         root.getChildren().add(rightBox);
         StackPane.setAlignment(rightBox, Pos.CENTER_RIGHT);
+
+        Selector selector=new Selector(human.myCards.cardList);
+        root.getChildren().addAll(selector);
+        StackPane.setAlignment(selector, Pos.CENTER);
     }
 
     /// Function which gets hand, stack and add new card to hand ( and View ) 

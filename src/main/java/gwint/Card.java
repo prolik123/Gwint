@@ -48,8 +48,6 @@ public class Card {
         icons.setMaxWidth(shieldImage.getWidth());
         icons.getChildren().addAll(shieldVal,lineView);
 
-        getCardClass();
-
         String cardClass=getCardClass();
         if(cardClass!=null) {
             Image classImage = new Image(App.class.getResource("cardParts/"+cardClass+".png").toExternalForm());
