@@ -24,7 +24,9 @@
             "quantity" : "1",
             "link": "3.png",
             "value": "3",
-            "board": "0"
+            "board": "0",
+            "isMedic": "true"
+
         }
     },
     {

@@ -59,8 +59,7 @@ public class BoardSlot {
                         View.getChildren().remove(btn);
                         cardList.remove(card);
                         GameEngine.human.throwCard(card);
-                        GameEngine.ablePlayerMove = false;            
-                        GameEngine.opponent.ThreadMove(1000);
+                        GameEngine.ablePlayerMove = false;
                     }
                 }
             });

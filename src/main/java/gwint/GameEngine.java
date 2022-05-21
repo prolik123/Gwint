@@ -47,6 +47,10 @@ public class GameEngine {
 
     public static DeckView deadView;
 
+    public static volatile boolean ableOponentMove = true;
+
+    public static boolean[] BoardWeather;
+
 
     //Constructor 
     //Let's get rollin' 🏎
@@ -131,16 +135,7 @@ public class GameEngine {
         StackPane.setMargin(dead, new Insets(0,Constants.width/10.0+5.0+deckView.width,0,0));
 
         //Here we create the bottomBox, which stores the cards that player has on hand
-        HBox bottomBox=new HBox();
-        bottomBox=GameEngine.human.myCards.getNewBoardView();
-        bottomBox.setMinWidth(Constants.width/1.5);
-        bottomBox.setMaxWidth(Constants.width/1.5);
-        bottomBox.setMinHeight((Constants.height-84.0)/7.0);
-        bottomBox.setMaxHeight((Constants.height-84.0)/7.0);
-        bottomBox.setAlignment(Pos.CENTER);
-
-        root.getChildren().add(bottomBox);
-        StackPane.setAlignment(bottomBox, Pos.BOTTOM_CENTER);
+        setPlayerHand(GameEngine.human);
 
         //This abomination here is the transformation that makes the playing field feel 3D
         //while being in 2D
@@ -218,20 +213,31 @@ public class GameEngine {
         root.getChildren().add(rightBox);
         StackPane.setAlignment(rightBox, Pos.CENTER_RIGHT);
 
-        Selector selector=new Selector(human.myCards.cardList);
+        BoardWeather = new boolean[Constants.numberOfBoards];
+        for(int k=0;k<Constants.numberOfBoards;k++)
+            BoardWeather[k] = false;
+
+        Selector selector=new Selector(human.myCards.cardList,Constants.numberOfDiscardAfterStart,Constants.textOnDiscardingCard);
+        selector.setAcceptDiscardButton(human.myCards.cardList,human);
         root.getChildren().addAll(selector);
         StackPane.setAlignment(selector, Pos.CENTER);
     }
 
     /// Function which gets hand, stack and add new card to hand ( and View ) 
-    public static synchronized Boolean addCardToHand(BoardSlot Board,Stack<Card> Stack){
-        if(Stack.empty()) return false;
-        Card New = Stack.lastElement();
-        Stack.pop();
+    public static synchronized Boolean addCardToHand(BoardSlot Board,List<Card> list){
+        if(list.isEmpty()) return false;
+        Card New = list.get(0);
+        list.remove(New);
         Board.cardList.add(New);
         Board.addCardToBoardView(New, Board.currentView);
-        deckView.changeDeckVal(Stack.size());
-        if(Stack.empty()) return false;
+        deckView.changeDeckVal(list.size());
+        if(list.isEmpty()) return false;
+        return true;
+    }
+
+    public static boolean addSelectedCardToHand(BoardSlot Board,Card card) {
+        Board.cardList.add(card);
+        Board.addCardToBoardView(card, Board.currentView);
         return true;
     }
 
@@ -259,12 +265,10 @@ public class GameEngine {
         }
 
         passText.setText("PASS");
-        
-        int deadCards=0;
-        for(int i=0;i<Constants.numberOfBoards;i++) {
-            deadCards+=human.myBoard[i].getCurentBoardView().getChildren().size();
-        }
-        deadView.changeDeadVal(deadCards);
+
+        human.addCardsFromBoardToDeadDeck();
+        opponent.addCardsFromBoardToDeadDeck();
+        deadView.changeDeadVal(human.deadCards.size());
 
         Platform.runLater(()->{
             root.getChildren().remove(res);
@@ -347,6 +351,19 @@ public class GameEngine {
             getChildren().add(res);
         }
         
+    }
+
+    public static void setPlayerHand(Player player) {
+        HBox bottomBox=new HBox();
+        bottomBox=player.myCards.getNewBoardView();
+        bottomBox.setMinWidth(Constants.width/1.5);
+        bottomBox.setMaxWidth(Constants.width/1.5);
+        bottomBox.setMinHeight((Constants.height-84.0)/7.0);
+        bottomBox.setMaxHeight((Constants.height-84.0)/7.0);
+        bottomBox.setAlignment(Pos.CENTER);
+
+        root.getChildren().add(bottomBox);
+        StackPane.setAlignment(bottomBox, Pos.BOTTOM_CENTER);
     }
 }
 

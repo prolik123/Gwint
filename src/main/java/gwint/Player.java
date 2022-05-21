@@ -18,7 +18,7 @@ public class Player {
     public BoardSlot myCards;
 
     /// the remaining cards from decks
-    public Stack<Card> myCardStack;
+    public List<Card> myCardDeck;
 
     /// Did the Player pass ?
     public boolean myPass = false;
@@ -39,6 +39,8 @@ public class Player {
 
     public HBox playerHeart;
 
+    public List<Card> deadCards;
+
     /// Basic Constructor for each field
     Player() {
 
@@ -55,7 +57,7 @@ public class Player {
     }
 
     /// Function which excess( more than the start number of cards ) cards adds on Stack 
-    private void chooseHandCards(List<Card> currList, Stack<Card> currStack){
+    private void chooseHandCards(List<Card> currList, List<Card> currStack){
         while(currList.size() > startNumberOfCards) {
             currStack.add(currList.get(currList.size()-1));
             currList.remove(currList.size()-1);
@@ -69,10 +71,11 @@ public class Player {
 
     void setBasicCardsInfo() {
         myCards = new BoardSlot();
-        myCardStack = new Stack<>();
+        myCardDeck = new ArrayList<>();
+        deadCards = new ArrayList<>();
         myCards.cardList = JsonCardParser.getCardsList();
         getListPermutation(myCards.cardList);
-        chooseHandCards(myCards.cardList, myCardStack);
+        chooseHandCards(myCards.cardList, myCardDeck);
     }
 
     void setBasicBoardsInfo() {
@@ -93,6 +96,10 @@ public class Player {
 
     /// If player has a card on hand and didn't passed it will throw random card (80%) or pass (20%)
     void move() {
+        if(!GameEngine.ableOponentMove && this == GameEngine.opponent) {
+            this.ThreadMove(1000);
+            return;
+        }
         if(!myCards.cardList.isEmpty() && !myPass) {
             Random makePass = new Random();
             if(makePass.nextInt(Constants.botRandomBounds) == 0)
@@ -118,11 +125,14 @@ public class Player {
             throwCardWithoutInterface(card);
         if(myCards.cardList.isEmpty())
             getPass();
+        if(this == GameEngine.human)
+            GameEngine.opponent.ThreadMove(1000);
     }
 
     void throwCardWithoutInterface(Card card) {
         Button btn=card.genCardView();
         myBoardValue += card.value;
+        myBoard[card.boardType].cardList.add(card);
         Platform.runLater(()->{myBoard[card.boardType].getCurentBoardView().getChildren().add(btn);});
         Platform.runLater(()->{myBoard[card.boardType].getCurentBoardView().setSpacing(-15);});
         updateValue();
@@ -143,6 +153,16 @@ public class Player {
     }
 
     void updateValue(){
+        int tempValue = 0;
+        for(int k=0;k<Constants.numberOfBoards;k++) {
+            for(Card card:myBoard[k].cardList) {
+                if(GameEngine.BoardWeather[k])
+                    tempValue +=1;
+                else
+                    tempValue += card.value;
+            }
+        }
+        myBoardValue = tempValue;
         playerValue.setText("" +myBoardValue);
     }
 
@@ -261,6 +281,13 @@ public class Player {
         playerHeart.setMinWidth(100);
         playerHeart.setMinHeight(50);
         playerHeart.setMaxHeight(50);
+    }
+
+    public void addCardsFromBoardToDeadDeck(){
+        for(int k=0;k<Constants.numberOfBoards;k++) {
+            for(Card card:myBoard[k].cardList)
+                deadCards.add(card);
+        }
     }
 
     public static class Heart {
