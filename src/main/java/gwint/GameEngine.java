@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.Font;
@@ -14,6 +15,7 @@ import javafx.scene.text.Text;
 import javafx.scene.effect.PerspectiveTransform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
 
@@ -39,11 +41,17 @@ public class GameEngine {
 
     public static VBox mainValues;
 
+    public static Text passText;
+
+    public static DeckView deckView;
+
+    public static DeckView deadView;
+
 
     //Constructor 
     //Let's get rollin' 🏎
     GameEngine(StackPane root) {
-        this.root = root;
+        GameEngine.root = root;
 
         //This here sets up the background, font and the general settings for the scene
         
@@ -57,16 +65,22 @@ public class GameEngine {
             "-fx-font-size: 20; "
         );
 
+        //This thing enables you to press shift to pass
+
+        root.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                if(!GameEngine.human.myPass)
+                    GameEngine.human.getPass();
+            }
+        });
+
         //Lets create the UI. Do note, that we create objects from the "furthest" to the "nearest".
 
         //TODO: Change this for something better then BorderPane
         //For now it does it's job, but is it the best option?
         //Center Pane is the most important object here, as it contains the cards on the table
         //and the players hand
-        BorderPane centerPane=new BorderPane();
-
-        //This here changes layout so that the cards don't overlap
-        //centerPane.setMaxHeight(Constants.height-Constants.height/7.0-84.0);
+        StackPane centerPane=new StackPane();
 
         //So we begin creating the layout
         //It goes something like this:
@@ -97,9 +111,24 @@ public class GameEngine {
         human = new Player();
         opponent.printNewBoards();
         human.printNewBoards();
-        centerPane.setCenter(centerBox);
-        StackPane.setAlignment(centerPane, Pos.TOP_CENTER);
+        centerPane.getChildren().add(centerBox);
+        //This here changes layout so that the cards don't overlap
+        //StackPane.setAlignment(centerBox, Pos.TOP_CENTER);
+        centerPane.setMinWidth(Constants.width);
+        centerPane.setMinHeight(Constants.height);
         root.getChildren().add(centerPane);
+
+        deckView=new DeckView();
+        Button deck=deckView.genDeckView();
+        centerPane.getChildren().add(deck);
+        StackPane.setAlignment(deck, Pos.BOTTOM_RIGHT);
+        StackPane.setMargin(deck, new Insets(0,Constants.width/10.0,0,0));
+
+        deadView=new DeckView();
+        Button dead=deadView.genDeadView();
+        centerPane.getChildren().add(dead);
+        StackPane.setAlignment(dead, Pos.BOTTOM_RIGHT);
+        StackPane.setMargin(dead, new Insets(0,Constants.width/10.0+5.0+deckView.width,0,0));
 
         //Here we create the bottomBox, which stores the cards that player has on hand
         HBox bottomBox=new HBox();
@@ -118,14 +147,14 @@ public class GameEngine {
         PerspectiveTransform perspectiveTrasform = new PerspectiveTransform();
         perspectiveTrasform.setUlx(Constants.width/14.0);                       //upper left x
         perspectiveTrasform.setUly(0.0);                                        //upper left y
-        perspectiveTrasform.setUrx(Constants.width/1.5-Constants.width/14.0);   //upper right x
+        perspectiveTrasform.setUrx(Constants.width-Constants.width/14.0);       //upper right x
         perspectiveTrasform.setUry(0.0);                                        //upper right y
-        perspectiveTrasform.setLrx(Constants.width/1.5);                        //lower left x
-        perspectiveTrasform.setLry(Constants.height-(Constants.height/7.0)-24); //lower left y
-        perspectiveTrasform.setLlx(0.0);                                        //lower right x
-        perspectiveTrasform.setLly(Constants.height-(Constants.height/7.0)-24); //lower right y
+        perspectiveTrasform.setLrx(Constants.width);                            //lower right x
+        perspectiveTrasform.setLry(Constants.height);                           //lower right y
+        perspectiveTrasform.setLlx(0.0);                                        //lower left x
+        perspectiveTrasform.setLly(Constants.height);                           //lower left y
 
-        centerBox.setEffect(perspectiveTrasform);
+        centerPane.setEffect(perspectiveTrasform);
 
         //Here is the pass, which is the worst part of this whole app. This should be a class I know.
         //However, Java didn't want to cooperate and so, it is bruteforced here. What you gonna do?
@@ -157,22 +186,41 @@ public class GameEngine {
         ImageView imView=new ImageView(new Image(App.class.getResource("coin.png").toExternalForm()));
         imView.setFitHeight(100);
         imView.setFitWidth(100);
-        passBtn.setGraphic(imView);
+
+        passText=new Text("PASS");
+        passText.setFont((Font.font("MedievalSharp",22)));
+        passText.setFill(Color.WHITE);
+
+        StackPane passBtnGraphic=new StackPane(imView,passText);
+
+        passBtn.setGraphic(passBtnGraphic);
         passBtn.setStyle(Constants.DECK_STYLE);
+
+
+        passBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent arg0) {
+                GameEngine.human.getPass();
+            }
+        });
+
+        passBtn.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent arg0) {
+                if(!human.myPass)Animations.rotateTo(passBtn, 360,1000);
+            }
+        });
+
         human.makeHeartView();
         
         rightBox.getChildren().addAll(opponent.playerHeart,mainValues,human.playerHeart);
 
         root.getChildren().add(rightBox);
         StackPane.setAlignment(rightBox, Pos.CENTER_RIGHT);
-            
-        //This thing enables you to press shift to pass
-        root.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.SHIFT) {
-                if(!GameEngine.human.myPass)
-                    GameEngine.human.getPass();
-            }
-        });
+
+        Selector selector=new Selector(human.myCards.cardList);
+        root.getChildren().addAll(selector);
+        StackPane.setAlignment(selector, Pos.CENTER);
     }
 
     /// Function which gets hand, stack and add new card to hand ( and View ) 
@@ -182,6 +230,7 @@ public class GameEngine {
         Stack.pop();
         Board.cardList.add(New);
         Board.addCardToBoardView(New, Board.currentView);
+        deckView.changeDeckVal(Stack.size());
         if(Stack.empty()) return false;
         return true;
     }
@@ -209,7 +258,14 @@ public class GameEngine {
             }
         }
 
-        GameEngine.centerBox.getChildren().clear();
+        passText.setText("PASS");
+        
+        int deadCards=0;
+        for(int i=0;i<Constants.numberOfBoards;i++) {
+            deadCards+=human.myBoard[i].getCurentBoardView().getChildren().size();
+        }
+        deadView.changeDeadVal(deadCards);
+
         Platform.runLater(()->{
             root.getChildren().remove(res);
             res = null;
@@ -220,6 +276,15 @@ public class GameEngine {
             else if(human.myPass)
                 opponent.ThreadMove(1000);
         });
+
+        new Thread(()->{
+            try {
+                Thread.sleep(500);
+                Platform.runLater(()->{
+                    centerBox.getChildren().clear();
+                });
+            } catch(Exception e){}
+        }).start();
     }
 
     public static void startNewRoundThred() {
@@ -238,9 +303,9 @@ public class GameEngine {
         root.getChildren().remove(res);
         res = null;
         if(human.hasOnHeart())  
-            res = new Result("Victory is ours!", 60, Color.BLUE);
+            res = new Result("Victory is ours!", 60, Color.valueOf(Constants.blue));
         else if(opponent.hasOnHeart()) 
-            res = new Result("Defeat is upon us", 60, Color.RED);
+            res = new Result("Defeat is upon us", 60, Color.valueOf(Constants.red));
         else 
             res = new Result("It is a draw", 60, Color.WHITE);
         StackPane.setAlignment(res, Pos.CENTER);
@@ -258,9 +323,9 @@ public class GameEngine {
 
     public static void PrintResult(){
         if(human.myBoardValue < opponent.myBoardValue)  
-            res = new Result("You lost the round!", 60, Color.RED);
+            res = new Result("You lost the round!", 60, Color.valueOf(Constants.red));
         else if(human.myBoardValue > opponent.myBoardValue) 
-            res = new Result("You won the round!", 60, Color.BLUE);
+            res = new Result("You won the round!", 60, Color.valueOf(Constants.blue));
         else 
             res = new Result("You drew the round!", 60, Color.WHITE);
         StackPane.setAlignment(res, Pos.CENTER);

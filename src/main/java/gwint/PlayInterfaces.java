@@ -1,7 +1,5 @@
 package gwint;
 
-import javafx.application.Platform;
-
 interface PlayInterface {
     boolean playEffect(Card card,Player player);
 }

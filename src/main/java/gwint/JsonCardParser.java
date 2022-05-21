@@ -56,7 +56,7 @@ public class JsonCardParser {
                         Class<?>[] classArr = PlayInterfaces.class.getClasses();
                         for(Class<?> classIt:classArr) {
                             if(classIt.getName().equals(Constants.effectClassNames[It])) 
-                                currentCard.effectArray.add((PlayInterface)classIt.newInstance());
+                                currentCard.effectArray.add((PlayInterface)classIt.getConstructor().newInstance());
                         }
                     }
                 }
