@@ -32,4 +32,11 @@ Ekipa tworząca w składzie:
 
 W sumie : 37 plików i 2018 linii
 
+# Instalacja
+```
+git clone https://github.com/prolik123/Gwint.git
+cd Gwint
+mvn clean package
+```
+
 (Wszystkie dane są przybliżone i aktualizowane raz na czas)
