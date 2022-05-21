@@ -118,10 +118,11 @@ public class Player {
 
     /// Function which gets a card and add it to current player View
     void throwCard(Card card) {
-        boolean cardThrowed = false;
+        Sounds.playSoundEffect("cardThrow");
+        boolean cardThrew = false;
         for(PlayInterface effect:card.effectArray)
-            cardThrowed = cardThrowed || effect.playEffect(card, this);
-        if(!cardThrowed)
+            cardThrew = cardThrew || effect.playEffect(card, this);
+        if(!cardThrew)
             throwCardWithoutInterface(card);
         if(myCards.cardList.isEmpty())
             getPass();
@@ -155,11 +156,45 @@ public class Player {
     void updateValue(){
         int tempValue = 0;
         for(int k=0;k<Constants.numberOfBoards;k++) {
+            //We create a hash map that stores our cards with bond class
+            HashMap<String,Integer> cntBonds=new HashMap<String,Integer>();
             for(Card card:myBoard[k].cardList) {
-                if(GameEngine.BoardWeather[k])
+                if(GameEngine.BoardWeather[k]) {
+                    card.badEffect();
                     tempValue +=1;
-                else
+                } else {
+                    card.removeEffect();
                     tempValue += card.value;
+                }
+
+                if(card.getCardClass()!=null && card.getCardClass().equals("BondClass")) {
+                    if(!cntBonds.containsKey(card.name)) {
+                        cntBonds.put(card.name, 1);
+                    } else {
+                        cntBonds.replace(card.name, cntBonds.get(card.name), cntBonds.get(card.name)+1);
+                    }
+                }
+            }
+            //And now, if there are at least two same cards with bond class, we multiply their worth
+            for(String name:cntBonds.keySet()) {
+                int cnt=cntBonds.get(name);
+                if(cnt>1) {
+                    for(Card cardFromMap:myBoard[k].cardList) {
+                        if(cardFromMap.name.equals(name)) {
+                            int newVal;
+                            if(GameEngine.BoardWeather[k]) newVal=Integer.valueOf((int)Math.pow(cardFromMap.value,cnt-1));
+                            else newVal=Integer.valueOf(cardFromMap.value*(int)Math.pow(cardFromMap.value,cnt-1));
+                        
+                            cardFromMap.goodEffect(newVal);
+                            
+                            if(GameEngine.BoardWeather[k]) {
+                                tempValue+=newVal-1;
+                            } else {
+                                tempValue+=newVal-cardFromMap.value;
+                            }
+                        }
+                    }
+                }
             }
         }
         myBoardValue = tempValue;
@@ -222,9 +257,8 @@ public class Player {
     }
 
     void preparePlayerForNextRound() {
-        clearBoard();
-
         myBoardValue = 0;
+        clearBoard();
         updateValue();
         if(!myCards.cardList.isEmpty()) {  
             playerPass.setVisible(false);

@@ -34,7 +34,7 @@ public class Constants {
 
     public static final String cardPartsPathPrefix = "cardParts/";
 
-    public static final String backgroundSoundPath = "src/main/resources/gwint/sound/background.mp3";
+    public static final String backgroundSoundPath = "src/main/resources/gwint/sound/";
 
     public static final String pathToOnHeart = "lifeOn.png";
 
@@ -58,9 +58,9 @@ public class Constants {
 
     /// CARDS EFFECTS
 
-    public static final String[] effectName = {"isSpy","isMedic"};
+    public static final String[] effectName = {"isSpy","isMedic","isSnow","isRain","isFog","isClear","isBond"};
 
-    public static final String[] effectClassNames = {"gwint.PlayInterfaces$SpyClass","gwint.PlayInterfaces$MedicClass"};
+    public static final String[] effectClassNames = {"gwint.PlayInterfaces$SpyClass","gwint.PlayInterfaces$MedicClass","gwint.PlayInterfaces$SnowClass","gwint.PlayInterfaces$RainClass","gwint.PlayInterfaces$FogClass","gwint.PlayInterfaces$WeatherClearClass","gwint.PlayInterfaces$BondClass"};
 
     // SPECIAL EFFECTS
 
@@ -75,6 +75,8 @@ public class Constants {
     public static final String red = "#c0392b";
 
     public static final String TCSian = "#D4AF37";
+
+    public static final String green = "#005005";
 
     Constants(double width, double height) {
         Constants.width = width;

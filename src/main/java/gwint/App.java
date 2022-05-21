@@ -16,11 +16,6 @@ import javafx.stage.Screen;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.layout.*;
 
-
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import java.io.File;
-
 import java.io.IOException;
 
 public class App extends Application {
@@ -44,6 +39,8 @@ public class App extends Application {
             else if(rootName.equals("BaseGame"))
             {
                 root=new StackPane();
+
+                Sounds.playSoundEffect("newGame");
 
                 new GameEngine((StackPane)root);
             }
@@ -98,9 +95,7 @@ public class App extends Application {
 
     public static void main(String[] args) {
         //Background music player 🔊
-        Media backgroundMusic=new Media(new File(Constants.backgroundSoundPath).toURI().toString());
-        MediaPlayer player=new MediaPlayer(backgroundMusic);
-        player.play();
+        Sounds.playBackgroundMusic();
 
         //3 2 1 and launch 🚀
         launch(args);
