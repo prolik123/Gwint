@@ -19,6 +19,14 @@ public class Constants {
 
     public static final int  numberOfAllCards = 12;
 
+    public static final int numberOfDiscardAfterStart = 2;
+
+    public static final int numberOfHealedCardByMedic = 1;
+
+    public static final String textOnDiscardingCard = "Select " + numberOfDiscardAfterStart + " cards to be discarded";
+
+    public static final String textOnRevivingCard = "Select " + numberOfHealedCardByMedic + " card to be revieved";
+
     /// PATHS
 
     
@@ -50,9 +58,9 @@ public class Constants {
 
     /// CARDS EFFECTS
 
-    public static final String[] effectName = {"isSpy"};
+    public static final String[] effectName = {"isSpy","isMedic"};
 
-    public static final String[] effectClassNames = {"gwint.PlayInterfaces$SpyClass"};
+    public static final String[] effectClassNames = {"gwint.PlayInterfaces$SpyClass","gwint.PlayInterfaces$MedicClass"};
 
     // SPECIAL EFFECTS
 

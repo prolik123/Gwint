@@ -12,6 +12,7 @@ public class Card {
     public int value;
     public String name;
     public int boardType;
+    public boolean selected = false;
 
     //He is shouting some java nonsense here, so I muted him
     @SuppressWarnings("all")
