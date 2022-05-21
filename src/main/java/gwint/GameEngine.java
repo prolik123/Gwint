@@ -82,9 +82,6 @@ public class GameEngine {
         //and the players hand
         StackPane centerPane=new StackPane();
 
-        //This here changes layout so that the cards don't overlap
-        //centerPane.setMaxHeight(Constants.height-Constants.height/7.0-84.0);
-
         //So we begin creating the layout
         //It goes something like this:
         //centerBox rightBox
@@ -115,6 +112,7 @@ public class GameEngine {
         opponent.printNewBoards();
         human.printNewBoards();
         centerPane.getChildren().add(centerBox);
+        //This here changes layout so that the cards don't overlap
         //StackPane.setAlignment(centerBox, Pos.TOP_CENTER);
         centerPane.setMinWidth(Constants.width);
         centerPane.setMinHeight(Constants.height);
@@ -198,10 +196,18 @@ public class GameEngine {
         passBtn.setGraphic(passBtnGraphic);
         passBtn.setStyle(Constants.DECK_STYLE);
 
+
         passBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent arg0) {
                 GameEngine.human.getPass();
+            }
+        });
+
+        passBtn.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent arg0) {
+                if(!human.myPass)Animations.rotateTo(passBtn, 360,1000);
             }
         });
 
@@ -211,6 +217,10 @@ public class GameEngine {
 
         root.getChildren().add(rightBox);
         StackPane.setAlignment(rightBox, Pos.CENTER_RIGHT);
+
+        Selector selector=new Selector(human.myCards.cardList);
+        root.getChildren().addAll(selector);
+        StackPane.setAlignment(selector, Pos.CENTER);
     }
 
     /// Function which gets hand, stack and add new card to hand ( and View ) 
@@ -256,7 +266,6 @@ public class GameEngine {
         }
         deadView.changeDeadVal(deadCards);
 
-        GameEngine.centerBox.getChildren().clear();
         Platform.runLater(()->{
             root.getChildren().remove(res);
             res = null;
@@ -267,6 +276,15 @@ public class GameEngine {
             else if(human.myPass)
                 opponent.ThreadMove(1000);
         });
+
+        new Thread(()->{
+            try {
+                Thread.sleep(500);
+                Platform.runLater(()->{
+                    centerBox.getChildren().clear();
+                });
+            } catch(Exception e){}
+        }).start();
     }
 
     public static void startNewRoundThred() {
@@ -285,9 +303,9 @@ public class GameEngine {
         root.getChildren().remove(res);
         res = null;
         if(human.hasOnHeart())  
-            res = new Result("Victory is ours!", 60, Color.BLUE);
+            res = new Result("Victory is ours!", 60, Color.valueOf(Constants.blue));
         else if(opponent.hasOnHeart()) 
-            res = new Result("Defeat is upon us", 60, Color.RED);
+            res = new Result("Defeat is upon us", 60, Color.valueOf(Constants.red));
         else 
             res = new Result("It is a draw", 60, Color.WHITE);
         StackPane.setAlignment(res, Pos.CENTER);
@@ -305,9 +323,9 @@ public class GameEngine {
 
     public static void PrintResult(){
         if(human.myBoardValue < opponent.myBoardValue)  
-            res = new Result("You lost the round!", 60, Color.RED);
+            res = new Result("You lost the round!", 60, Color.valueOf(Constants.red));
         else if(human.myBoardValue > opponent.myBoardValue) 
-            res = new Result("You won the round!", 60, Color.BLUE);
+            res = new Result("You won the round!", 60, Color.valueOf(Constants.blue));
         else 
             res = new Result("You drew the round!", 60, Color.WHITE);
         StackPane.setAlignment(res, Pos.CENTER);

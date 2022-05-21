@@ -1,8 +1,6 @@
 package gwint;
 
 import java.util.*;
-
-import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,7 +11,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 
 public class Player {
     
@@ -190,13 +187,18 @@ public class Player {
 
     void clearBoard() {
         for(int i=0;i<Constants.numberOfBoards;i++) {
-            FadeTransition btnTrans=new FadeTransition(Duration.millis(500),myBoard[i].currentView);
-            btnTrans.setFromValue(1.0);
-            btnTrans.setToValue(0.0);
-            btnTrans.play();
+            Animations.fadeOut(myBoard[i].currentView, Constants.fadeOutDuration);
             myBoard[i].cardList.clear();
         }
-        printNewBoards();
+
+        new Thread(()->{
+            try {
+                Thread.sleep(500);
+                Platform.runLater(()->{
+                    printNewBoards();
+                });
+            } catch(Exception e){}
+        }).start();
     }
 
     void preparePlayerForNextRound() {

@@ -2,13 +2,11 @@ package gwint;
 
 import java.util.*;
 
-import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.util.Duration;
 
 public class BoardSlot {
 
@@ -71,10 +69,7 @@ public class BoardSlot {
                 @Override
                 public void handle(MouseEvent arg0) {
                     if(!GameEngine.human.myPass) {
-                        ScaleTransition btnTrans=new ScaleTransition(Duration.millis(100), btn);
-                        btnTrans.setToX(1.2);
-                        btnTrans.setToY(1.2);
-                        btnTrans.play();
+                        Animations.scaleTo(btn, 1.2, 1.2, 100);
                     }
                 }
             });
@@ -82,10 +77,7 @@ public class BoardSlot {
             btn.setOnMouseExited(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent arg0) {
-                    ScaleTransition btnTrans=new ScaleTransition(Duration.millis(100), btn);
-                    btnTrans.setToX(1);
-                    btnTrans.setToY(1);
-                    btnTrans.play();
+                    Animations.scaleTo(btn, 1, 1, 100);
                 }
             });
         }

@@ -1,13 +1,11 @@
 package gwint;
 import java.util.*;
 
-import javafx.animation.FadeTransition;
 import javafx.geometry.*;
 import javafx.scene.control.Button;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
-import javafx.util.Duration;
 
 public class Card {
     public String imageLink;
@@ -50,8 +48,6 @@ public class Card {
         icons.setMaxWidth(shieldImage.getWidth());
         icons.getChildren().addAll(shieldVal,lineView);
 
-        getCardClass();
-
         String cardClass=getCardClass();
         if(cardClass!=null) {
             Image classImage = new Image(App.class.getResource("cardParts/"+cardClass+".png").toExternalForm());
@@ -73,13 +69,10 @@ public class Card {
 
         Button btn = new Button();
 
-        FadeTransition btnTrans=new FadeTransition(Duration.millis(500), btn);
-        btnTrans.setFromValue(0.0);
-        btnTrans.setToValue(1.0);
         btn.setGraphic(cardPane);
         btn.setStyle(Constants.DECK_STYLE);
 
-        btnTrans.play();
+        Animations.fadeIn(btn, Constants.fadeInDuration);
 
         return btn;
     }

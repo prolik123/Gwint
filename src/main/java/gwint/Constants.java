@@ -54,6 +54,19 @@ public class Constants {
 
     public static final String[] effectClassNames = {"gwint.PlayInterfaces$SpyClass"};
 
+    // SPECIAL EFFECTS
+
+    public static final long fadeInDuration = 500;
+
+    public static final long fadeOutDuration = 500;
+
+    // COLOR PALETTE
+
+    public static final String blue = "#2980b9";
+
+    public static final String red = "#c0392b";
+
+    public static final String TCSian = "#D4AF37";
 
     Constants(double width, double height) {
         Constants.width = width;
