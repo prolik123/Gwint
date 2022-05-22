@@ -275,6 +275,7 @@ public class GameEngine {
             res = null;
             opponent.preparePlayerForNextRound();
             human.preparePlayerForNextRound();
+            for(int k=0;k<Constants.numberOfBoards;k++) BoardWeather[k] = false;
             if(opponent.myPass && human.myPass)
                 startNewRoundThred();
             else if(human.myPass)

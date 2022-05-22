@@ -2,12 +2,11 @@ package gwint;
 
 import java.util.List;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
+import javafx.scene.ImageCursor;
 import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
+import javafx.scene.image.Image;
 
 interface PlayInterface {
     boolean playEffect(Card card,Player player);
@@ -87,7 +86,7 @@ public class PlayInterfaces {
         }
     }
 
-    public static class WeatherFirstLineClass implements PlayInterface {
+    public static class SnowClass implements PlayInterface {
 
         @Override
         public boolean playEffect(Card card, Player player) {
@@ -98,7 +97,7 @@ public class PlayInterfaces {
         }
     }
 
-    public static class WeatherSecondLineClass implements PlayInterface {
+    public static class RainClass implements PlayInterface {
 
         @Override
         public boolean playEffect(Card card, Player player) {
@@ -109,13 +108,36 @@ public class PlayInterfaces {
         }
     }
 
-    public static class WeatherThirdLineClass implements PlayInterface {
+    public static class FogClass implements PlayInterface {
 
         @Override
         public boolean playEffect(Card card, Player player) {
             GameEngine.BoardWeather[2] = true;
             GameEngine.human.updateValue();
             GameEngine.opponent.updateValue();
+            return true;
+        }
+    }
+
+    public static class BondClass implements PlayInterface {
+
+        @Override
+        public boolean playEffect(Card card, Player player) {
+            GameEngine.human.updateValue();
+            GameEngine.opponent.updateValue();
+            return false;
+        };
+    }
+
+    public static class DummyClass implements PlayInterface {
+        
+        @Override
+        public boolean playEffect(Card card, Player player) {
+            if(player == GameEngine.human) {
+                Image cursor = new Image(App.class.getResource("cursor.png").toExternalForm());
+                GameEngine.root.setCursor(new ImageCursor(cursor));
+                player.setDummy(card);
+            }
             return true;
         }
     }

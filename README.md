@@ -20,16 +20,22 @@ Ekipa tworząca w składzie:
   - [x] Podstawowe dźwięki 
   - [x] Podstawowy przeciwnik
 
+# Instalacja
+```
+git clone https://github.com/prolik123/Gwint.git
+cd Gwint
+mvn clean package
+```
+
 # Statystyki
 | język | pliki | linie kodu | komentarze | puste linie | razem |
 | :--- | ---: | ---: | ---: | ---: | ---: |
-| Java | 28 | 1,278 | 95 | 219 | 1,592 |
-| JSON | 2 | 166 | 0 | 0 | 166 |
-| XML | 3 | 159 | 2 | 9 | 170 |
-| Markdown | 1 | 29 | 0 | 7 | 36 |
-| CSS | 2 | 28 | 0 | 4 | 32 |
-| Python | 1 | 10 | 6 | 6 | 22 |
+| Java | 14 | 1,155 | 111 | 328 | 1,594 |
+| JSON | 1 | 126 | 0 | 1 | 127 |
+| XML | 2 | 109 | 2 | 5 | 116 |
+| Markdown | 1 | 35 | 0 | 8 | 43 |
+| CSS | 1 | 14 | 0 | 2 | 16 |
 
-W sumie : 37 plików i 2018 linii
+W sumie : 19 plików i 1896 linii
 
 (Wszystkie dane są przybliżone i aktualizowane raz na czas)

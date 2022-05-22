@@ -33,40 +33,42 @@ public class JsonCardParser {
 
         /// for each element of Json Array
         for(int k=0;k<arr.length();k++) {
-            Card currentCard = new Card();
             /// Getting k-th Json value form the array
             JSONObject currentJsonValue = (JSONObject) arr.get(k);
             JSONObject currentJsonCard = (JSONObject) currentJsonValue.get("card");
 
             /// gettting all of aribiutes
-            currentCard.name = getJsonStringAttribute(currentJsonCard,"name");
-                
-            currentCard.imageLink = getJsonStringAttribute(currentJsonCard, "link");
-
-            currentCard.value = getJsonIntegerAttribute(currentJsonCard, "value");
-
-            currentCard.boardType = getJsonIntegerAttribute(currentJsonCard, "board");
-
             int quantity = getJsonIntegerAttribute(currentJsonCard, "quantity");
-            
-            for(int It = 0;It<Constants.effectName.length;It++) {
-                try{
-                    String currInterface = getJsonStringAttribute(currentJsonCard, Constants.effectName[It]);
-                    if(currInterface.equals("true")) {
-                        Class<?>[] classArr = PlayInterfaces.class.getClasses();
-                        for(Class<?> classIt:classArr) {
-                            if(classIt.getName().equals(Constants.effectClassNames[It])) 
-                                currentCard.effectArray.add((PlayInterface)classIt.getConstructor().newInstance());
+
+            for(int j=0;j<quantity;j++) {
+                Card currentCard = new Card();
+
+                currentCard.name = getJsonStringAttribute(currentJsonCard,"name");
+                    
+                currentCard.imageLink = getJsonStringAttribute(currentJsonCard, "link");
+
+                currentCard.value = getJsonIntegerAttribute(currentJsonCard, "value");
+
+                currentCard.boardType = getJsonIntegerAttribute(currentJsonCard, "board");
+                
+                for(int It = 0;It<Constants.effectName.length;It++) {
+                    try{
+                        String currInterface = getJsonStringAttribute(currentJsonCard, Constants.effectName[It]);
+                        if(currInterface.equals("true")) {
+                            Class<?>[] classArr = PlayInterfaces.class.getClasses();
+                            for(Class<?> classIt:classArr) {
+                                if(classIt.getName().equals(Constants.effectClassNames[It])) 
+                                    currentCard.effectArray.add((PlayInterface)classIt.getConstructor().newInstance());
+                            }
                         }
                     }
+                    catch(Exception e) {
+                        /// Card does not has that interface
+                    }
                 }
-                catch(Exception e) {
-                    /// Card does not has that interface
-                }
-            }
-            /// add qunatity times k-th Card to List
-            for(int j=0;j<quantity;j++)
+
                 result.add(currentCard);
+            }
         }
 
         return result;

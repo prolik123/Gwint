@@ -3,7 +3,6 @@ package gwint;
 import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
@@ -13,7 +12,7 @@ import javafx.scene.text.*;
 public class Selector extends VBox{
     int howManySelected = 0;
     public Selector(List<Card> list,int howMany,String text) {
-        setMargin(this, new Insets(10));
+        setSpacing(20);
         setMinHeight(Constants.height);
         setMinWidth(Constants.width);
         setMaxHeight(Constants.height);
