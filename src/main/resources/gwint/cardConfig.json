@@ -123,5 +123,15 @@
             "board": "0",
             "isClear": "true"
         }
+    },
+    {
+        "card": {
+            "name": "dummy",
+            "quantity": "2",
+            "link" : "dummy.png",
+            "value": "0",
+            "board": "0",
+            "isDummy": "true"
+        }
     }
 ]

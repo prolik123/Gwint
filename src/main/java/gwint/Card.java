@@ -1,9 +1,12 @@
 package gwint;
 import java.util.*;
 
+import javafx.event.EventHandler;
 import javafx.geometry.*;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.image.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
@@ -29,6 +32,7 @@ public class Card {
 
     //Generates the card graphics 
     public Button genCardView() {
+        Card thisCard=this;
         //Gets card class lol
         String cardClass=getCardClass();
 
@@ -54,7 +58,7 @@ public class Card {
         VBox icons=new VBox(5);
         icons.setMaxWidth(shieldImage.getWidth());
 
-        if(!Arrays.asList("FogClass","RainClass","SnowClass","WeatherClearClass").contains(cardClass)){
+        if(!Arrays.asList("FogClass","RainClass","SnowClass","WeatherClearClass","DummyClass").contains(cardClass)){
             icons.getChildren().addAll(shieldVal,lineView);
         }
 
@@ -82,6 +86,28 @@ public class Card {
         btn.setStyle(Constants.DECK_STYLE);
 
         Animations.fadeIn(btn, Constants.fadeInDuration);
+
+
+        btn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent arg0) {
+                if(GameEngine.human.getDummy()!=null) {
+                    for(int i=0;i<Constants.numberOfBoards;i++) {
+                        if(GameEngine.human.myBoard[i].cardList.contains(thisCard)) {
+                            GameEngine.human.myCards.cardList.add(thisCard);
+                            GameEngine.human.myCards.addCardToBoardView(thisCard, GameEngine.human.myCards.currentView);
+                            GameEngine.human.myBoard[i].cardList.remove(thisCard);
+                            GameEngine.human.myBoard[i].getCurentBoardView().getChildren().remove(btn);
+                            GameEngine.human.dummy.boardType=i;
+                            GameEngine.human.throwCardWithoutInterface(GameEngine.human.dummy);
+                        }
+                    }
+                    GameEngine.human.updateValue();
+                    GameEngine.human.removeDummy();
+                    GameEngine.root.setCursor(Cursor.DEFAULT);
+                }
+            }
+        });
 
         return btn;
     }

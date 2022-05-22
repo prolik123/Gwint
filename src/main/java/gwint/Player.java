@@ -41,6 +41,8 @@ public class Player {
 
     public List<Card> deadCards;
 
+    public Card dummy=null;
+
     /// Basic Constructor for each field
     Player() {
 
@@ -320,7 +322,7 @@ public class Player {
     public void addCardsFromBoardToDeadDeck(){
         for(int k=0;k<Constants.numberOfBoards;k++) {
             for(Card card:myBoard[k].cardList)
-                deadCards.add(card);
+                if(card.getCardClass()==null || !card.getCardClass().equals("DummyClass")) deadCards.add(card);
         }
     }
 
@@ -337,5 +339,16 @@ public class Player {
             currentImage = new ImageView(new Image(App.class.getResource(Constants.pathToOffHeart).toExternalForm()));
         }
     }
+
+    public void setDummy(Card inDummy) {
+        dummy=inDummy;
+    }
     
+    public Card getDummy() {
+        return dummy;
+    }
+
+    public void removeDummy() {
+        dummy=null;
+    }
 }

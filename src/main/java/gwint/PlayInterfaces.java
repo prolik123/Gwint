@@ -4,7 +4,9 @@ import java.util.List;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.ImageCursor;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 
 interface PlayInterface {
     boolean playEffect(Card card,Player player);
@@ -125,5 +127,18 @@ public class PlayInterfaces {
             GameEngine.opponent.updateValue();
             return false;
         };
+    }
+
+    public static class DummyClass implements PlayInterface {
+        
+        @Override
+        public boolean playEffect(Card card, Player player) {
+            if(player == GameEngine.human) {
+                Image cursor = new Image(App.class.getResource("cursor.png").toExternalForm());
+                GameEngine.root.setCursor(new ImageCursor(cursor));
+                player.setDummy(card);
+            }
+            return true;
+        }
     }
 }
