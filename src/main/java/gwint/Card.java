@@ -20,6 +20,7 @@ public class Card {
 
     Text cardVal;
 
+    Button thisButton;
     //He is shouting some java nonsense here, so I muted him
     @SuppressWarnings("all")
     public ArrayList<PlayInterface> effectArray = new ArrayList<>();
@@ -58,7 +59,7 @@ public class Card {
         VBox icons=new VBox(5);
         icons.setMaxWidth(shieldImage.getWidth());
 
-        if(!Arrays.asList("FogClass","RainClass","SnowClass","WeatherClearClass","DummyClass").contains(cardClass)){
+        if(!Arrays.asList("FogClass","RainClass","SnowClass","WeatherClearClass","DummyClass","ScorchClass").contains(cardClass)){
             icons.getChildren().addAll(shieldVal,lineView);
         }
 
@@ -81,6 +82,7 @@ public class Card {
         cardPane.setAlignment(Pos.TOP_LEFT);
 
         Button btn = new Button();
+        thisButton=btn;
 
         btn.setGraphic(cardPane);
         btn.setStyle(Constants.DECK_STYLE);

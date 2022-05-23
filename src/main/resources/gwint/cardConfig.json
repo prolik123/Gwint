@@ -86,6 +86,25 @@
     },
     {
         "card": {
+            "name": "10",
+            "quantity" : "1",
+            "link": "10.png",
+            "value": "6",
+            "board": "0",
+            "isBerserker": "true"
+        }
+    },
+    {
+        "card": {
+            "name": "11",
+            "quantity" : "1",
+            "link": "11.png",
+            "value": "9",
+            "board": "0"
+        }
+    },
+    {
+        "card": {
             "name": "snow",
             "quantity": "1",
             "link" : "snow.png",
@@ -132,6 +151,16 @@
             "value": "0",
             "board": "0",
             "isDummy": "true"
+        }
+    },
+    {
+        "card": {
+            "name": "scorch",
+            "quantity": "1",
+            "link" : "scorch.png",
+            "value": "0",
+            "board": "0",
+            "isScorch": "true"
         }
     }
 ]

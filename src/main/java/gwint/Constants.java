@@ -58,7 +58,7 @@ public class Constants {
 
     /// CARDS EFFECTS
 
-    public static final String[] effectName = {"isSpy","isMedic","isSnow","isRain","isFog","isClear","isBond","isDummy"};
+    public static final String[] effectName = {"isSpy","isMedic","isSnow","isRain","isFog","isClear","isBond","isDummy","isScorch","isBerserker"};
 
     public static final String[] effectClassNames = {"gwint.PlayInterfaces$SpyClass",
                                                      "gwint.PlayInterfaces$MedicClass",
@@ -67,7 +67,9 @@ public class Constants {
                                                      "gwint.PlayInterfaces$FogClass",
                                                      "gwint.PlayInterfaces$WeatherClearClass",
                                                      "gwint.PlayInterfaces$BondClass",
-                                                     "gwint.PlayInterfaces$DummyClass"};
+                                                     "gwint.PlayInterfaces$DummyClass",
+                                                     "gwint.PlayInterfaces$ScorchClass",
+                                                     "gwint.PlayInterfaces$BerserkerClass"};
 
     // SPECIAL EFFECTS
 

@@ -2,6 +2,7 @@ package gwint;
 
 import java.util.List;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.ImageCursor;
@@ -139,6 +140,93 @@ public class PlayInterfaces {
                 player.setDummy(card);
             }
             return true;
+        }
+    }
+
+    public static class ScorchClass implements PlayInterface {
+        @Override
+        public boolean playEffect(Card card, Player player) {
+            int maxVal=-1;
+            for(int i=0;i<Constants.numberOfBoards;i++) {
+                for(Card curr:GameEngine.opponent.myBoard[i].cardList) {
+                    if(Integer.valueOf(curr.cardVal.getText())>maxVal) maxVal=Integer.valueOf(curr.cardVal.getText());
+                }
+                for(Card curr:GameEngine.human.myBoard[i].cardList) {
+                    if(Integer.valueOf(curr.cardVal.getText())>maxVal) maxVal=Integer.valueOf(curr.cardVal.getText());
+                }
+            }
+
+            for(int j=0;j<Constants.numberOfBoards;j++) {
+                for(int i=0;i<GameEngine.human.myBoard[j].cardList.size();i++) {
+                    Card curr=GameEngine.human.myBoard[j].cardList.get(i);
+                    if(Integer.valueOf(curr.cardVal.getText())==maxVal) {
+                        int currBoard=j;
+                        GameEngine.human.deadCards.add(curr);
+                        Platform.runLater(()->{GameEngine.human.myBoard[currBoard].getCurentBoardView().getChildren().remove(curr.thisButton);});
+                        GameEngine.human.myBoard[j].cardList.remove(curr);
+                        i=-1;
+                    }
+                }
+
+                for(int i=0;i<GameEngine.opponent.myBoard[j].cardList.size();i++) {
+                    Card curr=GameEngine.opponent.myBoard[j].cardList.get(i);
+                    if(Integer.valueOf(curr.cardVal.getText())==maxVal) {
+                        int currBoard=j;
+                        GameEngine.opponent.deadCards.add(curr);
+                        Platform.runLater(()->{GameEngine.opponent.myBoard[currBoard].getCurentBoardView().getChildren().remove(curr.thisButton);});
+                        GameEngine.opponent.myBoard[j].cardList.remove(curr);
+                        i=-1;
+                    }
+                }
+            }
+            return true;
+        }
+    }
+
+    public static class BerserkerClass implements PlayInterface {
+        @Override
+        public boolean playEffect(Card card, Player player) {
+            int maxVal=-1;
+            int sum=0;
+            if(player == GameEngine.human) {
+                for(Card curr:GameEngine.opponent.myBoard[card.boardType].cardList) {
+                    if(Integer.valueOf(curr.cardVal.getText())>maxVal) maxVal=Integer.valueOf(curr.cardVal.getText());
+                    sum+=Integer.valueOf(curr.cardVal.getText());
+                }
+
+                if(sum>=10) {
+                    for(int i=0;i<GameEngine.opponent.myBoard[card.boardType].cardList.size();i++) {
+                        Card curr=GameEngine.opponent.myBoard[card.boardType].cardList.get(i);
+                        if(Integer.valueOf(curr.cardVal.getText())==maxVal) {
+                            GameEngine.opponent.deadCards.add(curr);
+                            Platform.runLater(()->{GameEngine.opponent.myBoard[card.boardType].getCurentBoardView().getChildren().remove(curr.thisButton);});
+                            GameEngine.opponent.myBoard[card.boardType].cardList.remove(curr);
+                            i=-1;
+                        }
+                    }
+                }
+            } else {
+                for(Card curr:GameEngine.human.myBoard[card.boardType].cardList) {
+                    if(Integer.valueOf(curr.cardVal.getText())>maxVal) maxVal=Integer.valueOf(curr.cardVal.getText());
+                    sum+=Integer.valueOf(curr.cardVal.getText());
+                }
+
+                if(sum>=10) {
+                    for(int i=0;i<GameEngine.human.myBoard[card.boardType].cardList.size();i++) {
+                        Card curr=GameEngine.human.myBoard[card.boardType].cardList.get(i);
+                        if(Integer.valueOf(curr.cardVal.getText())==maxVal) {
+                            GameEngine.human.deadCards.add(curr);
+                            Platform.runLater(()->{GameEngine.human.myBoard[card.boardType].getCurentBoardView().getChildren().remove(curr.thisButton);});
+                            GameEngine.human.myBoard[card.boardType].cardList.remove(curr);
+                            i=-1;
+                        }
+                    }
+                }
+            }
+
+            GameEngine.human.updateValue();
+            GameEngine.opponent.updateValue();
+            return false;
         }
     }
 }
