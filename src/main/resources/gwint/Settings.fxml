@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 
 <VBox fx:id="settingsPane" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0"
-      xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gwint.MainMenu">
+      xmlns="http://javafx.com/javafx/13" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gwint.MainMenu">
 
     <children>
         <VBox alignment="TOP_RIGHT">
@@ -51,7 +51,7 @@
                         <Font size="26.0" />
                     </font>
                 </Label>
-                <Slider minorTickCount="5" prefHeight="60.0" prefWidth="400.0" scaleX="0.75" scaleY="0.75" scaleZ="0.75" fx:id="gameVolumeSlider">
+                <Slider minorTickCount="5" prefHeight="60.0" prefWidth="400.0" scaleX="0.75" scaleY="0.75" scaleZ="0.75" fx:id="effectsVolumeSlider">
                     <HBox.margin>
                         <Insets />
                     </HBox.margin>
@@ -63,11 +63,8 @@
         </HBox>
         <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0">
             <children>
-                <Button mnemonicParsing="false" prefHeight="87.0" prefWidth="241.0" text="Exit"
-                        onAction="#handleExitSettingsButtonAction" onMouseEntered="#handleEntered" onMouseExited="#handleExited">
-                    <font>
-                        <Font size="40.0" />
-                    </font>
+                <Button prefHeight="87.0" prefWidth="241.0" text="Exit"
+                        onAction="#handleExitSettingsButtonAction" onMouseEntered="#handleEntered" onMouseExited="#handleExited" style="-fx-font-family: 'MedievalSharp'; -fx-font-size:2.50em;">
                 </Button>
             </children>
         </HBox>
