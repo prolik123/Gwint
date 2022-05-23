@@ -9,8 +9,6 @@ public class Sounds {
 
     public static MediaPlayer soundEffectPlayer;
 
-    public static double soundEffectVolume;
-
     public static void playBackgroundMusic() {
         Media backgroundMusic=new Media(new File(Constants.backgroundSoundPath+"background.mp3").toURI().toString());
         backgroundMusicPlayer=new MediaPlayer(backgroundMusic);
@@ -20,7 +18,6 @@ public class Sounds {
     public static void playSoundEffect(String name) {
         Media soundEffect=new Media(new File(Constants.backgroundSoundPath+name+".mp3").toURI().toString());
         soundEffectPlayer=new MediaPlayer(soundEffect);
-        soundEffectPlayer.setVolume(soundEffectVolume);
         soundEffectPlayer.play();
     }
 }

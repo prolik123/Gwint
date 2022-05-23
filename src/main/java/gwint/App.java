@@ -56,11 +56,6 @@ public class App extends Application {
 
     }
 
-    public static Pane getRoot(){
-        return (Pane) root;
-    }
-
-
     @Override
     public void start(Stage stage) throws IOException {
         App.stage = stage;

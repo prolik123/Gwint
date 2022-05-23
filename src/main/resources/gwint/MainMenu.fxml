@@ -1,32 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 
-<StackPane xmlns="http://javafx.com/javafx/13" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gwint.MainMenu" fx:id="stackPane">
-   <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" fx:id="mainMenuPane">
-      <VBox alignment="CENTER" spacing="40.0">
-         <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-               <Image url="@tcs.png" />
-            </image>
-            <VBox.margin>
-               <Insets bottom="100.0" />
-            </VBox.margin>
-         </ImageView>
-         <Button id="playButton" fx:id="playButton" onAction="#handlePlayButtonAction" onMouseEntered="#handleEntered" onMouseExited="#handleExited" prefHeight="50.0" text=" P L A Y ">
-         </Button>
-         <Button fx:id="settingsButton" onAction="#handleSettingsButtonAction" onMouseEntered="#handleEntered" onMouseExited="#handleExited" prefHeight="50.0" text=" S E T T I N G S ">
-         </Button>
-         <Button fx:id="exitButton" onAction="#handleExitButtonAction" onMouseEntered="#handleEntered" onMouseExited="#handleExited" prefHeight="50.0" text=" E X I T ">
-         </Button>
+<?import java.net.URL?>
+<HBox alignment="CENTER"
+      maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      fx:controller="gwint.MainMenu"
+      xmlns:fx="http://javafx.com/fxml">
+      <VBox alignment="CENTER"  spacing="40.0">
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@tcs.png" />
+               </image>
+               <VBox.margin>
+                  <Insets bottom="100.0" />
+               </VBox.margin>
+            </ImageView>
+            <Button prefHeight="50.0"
+                    text=" P L A Y "
+                    fx:id="playButton"
+                    id="playButton"
+                    onMouseEntered= "#handleEntered"
+                    onMouseExited="#handleExited"
+                    onAction="#handlePlayButtonAction">
+            </Button>
+            <Button prefHeight="50.0"
+                    text=" H O W    T O    P L A Y "
+                    onMouseEntered= "#handleEntered"
+                    onMouseExited="#handleExited"
+                    fx:id="hTPButton">
+            </Button>
+            <Button prefHeight="50.0"
+                    text=" E X I T "
+                    fx:id="exitButton"
+                    onMouseEntered= "#handleEntered"
+                    onMouseExited="#handleExited"
+                    onAction="#handleExitButtonAction">
+            </Button>
+         </children>
       </VBox>
-   </HBox>
    <stylesheets>
       <URL value="@MainMenu.css" />
    </stylesheets>
-</StackPane>
+</HBox>
