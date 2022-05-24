@@ -28,7 +28,7 @@ public class DeckView {
     public Button genDeckView() {
         btn=new Button();
         setStyle("back.png");
-        cnt.setText(String.valueOf(Constants.numberOfAllCards-Constants.defultNumberOfCards));
+        cnt.setText(String.valueOf(0));
 
         return btn;
     }

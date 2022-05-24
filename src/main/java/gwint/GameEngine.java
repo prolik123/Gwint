@@ -127,6 +127,7 @@ public class GameEngine {
         centerPane.getChildren().add(deck);
         StackPane.setAlignment(deck, Pos.BOTTOM_RIGHT);
         StackPane.setMargin(deck, new Insets(0,Constants.width/10.0,0,0));
+        deckView.changeDeadVal(GameEngine.human.myCardDeck.size());
 
         deadView=new DeckView();
         Button dead=deadView.genDeadView();

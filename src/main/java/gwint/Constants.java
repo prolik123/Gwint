@@ -17,8 +17,6 @@ public class Constants {
 
     public static final int numberOfDrawnCardBySpy = 2;
 
-    public static final int  numberOfAllCards = 12;
-
     public static final int numberOfDiscardAfterStart = 2;
 
     public static final int numberOfHealedCardByMedic = 1;
