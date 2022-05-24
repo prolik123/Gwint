@@ -21,7 +21,7 @@
     {
         "card": {
             "name": "3",
-            "quantity": "100",
+            "quantity": "1",
             "link": "3.png",
             "value": "3",
             "board": "0",
@@ -212,7 +212,7 @@
     {
         "card": {
             "name": "dummy",
-            "quantity": "100",
+            "quantity": "2",
             "link" : "dummy.png",
             "value": "0",
             "board": "0",
