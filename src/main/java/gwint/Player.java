@@ -165,6 +165,7 @@ public class Player {
             //We create a hash map that stores our cards with bond class
             HashMap<String,Integer> cntBonds=new HashMap<String,Integer>();
             for(Card card:myBoard[k].cardList) {
+                if(card.name.equals("dummy")) continue;
                 if(GameEngine.BoardWeather[k]) {
                     card.badEffect();
                     tempValue +=1;
