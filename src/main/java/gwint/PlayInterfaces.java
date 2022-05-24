@@ -50,7 +50,9 @@ public class PlayInterfaces {
              if(player.deadCards.size()!=0) {
                 Selector selector = new Selector(player.deadCards,Constants.numberOfHealedCardByMedic,Constants.textOnRevivingCard);
                 setAccepttButton(selector,player,player.deadCards,player.myCards.cardList);
+                selector.setOpacity(0.0);
                 GameEngine.root.getChildren().add(selector);
+                Animations.fadeIn(selector, 250);
                 GameEngine.ableOponentMove = false;
              } else {
                  //Iunno aabout that solution but, it works
@@ -74,8 +76,15 @@ public class PlayInterfaces {
                             k--;
                         }
                     }
-                    GameEngine.ableOponentMove = true;
-                    GameEngine.root.getChildren().remove(selector);
+                    
+                    Animations.fadeOut(selector, 250);
+                    new Thread(()->{
+                        try {
+                            Thread.sleep(250);
+                            Platform.runLater(()->{GameEngine.root.getChildren().remove(selector);});
+                            GameEngine.ableOponentMove = true;
+                        } catch(Exception e){}
+                    }).start();
                 }
             });
             selector.getChildren().add(selectorBtn);

@@ -2,6 +2,7 @@ package gwint;
 
 import java.util.List;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -86,7 +87,13 @@ public class Selector extends VBox{
                     list.add(player.myCardDeck.get(0));
                     player.myCardDeck.remove(0);
                 }
-                GameEngine.root.getChildren().remove(Selector.this);
+                Animations.fadeOut(Selector.this, 250);
+                new Thread(()->{
+                    try {
+                        Thread.sleep(250);
+                        Platform.runLater(()->{GameEngine.root.getChildren().remove(Selector.this);});
+                    } catch(Exception e){}
+                }).start();
                 GameEngine.setPlayerHand(player);
                 GameEngine.human.playerPass.toFront();
             }
