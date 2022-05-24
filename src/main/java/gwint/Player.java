@@ -184,8 +184,8 @@ public class Player {
                     for(Card cardFromMap:myBoard[k].cardList) {
                         if(cardFromMap.name.equals(name)) {
                             int newVal;
-                            if(GameEngine.BoardWeather[k]) newVal=Integer.valueOf((int)Math.pow(cardFromMap.value,cnt-1));
-                            else newVal=Integer.valueOf(cardFromMap.value*(int)Math.pow(cardFromMap.value,cnt-1));
+                            if(GameEngine.BoardWeather[k]) newVal=Integer.valueOf((int)Math.pow(2,cnt-1));
+                            else newVal=Integer.valueOf(cardFromMap.value*(int)Math.pow(2,cnt-1));
                         
                             cardFromMap.goodEffect(newVal);
                             

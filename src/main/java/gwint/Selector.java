@@ -75,7 +75,7 @@ public class Selector extends VBox{
                 GameEngine.setPlayerHand(player);
                 GameEngine.root.getChildren().remove(player.playerPass);
                 player.makePassView();
-                player.playerPass.setStyle(Constants.HUMAN_PASS_STYLE);
+                player.playerPass.setStyle(Constants.GRIADENT_BOTTOM_UP);
                 StackPane.setAlignment(player.playerPass, Pos.BOTTOM_CENTER);
                 GameEngine.root.getChildren().add(player.playerPass);
             }

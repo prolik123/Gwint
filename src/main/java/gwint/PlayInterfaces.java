@@ -8,6 +8,8 @@ import javafx.event.EventHandler;
 import javafx.scene.ImageCursor;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.text.*;
 
 interface PlayInterface {
     boolean playEffect(Card card,Player player);
@@ -79,6 +81,7 @@ public class PlayInterfaces {
 
         @Override
         public boolean playEffect(Card card, Player player) {
+            Platform.runLater(()->{alertEffect(card.name);});
             for(int k=0;k<Constants.numberOfBoards;k++)
                 GameEngine.BoardWeather[k] = false;
             GameEngine.human.updateValue();
@@ -91,6 +94,7 @@ public class PlayInterfaces {
 
         @Override
         public boolean playEffect(Card card, Player player) {
+            Platform.runLater(()->{alertEffect(card.name);});
             GameEngine.BoardWeather[0] = true;
             GameEngine.human.updateValue();
             GameEngine.opponent.updateValue();
@@ -102,6 +106,7 @@ public class PlayInterfaces {
 
         @Override
         public boolean playEffect(Card card, Player player) {
+            Platform.runLater(()->{alertEffect(card.name);});
             GameEngine.BoardWeather[1] = true;
             GameEngine.human.updateValue();
             GameEngine.opponent.updateValue();
@@ -113,6 +118,7 @@ public class PlayInterfaces {
 
         @Override
         public boolean playEffect(Card card, Player player) {
+            Platform.runLater(()->{alertEffect(card.name);});
             GameEngine.BoardWeather[2] = true;
             GameEngine.human.updateValue();
             GameEngine.opponent.updateValue();
@@ -146,6 +152,7 @@ public class PlayInterfaces {
     public static class ScorchClass implements PlayInterface {
         @Override
         public boolean playEffect(Card card, Player player) {
+            Platform.runLater(()->{alertEffect(card.name);});
             int maxVal=-1;
             for(int i=0;i<Constants.numberOfBoards;i++) {
                 for(Card curr:GameEngine.opponent.myBoard[i].cardList) {
@@ -179,6 +186,9 @@ public class PlayInterfaces {
                     }
                 }
             }
+
+            GameEngine.human.updateValue();
+            GameEngine.opponent.updateValue();
             return true;
         }
     }
@@ -228,5 +238,23 @@ public class PlayInterfaces {
             GameEngine.opponent.updateValue();
             return false;
         }
+    }
+
+    public static void alertEffect(String effectName) {
+        Text sampleText=new Text(effectName+" effect has been played");
+        sampleText.setFill(Color.WHITE);
+        sampleText.setFont(Font.font("MedievalSharp",22));
+        GameEngine.alertBox.getChildren().clear();
+        GameEngine.alertBox.getChildren().add(sampleText);
+        GameEngine.alertBox.setVisible(true);
+        Animations.fadeIn(GameEngine.alertBox, 500);
+        new Thread(()->{
+            try {
+                Thread.sleep(2000);
+                Platform.runLater(()->{Animations.fadeOut(GameEngine.alertBox, 500);});
+                Thread.sleep(500);
+                GameEngine.alertBox.setVisible(false);
+            } catch(Exception e){}
+        }).start();
     }
 }

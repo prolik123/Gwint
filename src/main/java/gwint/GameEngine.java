@@ -47,6 +47,8 @@ public class GameEngine {
 
     public static DeckView deadView;
 
+    public static HBox alertBox;
+
     public static volatile boolean ableOponentMove = true;
 
     public static boolean[] BoardWeather;
@@ -80,8 +82,6 @@ public class GameEngine {
 
         //Lets create the UI. Do note, that we create objects from the "furthest" to the "nearest".
 
-        //TODO: Change this for something better then BorderPane
-        //For now it does it's job, but is it the best option?
         //Center Pane is the most important object here, as it contains the cards on the table
         //and the players hand
         StackPane centerPane=new StackPane();
@@ -141,12 +141,12 @@ public class GameEngine {
         //while being in 2D
         PerspectiveTransform perspectiveTrasform = new PerspectiveTransform();
         perspectiveTrasform.setUlx(Constants.width/14.0);                       //upper left x
-        perspectiveTrasform.setUly(0.0);                                        //upper left y
+        perspectiveTrasform.setUly(0.0);                                  //upper left y
         perspectiveTrasform.setUrx(Constants.width-Constants.width/14.0);       //upper right x
-        perspectiveTrasform.setUry(0.0);                                        //upper right y
+        perspectiveTrasform.setUry(0.0);                                  //upper right y
         perspectiveTrasform.setLrx(Constants.width);                            //lower right x
         perspectiveTrasform.setLry(Constants.height);                           //lower right y
-        perspectiveTrasform.setLlx(0.0);                                        //lower left x
+        perspectiveTrasform.setLlx(0.0);                                  //lower left x
         perspectiveTrasform.setLly(Constants.height);                           //lower left y
 
         centerPane.setEffect(perspectiveTrasform);
@@ -154,10 +154,10 @@ public class GameEngine {
         //Here is the pass, which is the worst part of this whole app. This should be a class I know.
         //However, Java didn't want to cooperate and so, it is bruteforced here. What you gonna do?
         human.makePassView();
-        human.playerPass.setStyle(Constants.HUMAN_PASS_STYLE);
+        human.playerPass.setStyle(Constants.GRIADENT_BOTTOM_UP);
         StackPane.setAlignment(human.playerPass, Pos.BOTTOM_CENTER);
         opponent.makePassView();
-        opponent.playerPass.setStyle(Constants.OPONENT_PASS_STYLE);
+        opponent.playerPass.setStyle(Constants.GRIADENT_TOP_DOWN);
         StackPane.setAlignment(opponent.playerPass, Pos.TOP_CENTER);
         root.getChildren().addAll(opponent.playerPass,human.playerPass);
 
@@ -216,6 +216,16 @@ public class GameEngine {
         BoardWeather = new boolean[Constants.numberOfBoards];
         for(int k=0;k<Constants.numberOfBoards;k++)
             BoardWeather[k] = false;
+
+        alertBox=new HBox();
+        alertBox.setMinWidth(Constants.width);
+        alertBox.setMinHeight(80);
+        alertBox.setMaxHeight(80);
+        alertBox.setStyle(Constants.GRIADENT_TOP_DOWN);
+        alertBox.setAlignment(Pos.CENTER);
+        alertBox.setVisible(false);
+        root.getChildren().add(alertBox);
+        StackPane.setAlignment(alertBox, Pos.TOP_CENTER);
 
         Selector selector=new Selector(human.myCards.cardList,Constants.numberOfDiscardAfterStart,Constants.textOnDiscardingCard);
         selector.setAcceptDiscardButton(human.myCards.cardList,human);
