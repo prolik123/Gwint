@@ -39,4 +39,12 @@ public class Animations {
         rotateTrans.setCycleCount(1);
         rotateTrans.play();
     }
+
+    //Smooth opacity change
+    public static void setOpacityTo(Node obj, double from, double to, long duration) {
+        FadeTransition fadeOutTrans=new FadeTransition(Duration.millis(duration),obj);
+        fadeOutTrans.setFromValue(from);
+        fadeOutTrans.setToValue(to);
+        fadeOutTrans.play();
+    }
 }

@@ -47,10 +47,15 @@ public class PlayInterfaces {
                  player.throwCardWithoutInterface(card);
                 return true;
              }
-            Selector selector = new Selector(player.deadCards,Constants.numberOfHealedCardByMedic,Constants.textOnRevivingCard);
-            setAccepttButton(selector,player,player.deadCards,player.myCards.cardList);
-            GameEngine.root.getChildren().add(selector);
-            GameEngine.ableOponentMove = false;
+             if(player.deadCards.size()!=0) {
+                Selector selector = new Selector(player.deadCards,Constants.numberOfHealedCardByMedic,Constants.textOnRevivingCard);
+                setAccepttButton(selector,player,player.deadCards,player.myCards.cardList);
+                GameEngine.root.getChildren().add(selector);
+                GameEngine.ableOponentMove = false;
+             } else {
+                 //Iunno aabout that solution but, it works
+                 alertEffect("You have no cards to revive, so no ");
+             }
             player.throwCardWithoutInterface(card);
             return true;
         }
@@ -107,7 +112,7 @@ public class PlayInterfaces {
         @Override
         public boolean playEffect(Card card, Player player) {
             Platform.runLater(()->{alertEffect(card.name);});
-            GameEngine.BoardWeather[1] = true;
+            GameEngine.BoardWeather[2] = true;
             GameEngine.human.updateValue();
             GameEngine.opponent.updateValue();
             return true;
@@ -119,7 +124,7 @@ public class PlayInterfaces {
         @Override
         public boolean playEffect(Card card, Player player) {
             Platform.runLater(()->{alertEffect(card.name);});
-            GameEngine.BoardWeather[2] = true;
+            GameEngine.BoardWeather[1] = true;
             GameEngine.human.updateValue();
             GameEngine.opponent.updateValue();
             return true;
@@ -144,6 +149,7 @@ public class PlayInterfaces {
                 Image cursor = new Image(App.class.getResource("cursor.png").toExternalForm());
                 GameEngine.root.setCursor(new ImageCursor(cursor));
                 player.setDummy(card);
+                GameEngine.ableOponentMove=false;
             }
             return true;
         }
@@ -163,28 +169,17 @@ public class PlayInterfaces {
                 }
             }
 
+            GameEngine.ableOponentMove = false;
             for(int j=0;j<Constants.numberOfBoards;j++) {
-                for(int i=0;i<GameEngine.human.myBoard[j].cardList.size();i++) {
-                    Card curr=GameEngine.human.myBoard[j].cardList.get(i);
-                    if(Integer.valueOf(curr.cardVal.getText())==maxVal) {
-                        int currBoard=j;
-                        GameEngine.human.deadCards.add(curr);
-                        Platform.runLater(()->{GameEngine.human.myBoard[currBoard].getCurentBoardView().getChildren().remove(curr.thisButton);});
-                        GameEngine.human.myBoard[j].cardList.remove(curr);
-                        i=-1;
-                    }
-                }
+                killCards(GameEngine.opponent, j, maxVal);
+                killCards(GameEngine.human, j, maxVal);
 
-                for(int i=0;i<GameEngine.opponent.myBoard[j].cardList.size();i++) {
-                    Card curr=GameEngine.opponent.myBoard[j].cardList.get(i);
-                    if(Integer.valueOf(curr.cardVal.getText())==maxVal) {
-                        int currBoard=j;
-                        GameEngine.opponent.deadCards.add(curr);
-                        Platform.runLater(()->{GameEngine.opponent.myBoard[currBoard].getCurentBoardView().getChildren().remove(curr.thisButton);});
-                        GameEngine.opponent.myBoard[j].cardList.remove(curr);
-                        i=-1;
-                    }
-                }
+                new Thread(()->{
+                    try {
+                        Thread.sleep(750);
+                        GameEngine.ableOponentMove=true;
+                    } catch(Exception e){}
+                }).start();
             }
 
             GameEngine.human.updateValue();
@@ -198,6 +193,7 @@ public class PlayInterfaces {
         public boolean playEffect(Card card, Player player) {
             int maxVal=-1;
             int sum=0;
+            GameEngine.ableOponentMove=false;
             if(player == GameEngine.human) {
                 for(Card curr:GameEngine.opponent.myBoard[card.boardType].cardList) {
                     if(Integer.valueOf(curr.cardVal.getText())>maxVal) maxVal=Integer.valueOf(curr.cardVal.getText());
@@ -205,15 +201,15 @@ public class PlayInterfaces {
                 }
 
                 if(sum>=10) {
-                    for(int i=0;i<GameEngine.opponent.myBoard[card.boardType].cardList.size();i++) {
-                        Card curr=GameEngine.opponent.myBoard[card.boardType].cardList.get(i);
-                        if(Integer.valueOf(curr.cardVal.getText())==maxVal) {
-                            GameEngine.opponent.deadCards.add(curr);
-                            Platform.runLater(()->{GameEngine.opponent.myBoard[card.boardType].getCurentBoardView().getChildren().remove(curr.thisButton);});
-                            GameEngine.opponent.myBoard[card.boardType].cardList.remove(curr);
-                            i=-1;
-                        }
-                    }
+                    killCards(GameEngine.opponent, card.boardType, maxVal);
+                    new Thread(()->{
+                        try {
+                            Thread.sleep(750);
+                            GameEngine.ableOponentMove=true;
+                        } catch(Exception e){}
+                    }).start();
+                } else {
+                    GameEngine.ableOponentMove=true;
                 }
             } else {
                 for(Card curr:GameEngine.human.myBoard[card.boardType].cardList) {
@@ -222,15 +218,15 @@ public class PlayInterfaces {
                 }
 
                 if(sum>=10) {
-                    for(int i=0;i<GameEngine.human.myBoard[card.boardType].cardList.size();i++) {
-                        Card curr=GameEngine.human.myBoard[card.boardType].cardList.get(i);
-                        if(Integer.valueOf(curr.cardVal.getText())==maxVal) {
-                            GameEngine.human.deadCards.add(curr);
-                            Platform.runLater(()->{GameEngine.human.myBoard[card.boardType].getCurentBoardView().getChildren().remove(curr.thisButton);});
-                            GameEngine.human.myBoard[card.boardType].cardList.remove(curr);
-                            i=-1;
-                        }
-                    }
+                    killCards(GameEngine.human, card.boardType, maxVal);
+                    new Thread(()->{
+                        try {
+                            Thread.sleep(750);
+                            GameEngine.ableOponentMove=true;
+                        } catch(Exception e){}
+                    }).start();
+                } else {
+                    GameEngine.ableOponentMove=true;
                 }
             }
 
@@ -256,5 +252,25 @@ public class PlayInterfaces {
                 GameEngine.alertBox.setVisible(false);
             } catch(Exception e){}
         }).start();
+    }
+
+    public static void killCards(Player player, int currBoard, int maxVal) {
+        for(int i=0;i<player.myBoard[currBoard].cardList.size();i++) {
+            Card curr=player.myBoard[currBoard].cardList.get(i);
+            if(Integer.valueOf(curr.cardVal.getText())==maxVal) {
+                player.deadCards.add(curr);
+                new Thread(()->{
+                    try {
+                        Platform.runLater(()->{curr.setDying();});
+                        Thread.sleep(250);
+                        Animations.fadeOut(curr.thisButton, 500);
+                        Thread.sleep(500);
+                        Platform.runLater(()->{player.myBoard[currBoard].getCurentBoardView().getChildren().remove(curr.thisButton);});
+                    } catch(Exception e){}
+                }).start();
+                player.myBoard[currBoard].cardList.remove(curr);
+                i=-1;
+            }
+        }
     }
 }

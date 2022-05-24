@@ -20,6 +20,8 @@ public class Card {
 
     Text cardVal;
 
+    StackPane cardPane;
+
     Button thisButton;
     //He is shouting some java nonsense here, so I muted him
     @SuppressWarnings("all")
@@ -77,7 +79,7 @@ public class Card {
         cardView.setFitHeight(newHeight);
         cardView.setFitWidth(newWidth);
 
-        StackPane cardPane=new StackPane(cardView,icons,borderView);
+        cardPane=new StackPane(cardView,icons,borderView);
         StackPane.setMargin(icons, new Insets(5));
         cardPane.setAlignment(Pos.TOP_LEFT);
 
@@ -88,7 +90,6 @@ public class Card {
         btn.setStyle(Constants.DECK_STYLE);
 
         Animations.fadeIn(btn, Constants.fadeInDuration);
-
 
         btn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -107,6 +108,7 @@ public class Card {
                     GameEngine.human.updateValue();
                     GameEngine.human.removeDummy();
                     GameEngine.root.setCursor(Cursor.DEFAULT);
+                    GameEngine.ableOponentMove=true;
                 }
             }
         });
@@ -132,5 +134,18 @@ public class Card {
     public void removeEffect() {
         cardVal.setText(String.valueOf(value));
         cardVal.setFill(Color.BLACK);
+    }
+
+    public void setDying() {
+        double newWidth=((Constants.height-84.0)/7.0/200.0)*150.0;
+        double newHeight=(Constants.height-84.0)/7.0;
+
+        Image deadImage = new Image(App.class.getResource("cardParts/dead.png").toExternalForm());
+        ImageView deadView = new ImageView(deadImage);
+        deadView.setOpacity(0.0);
+        deadView.setFitHeight(newHeight);
+        deadView.setFitWidth(newWidth);
+        cardPane.getChildren().add(deadView);
+        Animations.setOpacityTo(deadView, 0.0, 0.5, 250);
     }
 }

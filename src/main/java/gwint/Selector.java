@@ -1,6 +1,7 @@
 package gwint;
 
 import java.util.List;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -27,6 +28,7 @@ public class Selector extends VBox{
 
         HBox selectorCards=new HBox();
         selectorCards.setAlignment(Pos.CENTER);
+        int i=1;
         for(Card card:list) {
             Button currentButton = card.genCardView();
             currentButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -45,9 +47,23 @@ public class Selector extends VBox{
                     }
                 }
             });
+            
+            currentButton.setOpacity(0.0);
+            currentButton.setVisible(false);
             selectorCards.getChildren().add(currentButton);
-        }
 
+            //I hate threads.
+            int curri=i;
+            new Thread(()->{
+                try {
+                    Thread.sleep(curri*350);
+                    currentButton.setOpacity(0.0);
+                    currentButton.setVisible(true);
+                    Animations.fadeIn(currentButton, 350);
+                } catch(Exception e){}
+            }).start();
+            i++;
+        }
         getChildren().addAll(selectorText,selectorCards);
     }
 
@@ -71,13 +87,8 @@ public class Selector extends VBox{
                     player.myCardDeck.remove(0);
                 }
                 GameEngine.root.getChildren().remove(Selector.this);
-                GameEngine.root.getChildren().remove(player.myCards.getCurentBoardView());
                 GameEngine.setPlayerHand(player);
-                GameEngine.root.getChildren().remove(player.playerPass);
-                player.makePassView();
-                player.playerPass.setStyle(Constants.GRIADENT_BOTTOM_UP);
-                StackPane.setAlignment(player.playerPass, Pos.BOTTOM_CENTER);
-                GameEngine.root.getChildren().add(player.playerPass);
+                GameEngine.human.playerPass.toFront();
             }
         });
         getChildren().add(selectorBtn);

@@ -36,14 +36,14 @@ public class DeckView {
     //Changes the number of available cards
     public void changeDeckVal(int newVal) {
         if(newVal>0) cnt.setText(String.valueOf(newVal));
-        else btn.setVisible(false);
+        else Animations.fadeOut(btn, 500);
     }
 
     //Creates the dead (cards) object
     public Button genDeadView() {
         btn=new Button();
         setStyle("dead.png");
-        btn.setVisible(false);
+        btn.setOpacity(0.0);
         cnt.setText(String.valueOf(0));
 
         return btn;
@@ -51,7 +51,9 @@ public class DeckView {
 
     //Changes the number of dead cards
     public void changeDeadVal(int newVal) {
-        if(Integer.parseInt(cnt.getText())==0 && newVal!=0) btn.setVisible(true);
+        if(Integer.parseInt(cnt.getText())==0 && newVal!=0) {
+            Animations.fadeIn(btn, 500);
+        }
         cnt.setText(String.valueOf(Integer.parseInt(cnt.getText())+newVal));
     }
 

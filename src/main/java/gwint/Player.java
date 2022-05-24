@@ -4,6 +4,7 @@ import java.util.*;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -145,7 +146,10 @@ public class Player {
     void getPass(){
         myPass = true;
         if(this.equals(GameEngine.human)) GameEngine.passText.setText("PASSED");
-        Platform.runLater(()->{playerPass.setVisible(true);;});
+        Platform.runLater(()->{
+            playerPass.setVisible(true);
+            Animations.fadeIn(playerPass, 250);
+        });
 
         if(this == GameEngine.human && GameEngine.ablePlayerMove) {
             GameEngine.opponent.ThreadMove(1000);
@@ -244,7 +248,9 @@ public class Player {
 
     void clearBoard() {
         for(int i=0;i<Constants.numberOfBoards;i++) {
-            Animations.fadeOut(myBoard[i].currentView, Constants.fadeOutDuration);
+            for(Node curr:myBoard[i].currentView.getChildren()) {
+                Animations.fadeOut(curr, Constants.fadeOutDuration);
+            }
             myBoard[i].cardList.clear();
         }
 
@@ -252,7 +258,9 @@ public class Player {
             try {
                 Thread.sleep(500);
                 Platform.runLater(()->{
-                    printNewBoards();
+                    for(int k=0;k<Constants.numberOfBoards;k++) {
+                        myBoard[k].getCurentBoardView().getChildren().clear();
+                    }
                 });
             } catch(Exception e){}
         }).start();
@@ -263,7 +271,13 @@ public class Player {
         clearBoard();
         updateValue();
         if(!myCards.cardList.isEmpty()) {  
-            playerPass.setVisible(false);
+            Animations.fadeOut(playerPass, 250);
+            new Thread(()->{
+                try {
+                    Thread.sleep(250);
+                    playerPass.setVisible(false);
+                } catch(Exception e){}
+            }).start();
             //playerPass = null;
             myPass = false;
         }
@@ -308,6 +322,7 @@ public class Player {
         playerPass.setMinHeight((Constants.height-84.0)/7.0);
         playerPass.setMaxHeight((Constants.height-84.0)/7.0);
         playerPass.setVisible(false);
+        playerPass.setOpacity(0.0);
         playerPass.setAlignment(Pos.CENTER);
         
     }

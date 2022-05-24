@@ -228,6 +228,7 @@ public class GameEngine {
         root.getChildren().add(alertBox);
         StackPane.setAlignment(alertBox, Pos.TOP_CENTER);
 
+        human.myCards.currentView.setVisible(false);
         Selector selector=new Selector(human.myCards.cardList,Constants.numberOfDiscardAfterStart,Constants.textOnDiscardingCard);
         selector.setAcceptDiscardButton(human.myCards.cardList,human);
         root.getChildren().addAll(selector);
@@ -282,8 +283,13 @@ public class GameEngine {
         deadView.changeDeadVal(human.deadCards.size());
 
         Platform.runLater(()->{
-            root.getChildren().remove(res);
-            res = null;
+            Animations.fadeOut(res, 250);
+            new Thread(()->{
+                try {
+                    Thread.sleep(250);
+                } catch(Exception e){}
+                Platform.runLater(()->{root.getChildren().remove(res);});
+            }).start();
             opponent.preparePlayerForNextRound();
             human.preparePlayerForNextRound();
             for(int k=0;k<Constants.numberOfBoards;k++) BoardWeather[k] = false;
@@ -293,14 +299,14 @@ public class GameEngine {
                 opponent.ThreadMove(1000);
         });
 
-        new Thread(()->{
+        /*new Thread(()->{
             try {
                 Thread.sleep(500);
                 Platform.runLater(()->{
                     centerBox.getChildren().clear();
                 });
             } catch(Exception e){}
-        }).start();
+        }).start();*/
     }
 
     public static void startNewRoundThred() {
@@ -324,15 +330,17 @@ public class GameEngine {
             res = new Result("Defeat is upon us", 60, Color.valueOf(Constants.red));
         else 
             res = new Result("It is a draw", 60, Color.WHITE);
+
         StackPane.setAlignment(res, Pos.CENTER);
+        res.setOpacity(0.0);
         Platform.runLater(()->{root.getChildren().add(res);});
+        Animations.fadeIn(res, 250);
         Button back = new Button("Back to Main Menu");
         back.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent arg0) {
                 App.switchScene("MainMenu");
             }
-            
         });
         res.getChildren().add(back);
     }
@@ -345,18 +353,20 @@ public class GameEngine {
         else 
             res = new Result("You drew the round!", 60, Color.WHITE);
         StackPane.setAlignment(res, Pos.CENTER);
+        res.setOpacity(0.0);
         root.getChildren().add(res);
+        Animations.fadeIn(res, 250);
     }
 
     public static class Result extends VBox {
-    
         public Result(String Name,int size,Color Col) {
+            setSpacing(20);
             Text res=new Text();
             res.setFill(Col);
             res.setText(Name);
             res.setFont(Font.font("MedievalSharp",size));
             
-            setStyle("-fx-background-color: linear-gradient(to bottom, rgba(0,0,0,0) 20%,rgba(0,0,0,0.9) 40%,rgba(0,0,0,0.9) 60%,rgba(0,0,0,0) 80%)");
+            setStyle("-fx-background-color: linear-gradient(to bottom, rgba(0,0,0,0) 20%,rgba(0,0,0,0.9) 35%,rgba(0,0,0,0.9) 65%,rgba(0,0,0,0) 80%)");
 
             setAlignment(Pos.CENTER);
             setMaxHeight(Constants.height/2);
