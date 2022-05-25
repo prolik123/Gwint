@@ -102,7 +102,6 @@ public class JsonCardParser {
     }
 
 
-
     /// You must be sure that the attribute is String
     public static String getJsonStringAttribute(JSONObject object,String attributeName) {
         return (String) object.get(attributeName);

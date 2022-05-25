@@ -64,7 +64,7 @@ public class DeckBuilder implements Initializable {
                         card.selected = true;
                         selectedCards.add(cardsOnPane.inverseBidiMap().get(currentButton));
                         howManySelected++;
-                        Animations.scaleTo(currentButton, 1.5, 1.5, 100);
+                        Animations.scaleTo(currentButton, 1.7, 1.7, 100);
                     }
                     else if(card.selected) {
                         card.selected = false;
@@ -84,8 +84,7 @@ public class DeckBuilder implements Initializable {
 
     public void handlePlayButtonAction(ActionEvent event) {
         if (selectedCards.size() != Constants.numberOfCardsInDeck) return;
-        JsonMaker update = new JsonMaker();
-        update.applyDeckChanges(selectedCards);
+        JsonMaker.applyDeckChanges(selectedCards, this);
         App.switchScene("BaseGame");
     }
 
@@ -112,8 +111,8 @@ public class DeckBuilder implements Initializable {
         if (selectedCards.size() != Constants.numberOfCardsInDeck) throw new RuntimeException("Wrong number of Cards in deckConfig.json");
         for (Integer i : selectedCards){
             cards.get(i).selected = true;
-            cardsOnPane.get(i).setScaleX(1.5);
-            cardsOnPane.get(i).setScaleY(1.5);
+            cardsOnPane.get(i).setScaleX(1.7);
+            cardsOnPane.get(i).setScaleY(1.7);
         }
     }
 }

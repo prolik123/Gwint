@@ -80,7 +80,7 @@ public class App extends Application {
         //We start in the menu
         try {
 
-            loader = new FXMLLoader(getClass().getResource("DeckBuilder.fxml"));
+            loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
             root =  loader.load();
 
         }catch (IOException e)

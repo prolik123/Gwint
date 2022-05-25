@@ -8,12 +8,12 @@ import java.io.IOException;
 import java.util.List;
 
 public class JsonMaker {
-    public void applyDeckChanges(List<Integer> selectedCards) {
+    public static void applyDeckChanges(List<Integer> selectedCards, Object obj) {
         FileWriter file = null;
         JSONArray arr = new JSONArray();
         arr.addAll(selectedCards);
         try {
-            file = new FileWriter(this.getClass().getResource("deckConfig.json").getPath());
+            file = new FileWriter(obj.getClass().getResource("deckConfig.json").getPath());
             file.write(arr.toJSONString());
             
         } catch (IOException e) {
