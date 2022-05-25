@@ -4,6 +4,7 @@ import java.util.*;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -137,7 +138,6 @@ public class Player {
         myBoardValue += card.value;
         myBoard[card.boardType].cardList.add(card);
         Platform.runLater(()->{myBoard[card.boardType].getCurentBoardView().getChildren().add(btn);});
-        Platform.runLater(()->{myBoard[card.boardType].getCurentBoardView().setSpacing(-15);});
         updateValue();
     }
 
@@ -145,7 +145,10 @@ public class Player {
     void getPass(){
         myPass = true;
         if(this.equals(GameEngine.human)) GameEngine.passText.setText("PASSED");
-        Platform.runLater(()->{playerPass.setVisible(true);;});
+        Platform.runLater(()->{
+            playerPass.setVisible(true);
+            Animations.fadeIn(playerPass, 250);
+        });
 
         if(this == GameEngine.human && GameEngine.ablePlayerMove) {
             GameEngine.opponent.ThreadMove(1000);
@@ -161,6 +164,7 @@ public class Player {
             //We create a hash map that stores our cards with bond class
             HashMap<String,Integer> cntBonds=new HashMap<String,Integer>();
             for(Card card:myBoard[k].cardList) {
+                if(card.name.equals("dummy")) continue;
                 if(GameEngine.BoardWeather[k]) {
                     card.badEffect();
                     tempValue +=1;
@@ -184,8 +188,8 @@ public class Player {
                     for(Card cardFromMap:myBoard[k].cardList) {
                         if(cardFromMap.name.equals(name)) {
                             int newVal;
-                            if(GameEngine.BoardWeather[k]) newVal=Integer.valueOf((int)Math.pow(cardFromMap.value,cnt-1));
-                            else newVal=Integer.valueOf(cardFromMap.value*(int)Math.pow(cardFromMap.value,cnt-1));
+                            if(GameEngine.BoardWeather[k]) newVal=Integer.valueOf((int)Math.pow(2,cnt-1));
+                            else newVal=Integer.valueOf(cardFromMap.value*(int)Math.pow(2,cnt-1));
                         
                             cardFromMap.goodEffect(newVal);
                             
@@ -198,6 +202,11 @@ public class Player {
                     }
                 }
             }
+
+            //If cards take up more then 3/4 of the screen squize them
+            double diff=0.75*Constants.width-(((Constants.height-84.0)/7.0/200.0)*150.0+Constants.cardDefaultSpacing)*myBoard[k].cardList.size();
+            if(diff<0) myBoard[k].getCurentBoardView().setSpacing(Constants.cardDefaultSpacing+diff/(double)myBoard[k].cardList.size());
+            else myBoard[k].getCurentBoardView().setSpacing(Constants.cardDefaultSpacing);
         }
         myBoardValue = tempValue;
         playerValue.setText("" +myBoardValue);
@@ -244,7 +253,9 @@ public class Player {
 
     void clearBoard() {
         for(int i=0;i<Constants.numberOfBoards;i++) {
-            Animations.fadeOut(myBoard[i].currentView, Constants.fadeOutDuration);
+            for(Node curr:myBoard[i].currentView.getChildren()) {
+                Animations.fadeOut(curr, Constants.fadeOutDuration);
+            }
             myBoard[i].cardList.clear();
         }
 
@@ -252,7 +263,9 @@ public class Player {
             try {
                 Thread.sleep(500);
                 Platform.runLater(()->{
-                    printNewBoards();
+                    for(int k=0;k<Constants.numberOfBoards;k++) {
+                        myBoard[k].getCurentBoardView().getChildren().clear();
+                    }
                 });
             } catch(Exception e){}
         }).start();
@@ -261,18 +274,26 @@ public class Player {
     void preparePlayerForNextRound() {
         myBoardValue = 0;
         clearBoard();
-        updateValue();
+        new Thread(()-> {
+            try {
+                Thread.sleep(500);
+                updateValue();
+            } catch(Exception e) {}
+        });
         if(!myCards.cardList.isEmpty()) {  
-            playerPass.setVisible(false);
+            Animations.fadeOut(playerPass, 250);
+            new Thread(()->{
+                try {
+                    Thread.sleep(250);
+                    playerPass.setVisible(false);
+                } catch(Exception e){}
+            }).start();
             //playerPass = null;
             myPass = false;
         }
     }
 
     void printNewBoards() {
-        //My God, why have you forsaken me
-        //I know it is a poor solution, but it works and doesn't really have
-        //any negative impact on the app, soooooooo it stays for now
         if(this != GameEngine.human) {
             for(int k=Constants.numberOfBoards-1;k>=0;k--) {
                 printBoxBoard(k);
@@ -308,6 +329,7 @@ public class Player {
         playerPass.setMinHeight((Constants.height-84.0)/7.0);
         playerPass.setMaxHeight((Constants.height-84.0)/7.0);
         playerPass.setVisible(false);
+        playerPass.setOpacity(0.0);
         playerPass.setAlignment(Pos.CENTER);
         
     }

@@ -17,8 +17,6 @@ public class Constants {
 
     public static final int numberOfDrawnCardBySpy = 2;
 
-    public static final int  numberOfAllCards = 12;
-
     public static final int numberOfDiscardAfterStart = 2;
 
     public static final int numberOfHealedCardByMedic = 1;
@@ -48,17 +46,18 @@ public class Constants {
     /// STYLES
 
     
-    public static final String PASS_STYLE="-fx-background-color: transparent;";
+    public static final String PASS_STYLE="-fx-background-color: transparent; -fx-padding: 0";
 
-    public static final String DECK_STYLE="-fx-background-color: transparent;";
+    public static final String DECK_STYLE="-fx-background-color: transparent; -fx-padding: 0";
 
-    public static final String OPONENT_PASS_STYLE = "-fx-background-color: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.4) 80%, rgba(255,255,255,0) 100%)";
+    public static final String GRIADENT_TOP_DOWN = "-fx-background-color: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.4) 80%, rgba(255,255,255,0) 100%)";
 
-    public static final String HUMAN_PASS_STYLE = "-fx-background-color: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.4) 80%, rgba(255,255,255,0) 100%)";
+    public static final String GRIADENT_BOTTOM_UP = "-fx-background-color: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.4) 80%, rgba(255,255,255,0) 100%)";
 
+    public static final double cardDefaultSpacing = 12.0;
     /// CARDS EFFECTS
 
-    public static final String[] effectName = {"isSpy","isMedic","isSnow","isRain","isFog","isClear","isBond","isDummy"};
+    public static final String[] effectName = {"isSpy","isMedic","isSnow","isRain","isFog","isClear","isBond","isDummy","isScorch","isBerserker"};
 
     public static final String[] effectClassNames = {"gwint.PlayInterfaces$SpyClass",
                                                      "gwint.PlayInterfaces$MedicClass",
@@ -67,7 +66,9 @@ public class Constants {
                                                      "gwint.PlayInterfaces$FogClass",
                                                      "gwint.PlayInterfaces$WeatherClearClass",
                                                      "gwint.PlayInterfaces$BondClass",
-                                                     "gwint.PlayInterfaces$DummyClass"};
+                                                     "gwint.PlayInterfaces$DummyClass",
+                                                     "gwint.PlayInterfaces$ScorchClass",
+                                                     "gwint.PlayInterfaces$BerserkerClass"};
 
     // SPECIAL EFFECTS
 

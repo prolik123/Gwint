@@ -47,6 +47,8 @@ public class GameEngine {
 
     public static DeckView deadView;
 
+    public static HBox alertBox;
+
     public static volatile boolean ableOponentMove = true;
 
     public static boolean[] BoardWeather;
@@ -80,8 +82,6 @@ public class GameEngine {
 
         //Lets create the UI. Do note, that we create objects from the "furthest" to the "nearest".
 
-        //TODO: Change this for something better then BorderPane
-        //For now it does it's job, but is it the best option?
         //Center Pane is the most important object here, as it contains the cards on the table
         //and the players hand
         StackPane centerPane=new StackPane();
@@ -127,6 +127,7 @@ public class GameEngine {
         centerPane.getChildren().add(deck);
         StackPane.setAlignment(deck, Pos.BOTTOM_RIGHT);
         StackPane.setMargin(deck, new Insets(0,Constants.width/10.0,0,0));
+        deckView.changeDeadVal(GameEngine.human.myCardDeck.size());
 
         deadView=new DeckView();
         Button dead=deadView.genDeadView();
@@ -141,12 +142,12 @@ public class GameEngine {
         //while being in 2D
         PerspectiveTransform perspectiveTrasform = new PerspectiveTransform();
         perspectiveTrasform.setUlx(Constants.width/14.0);                       //upper left x
-        perspectiveTrasform.setUly(0.0);                                        //upper left y
+        perspectiveTrasform.setUly(0.0);                                  //upper left y
         perspectiveTrasform.setUrx(Constants.width-Constants.width/14.0);       //upper right x
-        perspectiveTrasform.setUry(0.0);                                        //upper right y
+        perspectiveTrasform.setUry(0.0);                                  //upper right y
         perspectiveTrasform.setLrx(Constants.width);                            //lower right x
         perspectiveTrasform.setLry(Constants.height);                           //lower right y
-        perspectiveTrasform.setLlx(0.0);                                        //lower left x
+        perspectiveTrasform.setLlx(0.0);                                  //lower left x
         perspectiveTrasform.setLly(Constants.height);                           //lower left y
 
         centerPane.setEffect(perspectiveTrasform);
@@ -154,10 +155,10 @@ public class GameEngine {
         //Here is the pass, which is the worst part of this whole app. This should be a class I know.
         //However, Java didn't want to cooperate and so, it is bruteforced here. What you gonna do?
         human.makePassView();
-        human.playerPass.setStyle(Constants.HUMAN_PASS_STYLE);
+        human.playerPass.setStyle(Constants.GRIADENT_BOTTOM_UP);
         StackPane.setAlignment(human.playerPass, Pos.BOTTOM_CENTER);
         opponent.makePassView();
-        opponent.playerPass.setStyle(Constants.OPONENT_PASS_STYLE);
+        opponent.playerPass.setStyle(Constants.GRIADENT_TOP_DOWN);
         StackPane.setAlignment(opponent.playerPass, Pos.TOP_CENTER);
         root.getChildren().addAll(opponent.playerPass,human.playerPass);
 
@@ -217,6 +218,17 @@ public class GameEngine {
         for(int k=0;k<Constants.numberOfBoards;k++)
             BoardWeather[k] = false;
 
+        alertBox=new HBox();
+        alertBox.setMinWidth(Constants.width);
+        alertBox.setMinHeight(80);
+        alertBox.setMaxHeight(80);
+        alertBox.setStyle(Constants.GRIADENT_TOP_DOWN);
+        alertBox.setAlignment(Pos.CENTER);
+        alertBox.setVisible(false);
+        root.getChildren().add(alertBox);
+        StackPane.setAlignment(alertBox, Pos.TOP_CENTER);
+
+        human.myCards.currentView.setVisible(false);
         Selector selector=new Selector(human.myCards.cardList,Constants.numberOfDiscardAfterStart,Constants.textOnDiscardingCard);
         selector.setAcceptDiscardButton(human.myCards.cardList,human);
         root.getChildren().addAll(selector);
@@ -271,8 +283,15 @@ public class GameEngine {
         deadView.changeDeadVal(human.deadCards.size());
 
         Platform.runLater(()->{
-            root.getChildren().remove(res);
-            res = null;
+            Animations.fadeOut(res, 250);
+            new Thread(()->{
+                try {
+                    Thread.sleep(250);
+                } catch(Exception e){}
+                Platform.runLater(()->{root.getChildren().remove(res);});
+            }).start();
+            human.playerValue.setText("0");
+            opponent.playerValue.setText("0");
             opponent.preparePlayerForNextRound();
             human.preparePlayerForNextRound();
             for(int k=0;k<Constants.numberOfBoards;k++) BoardWeather[k] = false;
@@ -281,15 +300,6 @@ public class GameEngine {
             else if(human.myPass)
                 opponent.ThreadMove(1000);
         });
-
-        new Thread(()->{
-            try {
-                Thread.sleep(500);
-                Platform.runLater(()->{
-                    centerBox.getChildren().clear();
-                });
-            } catch(Exception e){}
-        }).start();
     }
 
     public static void startNewRoundThred() {
@@ -313,15 +323,17 @@ public class GameEngine {
             res = new Result("Defeat is upon us", 60, Color.valueOf(Constants.red));
         else 
             res = new Result("It is a draw", 60, Color.WHITE);
+
         StackPane.setAlignment(res, Pos.CENTER);
+        res.setOpacity(0.0);
         Platform.runLater(()->{root.getChildren().add(res);});
+        Animations.fadeIn(res, 250);
         Button back = new Button("Back to Main Menu");
         back.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent arg0) {
                 App.switchScene("MainMenu");
             }
-            
         });
         res.getChildren().add(back);
     }
@@ -334,18 +346,20 @@ public class GameEngine {
         else 
             res = new Result("You drew the round!", 60, Color.WHITE);
         StackPane.setAlignment(res, Pos.CENTER);
+        res.setOpacity(0.0);
         root.getChildren().add(res);
+        Animations.fadeIn(res, 250);
     }
 
     public static class Result extends VBox {
-    
         public Result(String Name,int size,Color Col) {
+            setSpacing(20);
             Text res=new Text();
             res.setFill(Col);
             res.setText(Name);
             res.setFont(Font.font("MedievalSharp",size));
             
-            setStyle("-fx-background-color: linear-gradient(to bottom, rgba(0,0,0,0) 20%,rgba(0,0,0,0.9) 40%,rgba(0,0,0,0.9) 60%,rgba(0,0,0,0) 80%)");
+            setStyle("-fx-background-color: linear-gradient(to bottom, rgba(0,0,0,0) 20%,rgba(0,0,0,0.9) 35%,rgba(0,0,0,0.9) 65%,rgba(0,0,0,0) 80%)");
 
             setAlignment(Pos.CENTER);
             setMaxHeight(Constants.height/2);
