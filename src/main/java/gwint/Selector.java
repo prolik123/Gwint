@@ -27,7 +27,7 @@ public class Selector extends VBox{
         selectorText.setFill(Color.WHITE);
 
 
-        HBox selectorCards=new HBox(Constants.cardDefaultSpacing);
+        HBox selectorCards=new HBox(20);
         selectorCards.setAlignment(Pos.CENTER);
         int i=1;
         for(Card card:list) {
