@@ -75,7 +75,7 @@ public class App extends Application {
         //We start in the menu
         try {
 
-            loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
+            loader = new FXMLLoader(getClass().getResource("DeckPicker.fxml"));
             root =  loader.load();
 
         }catch (IOException e)

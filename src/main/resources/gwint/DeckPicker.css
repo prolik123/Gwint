@@ -1,0 +1,24 @@
+@font-face {
+    font-family: 'MedievalSharp';
+    src: url('MedievalSharp-regular.ttf');
+}
+
+
+#borderPane{
+    -fx-background-color: #000000;
+    -fx-font-family: 'MedievalSharp';
+    -fx-font-size:52;
+}
+
+
+.button {
+    -fx-text-fill: #D4AF37;
+    -fx-border-style: none;
+    -fx-background-color: transparent;
+}
+
+.label {
+    -fx-text-fill: #D4AF37;
+    -fx-font-family: 'MedievalSharp';
+}
+
