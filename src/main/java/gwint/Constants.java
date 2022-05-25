@@ -42,6 +42,8 @@ public class Constants {
 
     public static final String linkToFontDownload = "https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap";
 
+    public static final String[] namesOfClassInterfaces = {"gwint.PlayInterfaces"};
+
     
     /// STYLES
 
