@@ -138,7 +138,6 @@ public class Player {
         myBoardValue += card.value;
         myBoard[card.boardType].cardList.add(card);
         Platform.runLater(()->{myBoard[card.boardType].getCurentBoardView().getChildren().add(btn);});
-        Platform.runLater(()->{myBoard[card.boardType].getCurentBoardView().setSpacing(-15);});
         updateValue();
     }
 
@@ -203,6 +202,11 @@ public class Player {
                     }
                 }
             }
+
+            //If cards take up more then 3/4 of the screen squize them
+            double diff=0.75*Constants.width-(((Constants.height-84.0)/7.0/200.0)*150.0+Constants.cardDefaultSpacing)*myBoard[k].cardList.size();
+            if(diff<0) myBoard[k].getCurentBoardView().setSpacing(Constants.cardDefaultSpacing+diff/(double)myBoard[k].cardList.size());
+            else myBoard[k].getCurentBoardView().setSpacing(Constants.cardDefaultSpacing);
         }
         myBoardValue = tempValue;
         playerValue.setText("" +myBoardValue);
@@ -270,7 +274,12 @@ public class Player {
     void preparePlayerForNextRound() {
         myBoardValue = 0;
         clearBoard();
-        updateValue();
+        new Thread(()-> {
+            try {
+                Thread.sleep(500);
+                updateValue();
+            } catch(Exception e) {}
+        });
         if(!myCards.cardList.isEmpty()) {  
             Animations.fadeOut(playerPass, 250);
             new Thread(()->{
@@ -285,9 +294,6 @@ public class Player {
     }
 
     void printNewBoards() {
-        //My God, why have you forsaken me
-        //I know it is a poor solution, but it works and doesn't really have
-        //any negative impact on the app, soooooooo it stays for now
         if(this != GameEngine.human) {
             for(int k=Constants.numberOfBoards-1;k>=0;k--) {
                 printBoxBoard(k);

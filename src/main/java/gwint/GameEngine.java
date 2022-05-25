@@ -298,15 +298,6 @@ public class GameEngine {
             else if(human.myPass)
                 opponent.ThreadMove(1000);
         });
-
-        /*new Thread(()->{
-            try {
-                Thread.sleep(500);
-                Platform.runLater(()->{
-                    centerBox.getChildren().clear();
-                });
-            } catch(Exception e){}
-        }).start();*/
     }
 
     public static void startNewRoundThred() {
