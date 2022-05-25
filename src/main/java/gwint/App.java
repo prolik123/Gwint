@@ -35,6 +35,11 @@ public class App extends Application {
                 root = loader.load();
                 stage.setTitle("Main Menu");
             }
+            if(rootName.equals("DeckBuilder")) {
+                loader = new FXMLLoader(App.class.getResource("DeckBuilder.fxml"));
+                root = loader.load();
+                stage.setTitle("DeckBuilder");
+            }
 
             else if(rootName.equals("BaseGame"))
             {
@@ -75,7 +80,7 @@ public class App extends Application {
         //We start in the menu
         try {
 
-            loader = new FXMLLoader(getClass().getResource("DeckPicker.fxml"));
+            loader = new FXMLLoader(getClass().getResource("DeckBuilder.fxml"));
             root =  loader.load();
 
         }catch (IOException e)
