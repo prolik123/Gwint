@@ -46,18 +46,21 @@ public class Constants {
 
     public static final String linkToFontDownload = "https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap";
 
+    public static final String[] namesOfClassInterfaces = {"gwint.PlayInterfaces"};
+
     
     /// STYLES
 
     
-    public static final String PASS_STYLE="-fx-background-color: transparent;";
+    public static final String PASS_STYLE="-fx-background-color: transparent; -fx-padding: 0";
 
-    public static final String DECK_STYLE="-fx-background-color: transparent;";
+    public static final String DECK_STYLE="-fx-background-color: transparent; -fx-padding: 0";
 
     public static final String GRIADENT_TOP_DOWN = "-fx-background-color: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.4) 80%, rgba(255,255,255,0) 100%)";
 
     public static final String GRIADENT_BOTTOM_UP = "-fx-background-color: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.4) 80%, rgba(255,255,255,0) 100%)";
 
+    public static final double cardDefaultSpacing = 12.0;
     /// CARDS EFFECTS
 
     public static final String[] effectName = {"isSpy","isMedic","isSnow","isRain","isFog","isClear","isBond","isDummy","isScorch","isBerserker"};

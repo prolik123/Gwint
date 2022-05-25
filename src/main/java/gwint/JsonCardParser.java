@@ -51,14 +51,18 @@ public class JsonCardParser {
 
                 currentCard.boardType = getJsonIntegerAttribute(currentJsonCard, "board");
                 
+                /// Reflections :) 
                 for(int It = 0;It<Constants.effectName.length;It++) {
                     try{
                         String currInterface = getJsonStringAttribute(currentJsonCard, Constants.effectName[It]);
                         if(currInterface.equals("true")) {
-                            Class<?>[] classArr = PlayInterfaces.class.getClasses();
-                            for(Class<?> classIt:classArr) {
-                                if(classIt.getName().equals(Constants.effectClassNames[It])) 
-                                    currentCard.effectArray.add((PlayInterface)classIt.getConstructor().newInstance());
+                            for(String OverClassName:Constants.namesOfClassInterfaces) {
+
+                                Class<?>[] classArr = Class.forName(OverClassName).getClasses();
+                                for(Class<?> classIt:classArr) {
+                                    if(classIt.getName().equals(Constants.effectClassNames[It])) 
+                                        currentCard.effectArray.add((PlayInterface)classIt.getConstructor().newInstance());
+                                }
                             }
                         }
                     }

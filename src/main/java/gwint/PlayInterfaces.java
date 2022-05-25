@@ -154,13 +154,21 @@ public class PlayInterfaces {
         
         @Override
         public boolean playEffect(Card card, Player player) {
-            if(player == GameEngine.human) {
+            if(player == GameEngine.human && isSomethingOnPlayerBoard(player)) {
                 Image cursor = new Image(App.class.getResource("cursor.png").toExternalForm());
                 GameEngine.root.setCursor(new ImageCursor(cursor));
                 player.setDummy(card);
                 GameEngine.ableOponentMove=false;
             }
             return true;
+        }
+
+        private boolean isSomethingOnPlayerBoard(Player player) {
+            for(int k=0;k<Constants.numberOfBoards;k++) {
+                if(!player.myBoard[k].cardList.isEmpty() )
+                    return true;
+            }
+            return false;
         }
     }
 

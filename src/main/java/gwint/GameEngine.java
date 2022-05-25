@@ -290,6 +290,8 @@ public class GameEngine {
                 } catch(Exception e){}
                 Platform.runLater(()->{root.getChildren().remove(res);});
             }).start();
+            human.playerValue.setText("0");
+            opponent.playerValue.setText("0");
             opponent.preparePlayerForNextRound();
             human.preparePlayerForNextRound();
             for(int k=0;k<Constants.numberOfBoards;k++) BoardWeather[k] = false;
@@ -298,15 +300,6 @@ public class GameEngine {
             else if(human.myPass)
                 opponent.ThreadMove(1000);
         });
-
-        /*new Thread(()->{
-            try {
-                Thread.sleep(500);
-                Platform.runLater(()->{
-                    centerBox.getChildren().clear();
-                });
-            } catch(Exception e){}
-        }).start();*/
     }
 
     public static void startNewRoundThred() {

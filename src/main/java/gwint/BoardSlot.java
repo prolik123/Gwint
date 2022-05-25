@@ -39,6 +39,7 @@ public class BoardSlot {
 
         /// Constructor (each card in cardList is added to View)
         public BoardView() {
+            setSpacing(Constants.cardDefaultSpacing);
             for(Card card : cardList) {
                 addCardToBoardView(card, this);
             }
@@ -82,6 +83,10 @@ public class BoardSlot {
         }
         btn.setStyle(Constants.DECK_STYLE);
         View.getChildren().add(btn);
-        View.setSpacing(-15);
+
+        //If cards take up more then 3/4 of the screen squize them
+        double diff=0.75*Constants.width-(((Constants.height-84.0)/7.0/200.0)*150.0+Constants.cardDefaultSpacing)*View.getChildren().size();
+        if(diff<0) View.setSpacing(Constants.cardDefaultSpacing+diff/(double)View.getChildren().size());
+        else View.setSpacing(Constants.cardDefaultSpacing);
     }
 }
