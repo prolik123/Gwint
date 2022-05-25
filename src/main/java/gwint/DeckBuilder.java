@@ -84,7 +84,8 @@ public class DeckBuilder implements Initializable {
 
     public void handlePlayButtonAction(ActionEvent event) {
         if (selectedCards.size() != Constants.numberOfCardsInDeck) return;
-        JsonMaker.applyDeckChanges(selectedCards);
+        JsonMaker update = new JsonMaker();
+        update.applyDeckChanges(selectedCards);
         App.switchScene("BaseGame");
     }
 
