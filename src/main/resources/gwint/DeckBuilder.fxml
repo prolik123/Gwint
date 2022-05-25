@@ -44,6 +44,6 @@
       <Insets bottom="50.0" left="100.0" right="100.0" top="50.0" />
    </padding>
    <stylesheets>
-      <URL value="@DeckPicker.css" />
+      <URL value="@DeckBuilder.css" />
    </stylesheets>
 </BorderPane>

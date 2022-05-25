@@ -1,9 +1,10 @@
 package gwint;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
+import java.lang.reflect.Array;
 import java.util.*;
-
+import java.io.FileWriter;
+import java.io.IOException;
 
 import org.json.*;
 
@@ -29,7 +30,6 @@ public class JsonCardParser {
 
         /// getting array of Json Objects form cardConfig.json
         JSONArray arr = getJsonArray(Constants.pathToCardsConfig);
-
 
         /// for each element of Json Array
         for(int k=0;k<arr.length();k++) {
@@ -74,6 +74,35 @@ public class JsonCardParser {
         return result;
     }
 
+    public static List<Integer> getDeckConfigList() {
+        try{
+            return getDeckConfigListWithExceptions();
+        }
+        catch(JSONException e){
+            /// failure
+            throw new RuntimeException("You got JSONExeption from JsonParser");
+        }
+        catch(FileNotFoundException e) {
+            /// failure
+            throw new RuntimeException("You got FileNotFoundException from JsonParser");
+        }
+    }
+
+    public static List<Integer> getDeckConfigListWithExceptions() throws JSONException, FileNotFoundException{
+        List<Integer> result = new ArrayList<>();
+
+        /// getting array of Json Objects form cardConfig.json
+        JSONArray arr = getJsonArray(Constants.pathToDeckConfig);
+
+        /// for each element of Json Array
+        for(int k=0;k<arr.length();k++) {
+           result.add(arr.getInt(k));
+        }
+        return result;
+    }
+
+
+
     /// You must be sure that the attribute is String
     public static String getJsonStringAttribute(JSONObject object,String attributeName) {
         return (String) object.get(attributeName);
@@ -89,4 +118,6 @@ public class JsonCardParser {
         return new JSONArray(new JSONTokener(new FileReader(
             App.class.getResource(path).getFile())));
     }
+
+
 }

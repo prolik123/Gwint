@@ -1,5 +1,7 @@
 package gwint;
 
+import org.apache.commons.collections4.BidiMap;
+
 import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -12,8 +14,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import org.apache.commons.collections4.bidimap.DualHashBidiMap;
+
 
 import java.net.URL;
+import java.util.HashMap;
+
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -28,43 +34,61 @@ public class DeckBuilder implements Initializable {
 
     private List <Card> cards;
 
-    private final int howMany = 3;
-    private int howManySelected = 0;
+    //map that has relation 1:1
+    private BidiMap<Integer, Button> cardsOnPane;
+
+    private List <Integer> selectedCards;
+
+    private int howManySelected = 20;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         tilePane.setAlignment(Pos.CENTER);
         cards = JsonCardParser.getCardsList();
+        cardsOnPane = new DualHashBidiMap<>();
 
-        for(Card card : cards) {
-            Button currentButton = card.genCardView();
+
+        selectedCards = JsonCardParser.getDeckConfigList();
+
+        for (int i = 0; i < cards.size(); i++){
+            Card card = cards.get(i);
+
+            Button currentButton = card.genSimpleCardView();
+            cardsOnPane.put(i, currentButton);
             currentButton.setOnAction(new EventHandler<ActionEvent>() {
 
                 @Override
                 public void handle(ActionEvent event) {
-                    if(!card.selected && howManySelected < howMany) {
+                    if(!card.selected && howManySelected < Constants.numberOfCardsInDeck) {
                         card.selected = true;
+                        selectedCards.add(cardsOnPane.inverseBidiMap().get(currentButton));
                         howManySelected++;
-                        Animations.scaleTo(currentButton, 1.2, 1.2, 100);
+                        Animations.scaleTo(currentButton, 1.5, 1.5, 100);
                     }
                     else if(card.selected) {
                         card.selected = false;
+                        selectedCards.remove((Object) cardsOnPane.inverseBidiMap().get(currentButton));
                         howManySelected--;
-                        Animations.scaleTo(currentButton, 1, 1, 100);
+                        Animations.scaleTo(currentButton, 1.25, 1.25, 100);
                     }
+                    //System.out.println(selectedCards);
                 }
             });
             currentButton.setScaleX(1.25);
             currentButton.setScaleY(1.25);
             tilePane.getChildren().add(currentButton);
         }
+        SelectDeckFromConfig();
     }
-
 
     public void handlePlayButtonAction(ActionEvent event) {
+        if (selectedCards.size() != Constants.numberOfCardsInDeck) return;
+        JsonMaker.applyDeckChanges(selectedCards);
         App.switchScene("BaseGame");
     }
+
+    //does not apply changes
     public void handleBackButtonAction(ActionEvent event) {
         App.switchScene("MainMenu");
     }
@@ -81,5 +105,14 @@ public class DeckBuilder implements Initializable {
         btnTrans.setToX(1);
         btnTrans.setToY(1);
         btnTrans.play();
+    }
+
+    private void SelectDeckFromConfig(){
+        if (selectedCards.size() != Constants.numberOfCardsInDeck) throw new RuntimeException("Wrong number of Cards in deckConfig.json");
+        for (Integer i : selectedCards){
+            cards.get(i).selected = true;
+            cardsOnPane.get(i).setScaleX(1.5);
+            cardsOnPane.get(i).setScaleY(1.5);
+        }
     }
 }

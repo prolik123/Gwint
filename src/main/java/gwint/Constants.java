@@ -15,6 +15,8 @@ public class Constants {
 
     public static final int numberOfBoards = 3;
 
+    public static final int numberOfCardsInDeck = 20;
+
     public static final int numberOfDrawnCardBySpy = 2;
 
     public static final int numberOfDiscardAfterStart = 2;
@@ -39,6 +41,8 @@ public class Constants {
     public static final String pathToOffHeart = "lifeOff.png";
 
     public static final String pathToCardsConfig = "cardConfig.json";
+
+    public static final String pathToDeckConfig = "deckConfig.json";
 
     public static final String linkToFontDownload = "https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap";
 
