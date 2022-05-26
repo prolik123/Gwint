@@ -7,11 +7,11 @@ Ekipa tworząca w składzie:
  - **[Maciej Sanocki](https://github.com/msanock)**
 
 # Do zrobienia 
- 1. Umiejętności specjalne kart
- 2. Dodatkowe mechaniki urozmaicające rozgrywkę
- 3. Animacje
- 4. Efekty dźwiękowe
- 5. Dodać ustawienia
+ 1. Debugging
+ 2. Kilka nowych animacji
+ 3. Kilka nowych efektów dźwiękowych
+ 4. Zakładka credits
+ 5. Drobne poprawki i ulepszenia
 
 # Changelog
  ### 05.05.2022
@@ -19,6 +19,12 @@ Ekipa tworząca w składzie:
   - [x] Ulepszona grafika
   - [x] Podstawowe dźwięki 
   - [x] Podstawowy przeciwnik
+ ### 26.05.2022
+  - [x] Znacznie urozmaicone mechaniki gry
+  - [x] Ulepszona grafika
+  - [x] Usprawniony przeciwnik
+  - [x] Dużo nowych animacji
+  - [x] Dużo popraw bugów różnego rodzaju
 
 # Instalacja
 ```
@@ -27,15 +33,21 @@ cd Gwint
 mvn clean package
 ```
 
+# Wymagania
+ - Maven 3.8.0
+ - JavaFX 18.0.1
+
+*Na innych wersjach może działa, ale nie było to sprawdzane*
+
 # Statystyki
 | język | pliki | linie kodu | komentarze | puste linie | razem |
 | :--- | ---: | ---: | ---: | ---: | ---: |
-| Java | 14 | 1,155 | 111 | 328 | 1,594 |
-| JSON | 1 | 126 | 0 | 1 | 127 |
-| XML | 2 | 109 | 2 | 5 | 116 |
-| Markdown | 1 | 35 | 0 | 8 | 43 |
-| CSS | 1 | 14 | 0 | 2 | 16 |
+| Java | 17 | 1,708 | 125 | 435 | 2,268 |
+| JSON | 3 | 254 | 0 | 1 | 255 |
+| XML | 4 | 219 | 2 | 13 | 234 |
+| CSS | 2 | 98 | 40 | 21 | 159 |
+| Markdown | 1 | 34 | 0 | 8 | 42 |
 
-W sumie : 19 plików i 1896 linii
+W sumie : 27 plików i 2313 linii
 
 (Wszystkie dane są przybliżone i aktualizowane raz na czas)
