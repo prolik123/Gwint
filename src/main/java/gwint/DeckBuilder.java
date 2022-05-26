@@ -1,5 +1,6 @@
 package gwint;
 
+import javafx.geometry.Insets;
 import org.apache.commons.collections4.BidiMap;
 
 import javafx.animation.ScaleTransition;
@@ -54,7 +55,9 @@ public class DeckBuilder implements Initializable {
         for (int i = 0; i < cards.size(); i++){
             Card card = cards.get(i);
 
-            Button currentButton = card.genSimpleCardView();
+            Button currentButton = card.genCardView();
+            currentButton.setOnMouseClicked(null);
+            currentButton.setPadding(new Insets(40, 40, 40 , 40));
             cardsOnPane.put(i, currentButton);
             currentButton.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -64,7 +67,7 @@ public class DeckBuilder implements Initializable {
                         card.selected = true;
                         selectedCards.add(cardsOnPane.inverseBidiMap().get(currentButton));
                         howManySelected++;
-                        Animations.scaleTo(currentButton, 1.7, 1.7, 100);
+                        Animations.scaleTo(currentButton, 1.5, 1.5, 100);
                     }
                     else if(card.selected) {
                         card.selected = false;
@@ -111,8 +114,8 @@ public class DeckBuilder implements Initializable {
         if (selectedCards.size() != Constants.numberOfCardsInDeck) throw new RuntimeException("Wrong number of Cards in deckConfig.json");
         for (Integer i : selectedCards){
             cards.get(i).selected = true;
-            cardsOnPane.get(i).setScaleX(1.7);
-            cardsOnPane.get(i).setScaleY(1.7);
+            cardsOnPane.get(i).setScaleX(1.5);
+            cardsOnPane.get(i).setScaleY(1.5);
         }
     }
 }

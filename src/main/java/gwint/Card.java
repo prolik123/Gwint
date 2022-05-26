@@ -169,7 +169,8 @@ public class Card {
         thisButton=btn;
 
         btn.setGraphic(cardPane);
-        btn.setStyle(Constants.DECK_STYLE);
+        //btn.setStyle(Constants.DECK_STYLE);
+        btn.setPadding(new Insets(13));
 
         Animations.fadeIn(btn, Constants.fadeInDuration);
 
