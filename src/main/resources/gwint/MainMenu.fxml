@@ -18,11 +18,11 @@
                <Insets bottom="100.0" />
             </VBox.margin>
          </ImageView>
-         <Button id="playButton" fx:id="playButton" onAction="#handlePlayButtonAction" onMouseEntered="#handleEntered" onMouseExited="#handleExited" prefHeight="50.0" text=" P L A Y ">
+         <Button  onAction="#handlePlayButtonAction" onMouseEntered="#handleEntered" onMouseExited="#handleExited" prefHeight="50.0" text=" P L A Y ">
          </Button>
-         <Button fx:id="settingsButton" onAction="#handleSettingsButtonAction" onMouseEntered="#handleEntered" onMouseExited="#handleExited" prefHeight="50.0" text=" S E T T I N G S ">
+         <Button  onAction="#handleSettingsButtonAction" onMouseEntered="#handleEntered" onMouseExited="#handleExited" prefHeight="50.0" text=" S E T T I N G S ">
          </Button>
-         <Button fx:id="exitButton" onAction="#handleExitButtonAction" onMouseEntered="#handleEntered" onMouseExited="#handleExited" prefHeight="50.0" text=" E X I T ">
+         <Button  onAction="#handleExitButtonAction" onMouseEntered="#handleEntered" onMouseExited="#handleExited" prefHeight="50.0" text=" E X I T ">
          </Button>
       </VBox>
    </HBox>

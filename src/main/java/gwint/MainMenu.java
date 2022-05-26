@@ -23,12 +23,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainMenu implements Initializable {
-    @FXML
-    private Button playButton;
-    @FXML
-    private Button settingsButton;
-    @FXML
-    private Button exitButton;
+
     @FXML
     private HBox mainMenuPane;
     @FXML
@@ -42,7 +37,7 @@ public class MainMenu implements Initializable {
 
 
     public void handlePlayButtonAction(ActionEvent e){
-        App.switchScene("BaseGame");
+        App.switchScene("DeckBuilder");
     }
 
     public void handleSettingsButtonAction(ActionEvent e) throws IOException {

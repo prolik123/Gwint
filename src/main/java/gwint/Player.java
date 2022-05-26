@@ -76,7 +76,8 @@ public class Player {
         myCards = new BoardSlot();
         myCardDeck = new ArrayList<>();
         deadCards = new ArrayList<>();
-        myCards.cardList = JsonCardParser.getCardsList();
+        //myCards.cardList = JsonCardParser.getCardsList();
+        myCards.cardList = DeckLoader.loadAvailableDeck();
         getListPermutation(myCards.cardList);
         chooseHandCards(myCards.cardList, myCardDeck);
     }

@@ -35,6 +35,11 @@ public class App extends Application {
                 root = loader.load();
                 stage.setTitle("Main Menu");
             }
+            if(rootName.equals("DeckBuilder")) {
+                loader = new FXMLLoader(App.class.getResource("DeckBuilder.fxml"));
+                root = loader.load();
+                stage.setTitle("DeckBuilder");
+            }
 
             else if(rootName.equals("BaseGame"))
             {
