@@ -1,6 +1,10 @@
 package gwint;
 
 import javafx.geometry.Insets;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.InnerShadow;
+import javafx.scene.paint.Color;
 import org.apache.commons.collections4.BidiMap;
 
 import javafx.animation.ScaleTransition;
@@ -68,12 +72,14 @@ public class DeckBuilder implements Initializable {
                         selectedCards.add(cardsOnPane.inverseBidiMap().get(currentButton));
                         howManySelected++;
                         Animations.scaleTo(currentButton, 1.5, 1.5, 100);
+                        currentButton.setEffect(new InnerShadow(BlurType.GAUSSIAN, Color.web("#D4AF37"), 10, 0.5, 0.0, 0.0));
                     }
                     else if(card.selected) {
                         card.selected = false;
                         selectedCards.remove((Object) cardsOnPane.inverseBidiMap().get(currentButton));
                         howManySelected--;
                         Animations.scaleTo(currentButton, 1.25, 1.25, 100);
+                        currentButton.setEffect(null);
                     }
                     //System.out.println(selectedCards);
                 }
@@ -97,10 +103,8 @@ public class DeckBuilder implements Initializable {
     }
 
     public void handleEntered(MouseEvent e){
-        ScaleTransition btnTrans=new ScaleTransition(Duration.millis(100), (Node) e.getSource());
-        btnTrans.setToX(1.2);
-        btnTrans.setToY(1.2);
-        btnTrans.play();
+
+        Animations.scaleTo( e.getPickResult().getIntersectedNode(), 1.2, 1.2, 100);
     }
 
     public void handleExited(MouseEvent e){
@@ -116,6 +120,7 @@ public class DeckBuilder implements Initializable {
             cards.get(i).selected = true;
             cardsOnPane.get(i).setScaleX(1.5);
             cardsOnPane.get(i).setScaleY(1.5);
+            cardsOnPane.get(i).setEffect(new InnerShadow(BlurType.GAUSSIAN, Color.web("#D4AF37"), 10, 0.5, 0.0, 0.0));
         }
     }
 }

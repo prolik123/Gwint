@@ -12,10 +12,7 @@ import javafx.scene.control.Button;
 
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -25,7 +22,7 @@ import java.util.ResourceBundle;
 public class MainMenu implements Initializable {
 
     @FXML
-    private HBox mainMenuPane;
+    private BorderPane mainMenuPane;
     @FXML
     private StackPane stackPane;
     @FXML
@@ -50,7 +47,7 @@ public class MainMenu implements Initializable {
 
         FadeTransition fadeOut = new FadeTransition(Duration.millis(500), mainMenuPane);
         fadeOut.setFromValue(1);
-        fadeOut.setToValue(0.15);
+        fadeOut.setToValue(0);
 
         FadeTransition fadeIn = new FadeTransition(Duration.millis(500), settingsPane);
         fadeIn.setFromValue(0);
@@ -77,7 +74,7 @@ public class MainMenu implements Initializable {
         mainMenu.setOpacity(0.15);
 
         FadeTransition fadeIn = new FadeTransition(Duration.millis(500), mainMenu);
-        fadeIn.setFromValue(0.15);
+        fadeIn.setFromValue(0);
         fadeIn.setToValue(1);
 
         FadeTransition fadeOut = new FadeTransition(Duration.millis(500), settingsPane);
