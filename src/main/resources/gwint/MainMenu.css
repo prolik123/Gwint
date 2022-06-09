@@ -5,20 +5,33 @@
 
 #stackPane{
     -fx-background-color: #000000;
+    -fx-background-image: url(menubackground.jpg);
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
 }
 
 #mainMenuPane{
-    -fx-background-color: #000000;
+    -fx-background-color: transparent;
     -fx-font-family: 'MedievalSharp';
+    -fx-effect: dropshadow(gaussian, #000000, 20, 0.75, 1.0, 0.0);
     -fx-font-size:52;
 }
 
 #settingsPane{
     -fx-background-color: #2b2b2b;
     -fx-font-family: 'MedievalSharp';
-    -fx-background-radius: 50.0;
+    -fx-background-radius: 25.0;
+    -fx-effect: dropshadow(gaussian, #000000, 20, 0.75, 1.0, 0.0);
     -fx-padding: 8;
 }
+.slider .thumb{
+    -fx-background-color: #D4AF37;
+}
+.slider .track{
+    -fx-background-color: #000000;
+}
+
 
 .button {
     -fx-text-fill: #D4AF37;
@@ -26,9 +39,21 @@
     -fx-background-color: transparent;
 }
 
+#settingsPane .button {
+    -fx-effect: dropshadow(gaussian, #000000, 20, 0.75, 1.0, 0.0);
+}
+
+/*Settings icon by Icons8*/
+#settingsButton {
+    -fx-background-image: url('settingsIcon.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 90%;
+}
+
 .label {
     -fx-text-fill: #D4AF37;
     -fx-font-family: 'MedievalSharp';
+    -fx-effect: dropshadow(gaussian, #000000, 20, 0.75, 1.0, 0.0);
 }
 /*
 * :disabled {

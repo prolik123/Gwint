@@ -27,4 +27,25 @@ public class JsonMaker {
             }
         }
     }
+
+    public static void applyVolumeChanges(double backgroundMusicVolume, double soundEffectVolume, Object obj){
+        FileWriter file = null;
+        JSONArray arr = new JSONArray();
+        arr.add(backgroundMusicVolume);
+        arr.add(soundEffectVolume);
+        try {
+            file = new FileWriter(obj.getClass().getResource("volumeConfig.json").getPath());
+            file.write(arr.toJSONString());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                file.flush();
+                file.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

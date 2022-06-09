@@ -1,6 +1,10 @@
 package gwint;
 
 import javafx.geometry.Insets;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.InnerShadow;
+import javafx.scene.paint.Color;
 import org.apache.commons.collections4.BidiMap;
 
 import javafx.animation.ScaleTransition;
@@ -63,19 +67,20 @@ public class DeckBuilder implements Initializable {
 
                 @Override
                 public void handle(ActionEvent event) {
-                    if(!card.selected && howManySelected < Constants.numberOfCardsInDeck) {
+                    if(!card.selected && howManySelected < Constants.maxNumberOfCardsInDeck) {
                         card.selected = true;
                         selectedCards.add(cardsOnPane.inverseBidiMap().get(currentButton));
                         howManySelected++;
                         Animations.scaleTo(currentButton, 1.5, 1.5, 100);
+                        currentButton.setEffect(new InnerShadow(BlurType.GAUSSIAN, Color.web("#D4AF37"), 10, 0.5, 0.0, 0.0));
                     }
                     else if(card.selected) {
                         card.selected = false;
                         selectedCards.remove((Object) cardsOnPane.inverseBidiMap().get(currentButton));
                         howManySelected--;
                         Animations.scaleTo(currentButton, 1.25, 1.25, 100);
+                        currentButton.setEffect(null);
                     }
-                    //System.out.println(selectedCards);
                 }
             });
             currentButton.setScaleX(1.25);
@@ -85,14 +90,14 @@ public class DeckBuilder implements Initializable {
         SelectDeckFromConfig();
     }
 
-    public void handlePlayButtonAction(ActionEvent event) {
-        if (selectedCards.size() != Constants.numberOfCardsInDeck) return;
+    public void handleSaveButtonAction(ActionEvent event) {
+        if (selectedCards.size() < Constants.minNumberOfCardsInDeck) return;
         JsonMaker.applyDeckChanges(selectedCards, this);
-        App.switchScene("BaseGame");
+        App.switchScene("MainMenu");
     }
 
     //does not apply changes
-    public void handleBackButtonAction(ActionEvent event) {
+    public void handleDiscardButtonAction(ActionEvent event) {
         App.switchScene("MainMenu");
     }
 
@@ -111,11 +116,12 @@ public class DeckBuilder implements Initializable {
     }
 
     private void SelectDeckFromConfig(){
-        if (selectedCards.size() != Constants.numberOfCardsInDeck) throw new RuntimeException("Wrong number of Cards in deckConfig.json");
+        if (selectedCards.size() < Constants.minNumberOfCardsInDeck) throw new RuntimeException("Wrong number of Cards in deckConfig.json");
         for (Integer i : selectedCards){
             cards.get(i).selected = true;
             cardsOnPane.get(i).setScaleX(1.5);
             cardsOnPane.get(i).setScaleY(1.5);
+            cardsOnPane.get(i).setEffect(new InnerShadow(BlurType.GAUSSIAN, Color.web("#D4AF37"), 10, 0.5, 0.0, 0.0));
         }
     }
 }

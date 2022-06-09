@@ -12,10 +12,7 @@ import javafx.scene.control.Button;
 
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -25,7 +22,7 @@ import java.util.ResourceBundle;
 public class MainMenu implements Initializable {
 
     @FXML
-    private HBox mainMenuPane;
+    private BorderPane mainMenuPane;
     @FXML
     private StackPane stackPane;
     @FXML
@@ -37,6 +34,10 @@ public class MainMenu implements Initializable {
 
 
     public void handlePlayButtonAction(ActionEvent e){
+        App.switchScene("BaseGame");
+    }
+
+    public void handleDeckButtonAction(ActionEvent e){
         App.switchScene("DeckBuilder");
     }
 
@@ -48,9 +49,10 @@ public class MainMenu implements Initializable {
         stackPane.getChildren().add(settingsPane);
 
 
+
         FadeTransition fadeOut = new FadeTransition(Duration.millis(500), mainMenuPane);
         fadeOut.setFromValue(1);
-        fadeOut.setToValue(0.15);
+        fadeOut.setToValue(0);
 
         FadeTransition fadeIn = new FadeTransition(Duration.millis(500), settingsPane);
         fadeIn.setFromValue(0);
@@ -76,8 +78,9 @@ public class MainMenu implements Initializable {
         Pane mainMenu = (Pane) parent.getChildren().get(0);
         mainMenu.setOpacity(0.15);
 
+
         FadeTransition fadeIn = new FadeTransition(Duration.millis(500), mainMenu);
-        fadeIn.setFromValue(0.15);
+        fadeIn.setFromValue(0);
         fadeIn.setToValue(1);
 
         FadeTransition fadeOut = new FadeTransition(Duration.millis(500), settingsPane);
@@ -88,6 +91,8 @@ public class MainMenu implements Initializable {
 
         ParallelTransition fade = new ParallelTransition(fadeIn, fadeOut);
         fade.play();
+
+
 
         new Thread(() -> {
             try {
@@ -100,6 +105,7 @@ public class MainMenu implements Initializable {
     }
 
     public void handleExitButtonAction(ActionEvent e){
+        JsonMaker.applyVolumeChanges(Sounds.backgroundMusicVolume, Sounds.soundEffectVolume, this);
         App.exit();
     }
 
@@ -121,11 +127,18 @@ public class MainMenu implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         if (this.musicVolumeSlider == null) return;
 
-        musicVolumeSlider.valueProperty().setValue(100);
+        musicVolumeSlider.setMax(1.0);
+        musicVolumeSlider.setMin(0);
+        musicVolumeSlider.valueProperty().setValue(Sounds.backgroundMusicVolume);
         musicVolumeSlider.valueProperty().addListener((observableValue, number, t1) ->
-                Platform.runLater(() -> Sounds.backgroundMusicPlayer.setVolume(musicVolumeSlider.getValue()/100)));
+                Platform.runLater(() -> {
+                    Sounds.backgroundMusicPlayer.setVolume(musicVolumeSlider.getValue());
+                    Sounds.backgroundMusicVolume = musicVolumeSlider.getValue();
+                }));
 
-        effectsVolumeSlider.valueProperty().setValue(100);
+        effectsVolumeSlider.setMax(1.0);
+        effectsVolumeSlider.setMin(0);
+        effectsVolumeSlider.valueProperty().setValue(Sounds.soundEffectVolume);
         effectsVolumeSlider.valueProperty().addListener((observableValue, number, t1) ->
                 Platform.runLater(() -> Sounds.soundEffectVolume = effectsVolumeSlider.getValue()));
     }

@@ -8,6 +8,11 @@
     -fx-background-color: #000000;
     -fx-font-family: 'MedievalSharp';
     -fx-font-size:52;
+    -fx-background-color: #000000;
+    -fx-background-image: url(menubackground.jpg);
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: auto 100%;
 }
 
 #tilePane{
@@ -17,47 +22,9 @@
 #scrollPane{
     -fx-background-color: #000000;
     -fx-border-color: #000000;
-}
-/*.SP .scroll-bar:horizontal ,
-.SP  .scroll-bar:vertical{
-    -fx-background-color:transparent;
-
+    -fx-background-radius: 25.0;
 }
 
-*//** CSS **//*
-.SP{
-	-fx-border-color: #000000;
-}
-
-*//* The main scrollbar CSS class of ListView *//*
-.SP .scroll-bar:horizontal ,
-.SP  .scroll-bar:vertical{
-    -fx-background-color:transparent;
-
-}
-
-*//* The increment and decrement button CSS class of scrollbar *//*
-.SP .increment-button ,.SP .decrement-button {
-    -fx-background-color:transparent;
-	-fx-border-color:derive(gray,80%);
-}
-
-*//* The main scrollbar **track** CSS class  *//*
-.SP .scroll-bar:horizontal .track ,
-.SP .scroll-bar:vertical .track{
-     -fx-background-color: transparent;
-	 -fx-border-color:derive(gray,80%);
-	 -fx-background-radius: 0em;
-}
-
-*//* The main scrollbar **thumb** CSS class which we drag every time (movable) *//*
-.SP .scroll-bar:horizontal .thumb,
-.SP .scroll-bar:vertical .thumb {
-    -fx-background-color:derive(black,90%);
-	-fx-background-insets: 0, 0, 0;
-	-fx-background-radius: 0em;
-
-}*/
 .scroll-bar:horizontal .track,
 .scroll-bar:vertical .track{
     -fx-background-color : #000000;
@@ -77,7 +44,7 @@
 
 .scroll-bar:vertical .increment-button ,
 .scroll-bar:vertical .decrement-button {
-    -fx-background-color :transparent;
+    -fx-background-color : transparent;
     -fx-background-radius : 0.0em;
     -fx-padding :0.0 10.0 0.0 0.0;
 
@@ -108,13 +75,21 @@
     -fx-background-insets : 2.0, 0.0, 0.0;
     -fx-background-radius : 2.0em;
 }
+
+
 .button {
     -fx-text-fill: #D4AF37;
     -fx-border-style: none;
     -fx-background-color: transparent;
 }
 
+.controlButton {
+    -fx-effect: dropshadow(gaussian, #000000, 20, 0.75, 1.0, 0.0);
+}
+
+
 .label {
+    -fx-effect: dropshadow(gaussian, #000000, 20, 0.75, 1.0, 0.0);
     -fx-text-fill: #D4AF37;
     -fx-font-family: 'MedievalSharp';
 }
