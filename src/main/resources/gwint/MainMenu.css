@@ -8,7 +8,7 @@
     -fx-background-image: url(menubackground.jpg);
     -fx-background-position: center;
     -fx-background-repeat: no-repeat;
-    -fx-background-size: 100%;
+    -fx-background-size: cover;
 }
 
 #mainMenuPane{

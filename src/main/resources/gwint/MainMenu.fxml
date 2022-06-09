@@ -23,7 +23,7 @@
                </VBox.margin>
             </ImageView>
             <Button onAction="#handlePlayButtonAction" onMouseEntered="#handleEntered" onMouseExited="#handleExited" prefHeight="50.0" text=" P L A Y " />
-            <Button onMouseEntered="#handleEntered" onMouseExited="#handleExited" prefHeight="50.0" text=" S E T T I N G S " />
+            <Button onAction="#handleDeckButtonAction" onMouseEntered="#handleEntered" onMouseExited="#handleExited" prefHeight="50.0" text=" C H O S E   D E C K " />
             <Button onAction="#handleExitButtonAction" onMouseEntered="#handleEntered" onMouseExited="#handleExited" prefHeight="50.0" text=" E X I T " />
 
          </VBox>

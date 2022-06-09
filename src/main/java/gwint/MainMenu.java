@@ -34,6 +34,10 @@ public class MainMenu implements Initializable {
 
 
     public void handlePlayButtonAction(ActionEvent e){
+        App.switchScene("BaseGame");
+    }
+
+    public void handleDeckButtonAction(ActionEvent e){
         App.switchScene("DeckBuilder");
     }
 
