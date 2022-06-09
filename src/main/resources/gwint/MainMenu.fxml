@@ -17,6 +17,7 @@
             <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@tcs.png" />
+
                </image>
                <VBox.margin>
                   <Insets bottom="50.0" />
@@ -31,7 +32,7 @@
       <top>
          <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
-               <Button fx:id="settingsButton" minHeight="100" minWidth="100" onAction="#handleSettingsButtonAction">
+               <Button fx:id="settingsButton" minHeight="100" minWidth="100" onAction="#handleSettingsButtonAction" onMouseEntered="#handleEntered" onMouseExited="#handleExited">
                   </Button>
             </children>
             <BorderPane.margin>

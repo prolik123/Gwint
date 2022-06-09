@@ -81,7 +81,6 @@ public class DeckBuilder implements Initializable {
                         Animations.scaleTo(currentButton, 1.25, 1.25, 100);
                         currentButton.setEffect(null);
                     }
-                    //System.out.println(selectedCards);
                 }
             });
             currentButton.setScaleX(1.25);
@@ -103,8 +102,10 @@ public class DeckBuilder implements Initializable {
     }
 
     public void handleEntered(MouseEvent e){
-
-        Animations.scaleTo( e.getPickResult().getIntersectedNode(), 1.2, 1.2, 100);
+        ScaleTransition btnTrans=new ScaleTransition(Duration.millis(100), (Node) e.getSource());
+        btnTrans.setToX(1.2);
+        btnTrans.setToY(1.2);
+        btnTrans.play();
     }
 
     public void handleExited(MouseEvent e){
