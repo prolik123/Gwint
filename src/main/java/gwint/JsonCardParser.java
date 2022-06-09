@@ -105,6 +105,28 @@ public class JsonCardParser {
         return result;
     }
 
+    public static void getVolumes() {
+        try{
+            getVolumesWithExceptions();
+        }
+        catch(JSONException e){
+            e.printStackTrace();
+            /// failure
+            throw new RuntimeException("You got JSONExeption from JsonParser");
+        }
+        catch(FileNotFoundException e) {
+            /// failure
+            throw new RuntimeException("You got FileNotFoundException from JsonParser");
+        }
+    }
+
+    public static void getVolumesWithExceptions() throws JSONException, FileNotFoundException{
+        JSONArray arr = getJsonArray(Constants.pathToVolumeConfig);
+
+        Sounds.backgroundMusicVolume = arr.getDouble(0);
+        Sounds.soundEffectVolume = arr.getDouble(1);
+    }
+
 
     /// You must be sure that the attribute is String
     public static String getJsonStringAttribute(JSONObject object,String attributeName) {

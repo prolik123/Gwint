@@ -67,7 +67,7 @@ public class DeckBuilder implements Initializable {
 
                 @Override
                 public void handle(ActionEvent event) {
-                    if(!card.selected && howManySelected < Constants.numberOfCardsInDeck) {
+                    if(!card.selected && howManySelected < Constants.maxNumberOfCardsInDeck) {
                         card.selected = true;
                         selectedCards.add(cardsOnPane.inverseBidiMap().get(currentButton));
                         howManySelected++;
@@ -91,14 +91,14 @@ public class DeckBuilder implements Initializable {
         SelectDeckFromConfig();
     }
 
-    public void handlePlayButtonAction(ActionEvent event) {
-        if (selectedCards.size() != Constants.numberOfCardsInDeck) return;
+    public void handleSaveButtonAction(ActionEvent event) {
+        if (selectedCards.size() < Constants.minNumberOfCardsInDeck) return;
         JsonMaker.applyDeckChanges(selectedCards, this);
-        App.switchScene("BaseGame");
+        App.switchScene("MainMenu");
     }
 
     //does not apply changes
-    public void handleBackButtonAction(ActionEvent event) {
+    public void handleDiscardButtonAction(ActionEvent event) {
         App.switchScene("MainMenu");
     }
 
@@ -115,7 +115,7 @@ public class DeckBuilder implements Initializable {
     }
 
     private void SelectDeckFromConfig(){
-        if (selectedCards.size() != Constants.numberOfCardsInDeck) throw new RuntimeException("Wrong number of Cards in deckConfig.json");
+        if (selectedCards.size() < Constants.minNumberOfCardsInDeck) throw new RuntimeException("Wrong number of Cards in deckConfig.json");
         for (Integer i : selectedCards){
             cards.get(i).selected = true;
             cardsOnPane.get(i).setScaleX(1.5);

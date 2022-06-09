@@ -15,7 +15,9 @@ public class Constants {
 
     public static final int numberOfBoards = 3;
 
-    public static final int numberOfCardsInDeck = 20;
+    public static final int minNumberOfCardsInDeck = 12;
+
+    public static final int maxNumberOfCardsInDeck = 25;
 
     public static final int numberOfDrawnCardBySpy = 2;
 
@@ -41,6 +43,8 @@ public class Constants {
     public static final String pathToOffHeart = "lifeOff.png";
 
     public static final String pathToCardsConfig = "cardConfig.json";
+
+    public static final String pathToVolumeConfig = "volumeConfig.json";
 
     public static final String pathToDeckConfig = "deckConfig.json";
 

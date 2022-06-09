@@ -36,8 +36,8 @@
    <bottom>
       <HBox alignment="CENTER" spacing="50.0" BorderPane.alignment="CENTER">
          <children>
-            <Button styleClass="controlButton" mnemonicParsing="false" onAction="#handleBackButtonAction" onMouseEntered="#handleEntered" onMouseExited="#handleExited" text="Discard"/>
-            <Button styleClass="controlButton" mnemonicParsing="false" onAction="#handlePlayButtonAction" onMouseEntered="#handleEntered" onMouseExited="#handleExited" text="Save" />
+            <Button styleClass="controlButton" mnemonicParsing="false" onAction="#handleDiscardButtonAction" onMouseEntered="#handleEntered" onMouseExited="#handleExited" text="Discard"/>
+            <Button styleClass="controlButton" mnemonicParsing="false" onAction="#handleSaveButtonAction" onMouseEntered="#handleEntered" onMouseExited="#handleExited" text="Save" />
          </children>
       </HBox>
    </bottom>
